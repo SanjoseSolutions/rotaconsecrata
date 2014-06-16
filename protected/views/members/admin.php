@@ -12,18 +12,25 @@ $this->menu=array(
 	array('label'=>'Create Members', 'url'=>array('create')),
 );
 
+if ($search) {
+	$setSearch = "$('.search-form').toggle();";
+} else {
+	$setSearch = "";
+}
+
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
 	return false;
 });
-$('.search-form form').submit(function(){
+$('#submit-button form').submit(function(){
 	$('#members-grid').yiiGridView('update', {
 		data: $(this).serialize()
 	});
+	$('#members-grid').focus();
 	return false;
 });
-");
+" . $setSearch);
 ?>
 
 <h1>Manage Members</h1>
@@ -47,7 +54,6 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'columns'=>array(
 		'id',
 		'fullname',
-		'photo',
 		'maiden_name',
 		'mobile',
 		'dob',

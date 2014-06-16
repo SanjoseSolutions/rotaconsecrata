@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Web Application',
+	'name'=>'RotaConsecrata',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -65,7 +65,8 @@ return array(
 			'routes'=>array(
 				array(
 					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
+					'levels'=>'error, warning, trace',
+					'categories'=>'system.*, application.*',
 				),
 				// uncomment the following to show log messages on web pages
 				/*

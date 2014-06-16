@@ -2,6 +2,9 @@
 /* @var $this MembersController */
 /* @var $model Members */
 /* @var $form CActiveForm */
+
+$yesno_opts = array(1 => 'Yes', 0 => 'No');
+
 ?>
 
 <div class="wide form">
@@ -22,11 +25,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'photo'); ?>
-		<?php echo $form->textField($model,'photo',array('size'=>50,'maxlength'=>50)); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->label($model,'maiden_name'); ?>
 		<?php echo $form->textField($model,'maiden_name',array('size'=>60,'maxlength'=>100)); ?>
 	</div>
@@ -37,28 +35,55 @@
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->label($model,'dob'); ?>
 		<?php echo $form->textField($model,'dob'); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->label($model,'age'); ?>
+		<?php echo $form->textField($model,'age'); ?>
+	</span>
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->label($model,'joining_dt'); ?>
 		<?php echo $form->textField($model,'joining_dt'); ?>
+	</span>
+	<span class="rightHalf">
+	</span>
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->label($model,'vestation_dt'); ?>
 		<?php echo $form->textField($model,'vestation_dt'); ?>
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->label($model,'first_commitment_dt'); ?>
 		<?php echo $form->textField($model,'first_commitment_dt'); ?>
+	</span>
+	<span class="rightHalf">
+	</span>
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->label($model,'final_commitment_dt'); ?>
 		<?php echo $form->textField($model,'final_commitment_dt'); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->label($model,'made_final'); ?>
+		<?php echo $form->dropDownList($model, 'made_final', $yesno_opts, array('prompt' => '-- Select --')); ?>
+	</span>
+	</div>
+
+	<div>
+		<?php echo $form->label($model,'specialization'); ?>
+		<?php echo $form->dropDownList($model, 'specialization', Specializations::getAll(), array(
+			'prompt'=>'-- Select one --')); ?>
 	</div>
 
 	<div class="row">
@@ -72,13 +97,14 @@
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->label($model,'father_alive'); ?>
-		<?php echo $form->textField($model,'father_alive'); ?>
-	</div>
-
-	<div class="row">
+		<?php echo $form->dropDownList($model,'father_alive',$yesno_opts, array('prompt' => '-- Select --')); ?>
+	</span>
+	<span class="rightHalf">
 		<?php echo $form->label($model,'mother_alive'); ?>
-		<?php echo $form->textField($model,'mother_alive'); ?>
+		<?php echo $form->dropDownList($model,'mother_alive',$yesno_opts, array('prompt' => '-- Select --')); ?>
+	</span>
 	</div>
 
 	<div class="row">
@@ -117,23 +143,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'mission'); ?>
-		<?php echo $form->textField($model,'mission'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'generalate'); ?>
-		<?php echo $form->textField($model,'generalate'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->label($model,'community'); ?>
 		<?php echo $form->textField($model,'community'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'updated_by'); ?>
-		<?php echo $form->textField($model,'updated_by'); ?>
 	</div>
 
 	<div class="row">
@@ -142,22 +153,35 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'swiss_visit'); ?>
-		<?php echo $form->textField($model,'swiss_visit'); ?>
+	<span class="leftHalf">
+		<?php echo $form->label($model,'mission'); ?>
+		<?php echo $form->dropDownList($model,'mission', $yesno_opts, array('prompt' => '-- Select --')); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->label($model,'generalate'); ?>
+		<?php echo $form->dropDownList($model,'generalate', $yesno_opts, array('prompt' => '-- Select --')); ?>
+	</span>
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->label($model,'holyland_visit'); ?>
-		<?php echo $form->textField($model,'holyland_visit'); ?>
+		<?php echo $form->dropDownList($model,'holyland_visit', $yesno_opts, array('prompt' => '-- Select --')); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->label($model,'family_abroad'); ?>
+		<?php echo $form->dropDownList($model,'family_abroad', $yesno_opts, array('prompt' => '-- Select --')); ?>
+	</span>
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'family_abroad'); ?>
-		<?php echo $form->textField($model,'family_abroad'); ?>
+		<?php echo $form->label($model,'swiss_visit'); ?>
+		<?php echo $form->dropDownList($model,'swiss_visit', $yesno_opts, array('prompt' => '-- Select --')); ?>
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search'); ?>
+		<?php echo CHtml::submitButton('Search', array('id' => 'submit-button')); ?>
+		<?php echo CHtml::submitButton('Excel Export', array('name' => 'export')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

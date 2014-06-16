@@ -9,6 +9,7 @@
  * @property string $photo
  * @property string $maiden_name
  * @property string $mobile
+ * @property string $email
  * @property string $dob
  * @property string $joining_dt
  * @property string $vestation_dt
@@ -33,6 +34,9 @@
  * @property integer $swiss_visit
  * @property integer $holyland_visit
  * @property integer $family_abroad
+ *
+ * The followings are the available model relations:
+ * @property MemberSpecializations[] $memberSpecs
  */
 class Members extends CActiveRecord
 {
@@ -55,13 +59,14 @@ class Members extends CActiveRecord
 			array('fullname, dob, joining_dt, fathers_name, mothers_name', 'required'),
 			array('father_alive, mother_alive, mission, generalate, community, updated_by, swiss_visit, holyland_visit, family_abroad', 'numerical', 'integerOnly'=>true),
 			array('fullname, maiden_name, fathers_name, mothers_name', 'length', 'max'=>100),
-			array('photo, parish', 'length', 'max'=>50),
+			array('photo, email, parish', 'length', 'max'=>50),
 			array('mobile, home_phone, home_mobile', 'length', 'max'=>15),
 			array('diocese', 'length', 'max'=>30),
 			array('vestation_dt, first_commitment_dt, final_commitment_dt, address, demise_dt, leaving_dt, updated_on', 'safe'),
+			array('dob, vestation_dt, first_commitment_dt, final_commitment_dt, demise_dt, leaving_dt, updated_on, made_final, father_alive, mother_alive', 'default', 'setOnEmpty' => true, 'value' => null),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fullname, photo, maiden_name, mobile, dob, joining_dt, vestation_dt, first_commitment_dt, final_commitment_dt, fathers_name, mothers_name, father_alive, mother_alive, address, home_phone, home_mobile, parish, diocese, demise_dt, leaving_dt, mission, generalate, community, updated_by, updated_on, swiss_visit, holyland_visit, family_abroad', 'safe', 'on'=>'search'),
+			array('id, fullname, age, maiden_name, made_final, mobile, dob, joining_dt, vestation_dt, first_commitment_dt, final_commitment_dt, made_final, fathers_name, mothers_name, father_alive, mother_alive, address, home_phone, home_mobile, parish, diocese, demise_dt, leaving_dt, mission, generalate, community, updated_by, updated_on, swiss_visit, holyland_visit, family_abroad, specialization', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,6 +78,11 @@ class Members extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'memberSpecs' => array(self::HAS_MANY, 'MemberSpecializations', 'member_id'),
+			'siblings' => array(self::HAS_MANY, 'Siblings', 'member_id'),
+			'communityTerms' => array(self::HAS_MANY, 'CommunityTerms', 'member_id'),
+			'renewalCoursesSpiritual' => array(self::HAS_MANY, 'RenewalCoursesSpiritual', 'member_id'),
+			'renewalCoursesProfessional' => array(self::HAS_MANY, 'RenewalCoursesProfessional', 'member_id'),
 		);
 	}
 
@@ -87,6 +97,7 @@ class Members extends CActiveRecord
 			'photo' => 'Photo',
 			'maiden_name' => 'Maiden Name',
 			'mobile' => 'Mobile',
+			'email' => 'Email',
 			'dob' => 'Date of Birth',
 			'joining_dt' => 'Joining Date',
 			'vestation_dt' => 'Vestation Date',
@@ -103,8 +114,8 @@ class Members extends CActiveRecord
 			'diocese' => 'Diocese',
 			'demise_dt' => 'Demise Date',
 			'leaving_dt' => 'Leaving Date',
-			'mission' => 'Mission',
-			'generalate' => 'Generalate',
+			'mission' => 'Opted for Mission',
+			'generalate' => 'Under Generalate',
 			'community' => 'Community',
 			'updated_by' => 'Updated By',
 			'updated_on' => 'Updated On',
@@ -113,6 +124,35 @@ class Members extends CActiveRecord
 			'family_abroad' => 'Family Abroad',
 		);
 	}
+
+        protected function date_search($criteria, $dt_col, $yr_col) { 
+                $yr_val = $this->$yr_col;
+                if (preg_match('/^(\d+)-(\d+)$/', $yr_val, $matches) or preg_match('/^(\d+)\.\.(\d+)$/', $yr_val, $matches)) {
+                        $lim_max = "" . (date_format(new DateTime('now'), 'Y') - $matches[1])
+                                                . date_format(new DateTime('now'), '-m-d');
+                        $lim_min = "" . (date_format(new DateTime('now'), 'Y') - $matches[2] - 1)
+                                                . date_format(new DateTime('now'), '-m-d');
+                        $criteria = $criteria->addCondition("$dt_col between '$lim_min' and '$lim_max'");
+                } elseif (preg_match('/^(>|<|<=|>=|<>)(\d+)$/', $yr_val, $matches)) {
+                        if (preg_match('/^[<=]+$/', $matches[1])) {
+                                $sgn = preg_replace('/</', '>', $matches[1]);
+                        } elseif (preg_match('/^[>=]+$/', $matches[1])) {
+                                $sgn = preg_replace('/>/', '<', $matches[1]);
+                        } else {
+                                $sgn = $matches[1];
+                        }
+
+                        $lim = "" . (date_format(new DateTime('now'), 'Y') - $matches[2])
+                                                . date_format(new DateTime('now'), '-m-d');
+                        $criteria = $criteria->addCondition("$dt_col $sgn '$lim'");
+                } elseif (preg_match('/^(\d+)$/', $yr_val, $matches)) {
+                        $lim_max = "" . (date_format(new DateTime('now'), 'Y') - $matches[1])
+                                                . date_format(new DateTime('now'), '-m-d');
+                        $lim_min = "" . (date_format(new DateTime('now'), 'Y') - $matches[1] - 1)
+                                                . date_format(new DateTime('now'), '-m-d');
+                        $criteria = $criteria->addCondition("$dt_col between '$lim_min' and '$lim_max'");
+                }
+        }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -137,11 +177,28 @@ class Members extends CActiveRecord
 		$criteria->compare('photo',$this->photo,true);
 		$criteria->compare('maiden_name',$this->maiden_name,true);
 		$criteria->compare('mobile',$this->mobile,true);
+		$criteria->compare('email',$this->email,true);
 		$criteria->compare('dob',$this->dob,true);
+                if (isset($this->age)) {
+                        $this->date_search($criteria, 'dob', 'age');
+                }
 		$criteria->compare('joining_dt',$this->joining_dt,true);
 		$criteria->compare('vestation_dt',$this->vestation_dt,true);
 		$criteria->compare('first_commitment_dt',$this->first_commitment_dt,true);
 		$criteria->compare('final_commitment_dt',$this->final_commitment_dt,true);
+		if (isset($this->made_final)) {
+			switch ($this->made_final) {
+				case 0: $cond = "IS"; break;
+				case 1: $cond = "IS NOT"; break;
+			}
+			$criteria = $criteria->addCondition("final_commitment_dt $cond NULL");
+		}
+		if (isset($this->specialization)) {
+			$criteria->mergeWith(array(
+				'join' => 'INNER JOIN member_spec m ON m.member_id = t.id',
+				'condition' => 'm.spec_id = ' . $this->specialization,
+			));
+		}
 		$criteria->compare('fathers_name',$this->fathers_name,true);
 		$criteria->compare('mothers_name',$this->mothers_name,true);
 		$criteria->compare('father_alive',$this->father_alive);
@@ -176,5 +233,39 @@ class Members extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+        public function getAge() {
+                return $this->dob ? (strtotime('now') - strtotime($this->dob)) / (60*60*24*365.2425) : null;
+        }
+
+        public function setAge($val) {
+                $this->age = $val;
+        }
+
+        public function getMade_final() {
+                return isset($this->made_final) ? $this->made_final : null;
+        }
+
+        public function setMade_final($val) {
+		if ($val == null) return;
+                $this->made_final = $val;
+        }
+
+        public function getProfessed() {
+                return $this->first_commitment_dt ? (strtotime('now') - strtotime($this->first_commitment_dt)) / (60*60*24*365.2425) : null;
+        }
+
+	public function getPresentCommunity() {
+		$mid = $this->id;
+		return CommunityTerms::model()->find("member_id = $mid AND year_to IS NULL");
+	}
+
+	public function setSpecialization($val) {
+		$this->specialization = $val;
+	}
+
+	public function getSpecialization() {
+		return isset($this->specialization) ? $this->specialization : null;
 	}
 }

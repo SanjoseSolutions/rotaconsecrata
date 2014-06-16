@@ -2,6 +2,7 @@
 /* @var $this MembersController */
 /* @var $model Members */
 /* @var $form CActiveForm */
+
 ?>
 
 <div class="form">
@@ -25,8 +26,9 @@
 		<?php echo $form->error($model,'fullname'); ?>
 	</div>
 
+	<?php if (!$model->isNewRecord): ?>
 	<figure class="photo">
-	<?php if ($model->isNewRecord or !$model->photo) {
+	<?php if (!$model->photo) {
 			$photo_path = "/images/placeholder-woman.jpg";
 			$src = Yii::app()->request->baseUrl . $photo_path;
 			list($width, $height) = getimagesize(".$photo_path");
@@ -45,6 +47,7 @@
 	</figure>
 	
 	<div class="rightSection">
+	<?php endif ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'maiden_name'); ?>
@@ -72,16 +75,23 @@
 		<?php echo $form->error($model,'dob'); ?>
 	</span>
 	<span class="rightHalf">
-		<?php echo $form->labelEx($model,'joining_dt'); ?>
-		<?php echo $form->dateField($model,'joining_dt',array('placeholder'=>'Enter Date of Joining')); ?>
-		<?php echo $form->error($model,'joining_dt'); ?>
+		<?php echo $form->labelEx($model,'demise_dt'); ?>
+		<?php echo $form->dateField($model,'demise_dt'); ?>
+		<?php echo $form->error($model,'demise_dt'); ?>
 	</span>
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
+		<?php echo $form->labelEx($model,'joining_dt'); ?>
+		<?php echo $form->dateField($model,'joining_dt',array('placeholder'=>'Enter Date of Joining')); ?>
+		<?php echo $form->error($model,'joining_dt'); ?>
+	</span>
+	<span class="rightHalf">
 		<?php echo $form->labelEx($model,'vestation_dt'); ?>
 		<?php echo $form->dateField($model,'vestation_dt',array('placeholder'=>'Enter Date of Vestation')); ?>
 		<?php echo $form->error($model,'vestation_dt'); ?>
+	</span>
 	</div>
 
 	<div class="row">
@@ -96,7 +106,25 @@
 		<?php echo $form->error($model,'final_commitment_dt'); ?>
 	</span>
 	</div>
+
+	<div class="row">
+	<?php echo CHtml::label('Specialization', null);
+		foreach ($specializations as $spec) {
+			echo '<label class="cblabel" for="spec_'.$spec->id.'">'.$spec->name." ";
+			echo CHtml::checkBox('specialization[]', in_array($spec->id, $setSpecs), array('id'=>"spec_".$spec->id, 'value' => $spec->id));
+			echo '</label>';
+		} ?>
+		<?php /* $data = array();
+		foreach ($specializations as $spec) {
+			$data[$spec->id] = $spec->name;			
+		}
+		echo CHtml::checkBoxList('specialization', null, $data); 
+		*/ ?>
+	</div>
+
+	<?php if (!$model->isNewRecord): ?>
 	</div><!-- end of div.rightSection -->
+	<?php endif ?>
 
 	<div class="row">
 	<span class="left34">
@@ -159,11 +187,6 @@
 	</div>
 
 	<div class="row">
-	<span class="leftHalf">
-		<?php echo $form->labelEx($model,'demise_dt'); ?>
-		<?php echo $form->dateField($model,'demise_dt'); ?>
-		<?php echo $form->error($model,'demise_dt'); ?>
-	</span>
 	<span class="rightHalf">
 		<?php echo $form->labelEx($model,'leaving_dt'); ?>
 		<?php echo $form->dateField($model,'leaving_dt'); ?>
@@ -186,7 +209,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'community'); ?>
-		<?php echo $form->textField($model,'community'); ?>
+		<?php echo $form->textField($model,'community',array('placeholder'=>'Enter community')); ?>
 		<?php echo $form->error($model,'community'); ?>
 	</div>
 

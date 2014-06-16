@@ -233,3 +233,80 @@ figure.photo {
 	padding-right: 10px;
 }
 
+figure figcaption {
+	text-align: center;
+}
+
+figcaption a {
+	font-size: 110%;
+}
+
+.rightSection {
+	display: inline-block;
+	vertical-align: top;
+}
+
+fieldset {
+	display: inline;
+	border: 1px solid #aaa;
+	padding: 5px;
+}
+
+fieldset legend {
+	padding: 2px;
+}
+
+#fancybox-content {
+	width: 400px;
+	height: 200px;
+}
+
+span.mobile:before {
+	content: url('../images/mobile.png') top left no-repeat;
+	margin: 0 5px 0 0;
+}
+
+span.email:before {
+	content: url('../images/email.jpg');
+	margin: 0 5px 0 0;
+}
+
+span.phone:before {
+	background: url('../images/phone.png') 100% 50% no-repeat;
+	content: url('../images/blank.png');
+	margin: 0 3px 0 0;
+}
+
+div.title {
+	margin-bottom: 10px;
+}
+
+.fields {
+	font-size: 110%;
+}
+
+.fields .val {
+	font-family: 'Times New Roman', serif;
+	font-size: 115%;
+	color: rgb(10, 30, 50);
+}
+
+span.mobile span.val {
+	font-family: 'Times New Roman', serif;
+	font-size: 120%;
+	color: hsl(300, 20%, 30%);
+}
+
+div.items div.view figure {
+	float: left;
+}
+
+div.items div.view .title {
+	font-size: 110%;
+}
+
+div.items div.view {
+	width: 320px;
+	float: left;
+}
+

@@ -2,6 +2,7 @@
 
 class SiteController extends Controller
 {
+	public $layout='//layouts/column2';
 	/**
 	 * Declares class-based actions.
 	 */
@@ -29,7 +30,14 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		if (Yii::app()->user->isGuest) {
+			$this->redirect(array('login'));
+		} else {
+			$model=new Members('search');
+			$this->render('index', array(
+				'model'=>$model
+			));
+		}
 	}
 
 	/**

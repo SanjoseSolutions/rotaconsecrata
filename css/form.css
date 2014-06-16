@@ -170,6 +170,16 @@ div.form label {
 	font-family: Verdana, sans;
 }
 
+div.form label.cblabel {
+	font-family: inherit;
+	font-weight: normal;
+	font-size: 100%;
+	text-transform: none;
+	color: inherit;
+	display: inline-block;
+	margin-right: 8px;
+}
+
 div.rightSection {
 	display: inline-block;
 	width: auto;

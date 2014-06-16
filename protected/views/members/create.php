@@ -15,4 +15,8 @@ $this->menu=array(
 
 <h1>Create Members</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array(
+	'model'=>$model,
+	'specializations'=>$specializations,
+	'setSpecs'=>array(),
+)); ?>

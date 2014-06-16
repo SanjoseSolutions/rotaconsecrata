@@ -40,6 +40,56 @@ CREATE TABLE member_spec(
 	member_id INTEGER
 );
 
+CREATE TABLE siblings(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	fullname	VARCHAR(100),
+	phone	VARCHAR(15),
+	alive	TINYINT,
+	member_id	INTEGER,
+	CONSTRAINT member_siblings FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE communities(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	name	VARCHAR(50)
+);
+
+CREATE TABLE community_terms(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	community_id	INTEGER NOT NULL,
+	year_from	INTEGER,
+	year_to	INTEGER,
+	designation	VARCHAR(75),
+	duration	VARCHAR(15),
+	member_id	INTEGER NOT NULL,
+	CONSTRAINT member_communities FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT community_term FOREIGN KEY (community_id) REFERENCES communities(id) ON UPDATE CASCADE
+);
+
+CREATE TABLE renewal_courses_spiritual(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	name	VARCHAR(100),
+	year	INTEGER,
+	member_id	INTEGER NOT NULL,
+	CONSTRAINT member_courses_spiritual FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE renewal_courses_professional(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	name	VARCHAR(100),
+	year	INTEGER,
+	member_id	INTEGER NOT NULL,
+	CONSTRAINT member_courses_professional FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE education_courses(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	name	VARCHAR(100),
+	year	VARCHAR(15),
+	member_id	INTEGER NOT NULL,
+	CONSTRAINT member_education_courses FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 CREATE TABLE tbl_user (
     id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(128) NOT NULL,

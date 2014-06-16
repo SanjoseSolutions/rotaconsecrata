@@ -5,17 +5,25 @@
 
 <div class="view">
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
-	<br />
+<figure class="photo">
+	<?php if (!$data->photo) {
+			$photo_path = "/images/placeholder-woman.jpg";
+			$src = Yii::app()->request->baseUrl . $photo_path;
+			list($width, $height) = getimagesize(".$photo_path");
+			$label = 'Add Photo';
+		} else {
+			$src = Yii::app()->request->baseUrl . '/images/members/' . $data->photo;
+			list($width, $height) = getimagesize("./images/members/" . $data->photo);
+			$label = 'Update Photo';
+		}
+		$width = 120 * $width / $height;
+		$height = 120;
+		$alt = $data->fullname . "'s photo";
+		echo CHtml::image($src, $alt, array('width' => $width, 'height' => $height));
+	?>
+</figure>
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fullname')); ?>:</b>
-	<?php echo CHtml::encode($data->fullname); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('photo')); ?>:</b>
-	<?php echo CHtml::encode($data->photo); ?>
-	<br />
+	<h1 class="title"><?php echo CHtml::link(CHtml::encode($data->fullname . " #" .$data->id), array('view', 'id'=>$data->id)); ?></h1>
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('maiden_name')); ?>:</b>
 	<?php echo CHtml::encode($data->maiden_name); ?>
