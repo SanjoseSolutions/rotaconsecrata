@@ -189,6 +189,7 @@ div.form input {
 }
 
 span.leftHalf,
+span.left13,
 span.left23,
 span.left34 {
 	display: inline-block;
@@ -213,6 +214,7 @@ span.left23 {
 	width: 66%;
 }
 
+span.left13,
 span.right13 {
 	width: 32%;
 }

@@ -34,6 +34,8 @@
  * @property integer $swiss_visit
  * @property integer $holyland_visit
  * @property integer $family_abroad
+ * @property integer $annual_checkups
+ * @property string $health_data
  *
  * The followings are the available model relations:
  * @property MemberSpecializations[] $memberSpecs
@@ -57,12 +59,12 @@ class Members extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('fullname, dob, joining_dt, fathers_name, mothers_name', 'required'),
-			array('father_alive, mother_alive, mission, generalate, community, updated_by, swiss_visit, holyland_visit, family_abroad', 'numerical', 'integerOnly'=>true),
+			array('father_alive, mother_alive, mission, generalate, community, updated_by, swiss_visit, holyland_visit, family_abroad, annual_checkups', 'numerical', 'integerOnly'=>true),
 			array('fullname, maiden_name, fathers_name, mothers_name', 'length', 'max'=>100),
 			array('photo, email, parish', 'length', 'max'=>50),
 			array('mobile, home_phone, home_mobile', 'length', 'max'=>15),
 			array('diocese', 'length', 'max'=>30),
-			array('vestation_dt, first_commitment_dt, final_commitment_dt, address, demise_dt, leaving_dt, updated_on', 'safe'),
+			array('vestation_dt, first_commitment_dt, final_commitment_dt, address, health_data, demise_dt, leaving_dt, updated_on', 'safe'),
 			array('dob, vestation_dt, first_commitment_dt, final_commitment_dt, demise_dt, leaving_dt, updated_on, made_final, father_alive, mother_alive', 'default', 'setOnEmpty' => true, 'value' => null),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -122,6 +124,8 @@ class Members extends CActiveRecord
 			'swiss_visit' => 'Swiss Visit',
 			'holyland_visit' => 'Holyland Visit',
 			'family_abroad' => 'Family Abroad',
+			'annual_checkups' => 'Annual Checkups',
+			'health_data' => 'Health Data',
 		);
 	}
 
@@ -193,7 +197,7 @@ class Members extends CActiveRecord
 			}
 			$criteria = $criteria->addCondition("final_commitment_dt $cond NULL");
 		}
-		if (isset($this->specialization)) {
+		if (isset($this->specialization) and $this->specialization) {
 			$criteria->mergeWith(array(
 				'join' => 'INNER JOIN member_spec m ON m.member_id = t.id',
 				'condition' => 'm.spec_id = ' . $this->specialization,
@@ -218,6 +222,8 @@ class Members extends CActiveRecord
 		$criteria->compare('swiss_visit',$this->swiss_visit);
 		$criteria->compare('holyland_visit',$this->holyland_visit);
 		$criteria->compare('family_abroad',$this->family_abroad);
+		$criteria->compare('annual_checkups',$this->annual_checkups);
+		$criteria->compare('health_data',$this->health_data);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

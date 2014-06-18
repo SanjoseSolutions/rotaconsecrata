@@ -16,6 +16,10 @@
 			'htmlOptions'=>array('class'=>'operations'),
 		));
 		$this->endWidget();
+		$q = Quotes::getRandom();
+		echo "<blockquote>" . $q->quote;
+		echo "</blockquote>";
+		echo "<cite>- " . $q->source . "</cite>";
 	?>
 	</div><!-- sidebar -->
 </div>

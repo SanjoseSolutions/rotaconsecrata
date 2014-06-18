@@ -310,3 +310,7 @@ div.items div.view {
 	float: left;
 }
 
+cite {
+	display: block;
+	text-align: right;
+}

@@ -175,8 +175,14 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->label($model,'swiss_visit'); ?>
 		<?php echo $form->dropDownList($model,'swiss_visit', $yesno_opts, array('prompt' => '-- Select --')); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->label($model,'annual_checkups'); ?>
+		<?php echo $form->dropDownList($model,'annual_checkups', $yesno_opts, array('prompt' => '-- Select --')); ?>
+	</span>
 	</div>
 
 	<div class="row buttons">

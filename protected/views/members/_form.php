@@ -214,21 +214,35 @@
 	</div>
 
 	<div class="row">
-	<span class="right13">
+	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'swiss_visit'); ?>
 		<?php echo $form->checkBox($model,'swiss_visit'); ?>
 		<?php echo $form->error($model,'swiss_visit'); ?>
 	</span>
-	<span class="right13">
+	<span class="rightHalf">
 		<?php echo $form->labelEx($model,'holyland_visit'); ?>
 		<?php echo $form->checkBox($model,'holyland_visit'); ?>
 		<?php echo $form->error($model,'holyland_visit'); ?>
 	</span>
-	<span class="right13">
+	</div>
+
+	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'family_abroad'); ?>
 		<?php echo $form->checkBox($model,'family_abroad'); ?>
 		<?php echo $form->error($model,'family_abroad'); ?>
 	</span>
+	<span class="rightHalf">
+		<?php echo $form->labelEx($model,'annual_checkups'); ?>
+		<?php echo $form->checkBox($model,'annual_checkups'); ?>
+		<?php echo $form->error($model,'annual_checkups'); ?>
+	</span>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'health_data'); ?>
+		<?php echo $form->textArea($model,'health_data',array('rows'=>4, 'cols'=>50,'placeholder'=>'Enter Health Data')); ?>
+		<?php echo $form->error($model,'health_data'); ?>
 	</div>
 
 	<div class="row buttons">

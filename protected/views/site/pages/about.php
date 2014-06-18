@@ -8,5 +8,18 @@ $this->breadcrumbs=array(
 ?>
 <h1>About</h1>
 
-<p>This is a "static" page. You may change the content of this page
-by updating the file <code><?php echo __FILE__; ?></code>.</p>
+<p><em><?php echo Yii::app()->name ?></em> version 1.0 is built by <a
+href="http://www.sanjosesolutions.in">SANJOSE SOLUTIONS, Bangalore</a> as a paperless
+member database for Religious Congregations. It can be installed either as a
+local software, or as a web-based solution. Data is secure and accessible only
+to administrators with password protection. Installation, Support and Training
+services are available on request. For more information, contact: </p>
+
+<pre>
+Terence Monteiro,
+Sanjose Solutions,
+"Terroy", 67, 10th Cross,
+Lingarajpuram, Bangalore - 84.
+Mobile: +91 96633 13728
+Email: terence@sanjosesolutions.in
+</pre>

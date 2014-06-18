@@ -177,14 +177,14 @@ $this->menu=array(
 
 	echo "<div class='fields'>";
 	if ($model->address) {
-		echo "<label>Home Address</label><br>";
-		echo "<span class='val'>" . $model->address . "<br>";
-	}
-	if ($model->home_phone) {
-		echo "<span class='phone'>".$model->home_phone."</span></span>&nbsp;";
-		if ($model->home_mobile) {
-			echo "<span class='mobile'>".$model->home_mobile."</span>";
+		echo "<label>Home Contact: </label>";
+		if ($model->home_phone) {
+			echo "<span class='val'><span class='phone'>".$model->home_phone."</span>&nbsp;";
+			if ($model->home_mobile) {
+				echo "<span class='mobile'>".$model->home_mobile."</span>";
+			}
 		}
+		echo "<br />" . $model->address . "</span><br>";
 	}
 	echo "</div>";
 
@@ -271,5 +271,21 @@ $this->menu=array(
 		'id'=>'add-professional-courses')
 	);
 	echo "</div>";
+	echo "</div><!-- end of rightSection -->";
+
+	echo "<div class='fields'>";
+	$flds = array('mission', 'generalate', 'swiss_visit', 'holyland_visit', 'family_abroad', 'annual_checkups');
+	$cls = "left13";
+	foreach($flds as $fld) {
+		echo "<span class='$cls'>";
+		$cls = $cls === "left13" ? "right13" : "left13";
+		echo "<label>";
+		echo $model->attributeLabels()[$fld];
+		echo ": </label>";
+		echo "<span class='val'>";
+		echo $model->$fld ? 'YES' : 'NO';
+		echo '</span>';
+		echo '</span>';
+	}
+	echo "</div>";
 ?>
-</div>

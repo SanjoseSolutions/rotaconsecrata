@@ -71,7 +71,7 @@ class MembersController extends Controller
 		if(isset($_POST['Members']))
 		{
 			$model->attributes=$_POST['Members'];
-			$specs = $_POST['specialization'];
+			$specs = isset($_POST['specialization']) ? $_POST['specialization'] : array();
 			Yii::trace("specs: ".var_export($specs, true), 'application.controllers.MembersController');
 			if($model->save()) {
 				foreach($specs as $spec) {
@@ -114,7 +114,7 @@ class MembersController extends Controller
 		if(isset($_POST['Members']))
 		{
 			$model->attributes=$_POST['Members'];
-			$specs = $_POST['specialization'];
+			$specs = isset($_POST['specialization']) ? $_POST['specialization'] : array();
 			Yii::trace("specs: ".var_export($specs, true), 'application.controllers.MembersController');
 			foreach($specs as $spec) {
 				if (!in_array($spec, $setSpecs)) {
