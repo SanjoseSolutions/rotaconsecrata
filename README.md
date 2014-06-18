@@ -1,4 +1,4 @@
 Rota Consecrata
 ===============
 
-Member Database for Religious Congregations, by [Sanjose Solutions](www.sanjosesolutions.in).
+Member Database for Religious Congregations, by [Sanjose Solutions](http://www.sanjosesolutions.in).

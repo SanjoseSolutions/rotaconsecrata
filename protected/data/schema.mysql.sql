@@ -66,6 +66,12 @@ CREATE TABLE community_terms(
 	CONSTRAINT community_term FOREIGN KEY (community_id) REFERENCES communities(id) ON UPDATE CASCADE
 );
 
+CREATE TABLE quotes(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	source VARCHAR(50),
+	quote	TEXT
+);
+
 CREATE TABLE renewal_courses_spiritual(
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	name	VARCHAR(100),
