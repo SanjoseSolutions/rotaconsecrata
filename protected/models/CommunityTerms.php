@@ -58,7 +58,7 @@ class CommunityTerms extends CActiveRecord
 		);
 	}
 
-	protected function beforeSave()
+/*	protected function beforeSave()
 	{
 		Yii::trace('MODEL.CT.beforeSave called', 'application.models.CommunityTerms');
 		$cname = $this->community;
@@ -77,7 +77,7 @@ class CommunityTerms extends CActiveRecord
 		else
 			return false;
 	}
-
+*/
 
 	/**
 	 * @return array customized attribute labels (name=>label)

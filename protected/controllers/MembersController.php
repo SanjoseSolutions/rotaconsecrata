@@ -36,7 +36,10 @@ class MembersController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','photo','crop', 'siblings', 'communities', 'spiritualRenewalCourses', 'professionalRenewalCourses'),
+				'actions'=>array('admin','delete','photo','crop',
+					'siblings', 'siblingsSummary', 'communities', 'communitiesSummary',
+					'spiritualRenewalCourses', 'spiritualRenewalCoursesSummary',
+					'professionalRenewalCourses', 'professionalRenewalCoursesSummary'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -224,11 +227,28 @@ class MembersController extends Controller
 		));
 	}
 
+	public function actionSiblingsSummary($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('/siblings/summary', array(
+			'siblings' => $model->siblings,
+		));
+	}
+
 	public function actionCommunities($id)
 	{
 		$model=$this->loadModel($id);
 		$this->renderPartial('communities', array(
 			'model' => $model
+		));
+	}
+
+	public function actionCommunitiesSummary($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('/communityTerms/summary', array(
+			'model' => $model,
+			'commTerms' => $model->communityTerms,
 		));
 	}
 
@@ -240,12 +260,28 @@ class MembersController extends Controller
 		));
 	}
 
+	public function actionSpiritualRenewalCoursesSummary($id)
+	{
+		$model = $this->loadModel($id);
+                $this->renderPartial('/renewalCoursesSpiritual/summary', array(
+                        'spiritualCourses' => $model->renewalCoursesSpiritual
+                )); 
+	}
+
 	public function actionProfessionalRenewalCourses($id)
 	{
 		$model = $this->loadModel($id);
 		$this->renderPartial('professionalRenewalCourses', array(
 			'model' => $model
 		));
+	}
+
+	public function actionProfessionalRenewalCoursesSummary($id)
+	{
+		$model = $this->loadModel($id);
+                $this->renderPartial('/renewalCoursesProfessional/summary', array(
+                        'professionalCourses' => $model->renewalCoursesProfessional
+                )); 
 	}
 
 	public function actionPhoto($id)

@@ -70,7 +70,7 @@ class CommunityTermsController extends Controller
 		if(isset($_POST['CommunityTerms']))
 		{
 			$model->attributes=$_POST['CommunityTerms'];
-			$cname = $model->community;
+			$cname = $model->communityName;
 			Yii::trace("CT.create called with community:$cname", 'application.controllers.CommunityTermsController');
 			$comm = Communities::findOrCreateByName($cname);
 			$model->community_id = $comm->id;
@@ -98,6 +98,9 @@ class CommunityTermsController extends Controller
 		if(isset($_POST['CommunityTerms']))
 		{
 			$model->attributes=$_POST['CommunityTerms'];
+			$cname = $model->communityName;
+			$comm = Communities::findOrCreateByName($cname);
+			$model->community_id = $comm->id;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

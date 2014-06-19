@@ -16,7 +16,8 @@ $this->widget('application.extensions.fancybox.EFancyBox', array(
         'config'=>array(),
 ));
 
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-communities.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-siblings.js');
+#Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-communities.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-spiritualRenewalCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-professionalRenewalCourses.js');
 Yii::app()->clientScript->registerScript('addSibs', "
@@ -24,6 +25,14 @@ $('#add-sibs').fancybox( {
 	'onComplete': function() {
 		set_form_submit();
 		set_button_click();
+	},
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'/members/siblingsSummary', 
+			'id' => $model->id
+		)) . "', function(data) {
+			$('#siblings-summary .val').html(data);
+		} );
 	}
 } );
 $('#add-comms').fancybox( {
@@ -31,11 +40,19 @@ $('#add-comms').fancybox( {
                 set_comm_form_submit();
                 set_comm_button_click();
 		set_comm_autocomplete();
-        }
+        },
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'/members/communitiesSummary',
+			'id' => $model->id
+		)) . "', function(data) {
+			$('#communities-summary .val').html(data);
+		} );
+	}
 } );
 function set_comm_autocomplete()
 {
-	jQuery('#CommunityTerms_community').autocomplete( {
+	jQuery('#CommunityTerms_communityName').autocomplete( {
 		'source': " . json_encode(Communities::getAll()) . "
 	} );
 }
@@ -43,15 +60,29 @@ $('#add-spiritual-courses').fancybox( {
 	'onComplete': function() {
                 set_spiritual_course_button_click();
                 set_spiritual_course_form_submit();
+	},
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'spiritualRenewalCoursesSummary', 'id'=>$model->id
+		)) . "', function(data) {
+			$('#renewal-courses-spiritual-summary .val').html(data);
+		} );
 	}
 } );
 $('#add-professional-courses').fancybox( {
 	'onComplete': function() {
                 set_professional_course_button_click();
                 set_professional_course_form_submit();
+	},
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'professionalRenewalCoursesSummary', 'id'=>$model->id
+		)) . "', function(data) {
+			$('#renewal-courses-professional-summary .val').html(data);
+		} );
 	}
 } );
-");
+".file_get_contents(dirname(__FILE__).'/../../../js/add-communities.js'));
 
 /* @var $this MembersController */
 /* @var $model Members */
@@ -198,36 +229,26 @@ $this->menu=array(
 	}
 
 	if ($model->siblings) {
-		echo "<div class='fields'>";
-		$siblings = $model->siblings;
-		$sibs = array();
-		$i = 0;
-		$xtra = "";
-		foreach($siblings as $sib) {
-			if (++$i > 2) {
-				$xtra = " +" . (count($siblings) - $i + 1);
-				break;
-			}
-			array_push($sibs, $sib->fullname);
-		}
+		echo '<div id="siblings-summary" class="fields">';
 		echo "<label>Siblings: </label>";
-		$sibstr = implode(", ", $sibs) . $xtra;
-		echo "<span class='val'>$sibstr</span> ";
+		echo "<span class='val'>";
+		$this->renderPartial('/siblings/summary', array('siblings' => $model->siblings));
+		echo "</span> ";
 		echo CHtml::link("Edit", array('/members/siblings', 'id' => $model->id), array('id' => 'add-sibs'));
 		echo "</div>";
 	} else {
 		echo CHtml::link("Add Siblings", array('/members/siblings', 'id' => $model->id), array('id' => 'add-sibs'));
 	}
 
-	echo "<div class='fields'>";
+	echo '<div id="communities-summary" class="fields">';
 	if ($model->communityTerms) {
-		$commTerms = $model->communityTerms;
-		$nComm = count($commTerms) - 1;
-		$xtra = $nComm ? " +$nComm" : "";
-		$comm = $model->presentCommunity;
 		echo "<label>Community: </label>";
-		echo "<span class='val'>" . $comm->community->name .
-			" (since " . $comm->year_from . ")$xtra</span> ";
+		echo "<span class='val'>";
+		$this->renderPartial('/communityTerms/summary', array(
+			'model' => $model,
+			'commTerms' => $model->communityTerms
+		));
+		echo "</span> ";
 		$lbl = "Edit";
 		echo CHtml::link($lbl, array('/members/communities', 'id' => $model->id), array('id' => 'add-comms'));
 	} else {
@@ -236,12 +257,14 @@ $this->menu=array(
 	}
 	echo "</div>";
 
-	echo "<div class='fields'>";
+	echo "<div id='renewal-courses-spiritual-summary' class='fields'>";
 	if ($model->renewalCoursesSpiritual) {
-		$spiritualCourses = $model->renewalCoursesSpiritual;
-		$nComm = count($spiritualCourses);
 		echo "<label>Spiritual Renewal Courses: </label>";
-		echo "<span class='val'>$nComm</span> ";
+		echo "<span class='val'>";
+		$this->renderPartial('/renewalCoursesSpiritual/summary', array(
+			'spiritualCourses' => $model->renewalCoursesSpiritual
+		));
+		echo "</span> ";
 		$lbl = "Edit";
 	} else {
 		$lbl = "Add Spiritual Renewal Courses";
@@ -254,12 +277,14 @@ $this->menu=array(
 	);
 	echo "</div>";
 
-	echo "<div class='fields'>";
+	echo "<div id='renewal-courses-professional-summary' class='fields'>";
 	if ($model->renewalCoursesProfessional) {
-		$professionalCourses = $model->renewalCoursesProfessional;
-		$nComm = count($professionalCourses);
 		echo "<label>Professional Renewal Courses: </label>";
-		echo "<span class='val'>$nComm</span> ";
+		echo "<span class='val'>";
+		$this->renderPartial('/renewalCoursesProfessional/summary', array(
+			'professionalCourses' => $model->renewalCoursesProfessional
+		));
+		echo "</span> ";
 		$lbl = "Edit";
 	} else {
 		$lbl = "Add Professional Renewal Courses";

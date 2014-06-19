@@ -1,5 +1,5 @@
 function set_comm_form_submit() {
-        $('#communities-form').submit(function() {
+        $('#community-terms-form').submit(function() {
                 $.post($(this).attr('action'), $(this).serialize());
                 reload_comms();
                 return false;
