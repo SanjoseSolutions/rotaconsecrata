@@ -190,7 +190,9 @@ class MembersController extends Controller
 		    $dataProvider = $model->search();
 		    $dataProvider->pagination = false;
 
-		    $fields = array('id', 'fullname', 'dob', 'mobile', 'email', 'fathers_name', 'mothers_name', 'joining_dt', 'first_commitment_dt', 'final_commitment_dt', 'address', 'home_phone', 'home_mobile', 'parish', 'diocese');
+		    $fields = array('id', 'fullname', 'dob', 'mobile', 'email', 'fathers_name',
+		    	'mothers_name', 'joining_dt', 'first_commitment_dt', 'final_commitment_dt',
+			'address', 'home_phone', 'home_mobile', 'parish', 'diocese');
 
 		    $labels = $model->attributeLabels();
 		    $fval = array();
@@ -211,7 +213,7 @@ class MembersController extends Controller
 		    Yii::app()->end();
 		    return;
 		
-		}       
+		}
 
 		$this->render('admin',array(
 			'model'=>$model,

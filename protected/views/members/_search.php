@@ -144,7 +144,7 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 
 	<div class="row">
 		<?php echo $form->label($model,'community'); ?>
-		<?php echo $form->textField($model,'community'); ?>
+		<?php echo $form->dropDownList($model,'community', Communities::getAllHash(), array('prompt' => '-- Select one --')); ?>
 	</div>
 
 	<div class="row">

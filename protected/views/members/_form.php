@@ -82,6 +82,18 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'edu_joining'); ?>
+		<?php echo $form->textField($model,'edu_joining',array('size'=>50,'maxlength'=>50,'placeholder'=>'Enter Education when Joining')); ?>
+		<?php echo $form->error($model,'edu_joining'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'edu_present'); ?>
+		<?php echo $form->textField($model,'edu_present',array('size'=>50,'maxlength'=>50,'placeholder'=>'Enter Education at Present')); ?>
+		<?php echo $form->error($model,'edu_present'); ?>
+	</div>
+
+	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'joining_dt'); ?>
 		<?php echo $form->dateField($model,'joining_dt',array('placeholder'=>'Enter Date of Joining')); ?>
@@ -205,12 +217,6 @@
 		<?php echo $form->checkBox($model,'generalate'); ?>
 		<?php echo $form->error($model,'generalate'); ?>
 	</span>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'community'); ?>
-		<?php echo $form->textField($model,'community',array('placeholder'=>'Enter community')); ?>
-		<?php echo $form->error($model,'community'); ?>
 	</div>
 
 	<div class="row">

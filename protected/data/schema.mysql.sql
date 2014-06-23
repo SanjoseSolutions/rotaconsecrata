@@ -25,6 +25,8 @@ CREATE TABLE members(
 	community INTEGER,
 	updated_by INTEGER,
 	updated_on DATE,
+	edu_joining VARCHAR(50),
+	edu_present VARCHAR(50),
 	swiss_visit TINYINT,
 	holyland_visit TINYINT,
 	family_abroad TINYINT

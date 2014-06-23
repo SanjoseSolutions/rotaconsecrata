@@ -124,4 +124,14 @@ class Communities extends CActiveRecord
 		}
 		return $comm_list;
 	}
+
+	public static function getAllHash()
+	{
+		$comm_hash = array();
+		$communities = Communities::model()->findAll();
+		foreach($communities as $community) {
+			$comm_hash[$community->id] = $community->name;
+		}
+		return $comm_hash;
+	}
 }

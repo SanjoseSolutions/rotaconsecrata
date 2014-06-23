@@ -26,9 +26,10 @@
  * @property string $diocese
  * @property string $demise_dt
  * @property string $leaving_dt
+ * @property string $edu_joining
+ * @property string $edu_present
  * @property integer $mission
  * @property integer $generalate
- * @property integer $community
  * @property integer $updated_by
  * @property string $updated_on
  * @property integer $swiss_visit
@@ -61,7 +62,7 @@ class Members extends CActiveRecord
 			array('fullname, dob, joining_dt, fathers_name, mothers_name', 'required'),
 			array('father_alive, mother_alive, mission, generalate, community, updated_by, swiss_visit, holyland_visit, family_abroad, annual_checkups', 'numerical', 'integerOnly'=>true),
 			array('fullname, maiden_name, fathers_name, mothers_name', 'length', 'max'=>100),
-			array('photo, email, parish', 'length', 'max'=>50),
+			array('photo, email, parish, edu_joining, edu_present', 'length', 'max'=>50),
 			array('mobile, home_phone, home_mobile', 'length', 'max'=>15),
 			array('diocese', 'length', 'max'=>30),
 			array('vestation_dt, first_commitment_dt, final_commitment_dt, address, health_data, demise_dt, leaving_dt, updated_on', 'safe'),
@@ -116,6 +117,8 @@ class Members extends CActiveRecord
 			'diocese' => 'Diocese',
 			'demise_dt' => 'Demise Date',
 			'leaving_dt' => 'Leaving Date',
+			'edu_joining' => 'Education when Joining',
+			'edu_present' => 'Education at Present',
 			'mission' => 'Opted for Mission',
 			'generalate' => 'Under Generalate',
 			'community' => 'Community',
@@ -214,9 +217,16 @@ class Members extends CActiveRecord
 		$criteria->compare('diocese',$this->diocese,true);
 		$criteria->compare('demise_dt',$this->demise_dt,true);
 		$criteria->compare('leaving_dt',$this->leaving_dt,true);
+		$criteria->compare('edu_joining',$this->edu_joining,true);
+		$criteria->compare('edu_present',$this->edu_present,true);
 		$criteria->compare('mission',$this->mission);
 		$criteria->compare('generalate',$this->generalate);
-		$criteria->compare('community',$this->community);
+		if (isset($this->community)) {
+			$criteria->mergeWith(array(
+				'join' => 'INNER JOIN community_terms c ON c.member_id = t.id',
+				'condition' => 'c.community_id = ' . $this->community
+			));
+		}
 		$criteria->compare('updated_by',$this->updated_by);
 		$criteria->compare('updated_on',$this->updated_on,true);
 		$criteria->compare('swiss_visit',$this->swiss_visit);
@@ -261,6 +271,14 @@ class Members extends CActiveRecord
         public function getProfessed() {
                 return $this->first_commitment_dt ? (strtotime('now') - strtotime($this->first_commitment_dt)) / (60*60*24*365.2425) : null;
         }
+
+	public function setCommunity($val) {
+		$this->_community = $val;
+	}
+
+	public function getCommunity() {
+		return isset($this->_community) ? $this->_community : null;
+	}
 
 	public function getPresentCommunity() {
 		$mid = $this->id;

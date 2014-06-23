@@ -188,6 +188,20 @@ $this->menu=array(
 		echo "</div>";
 	}
 
+	if ($model->edu_joining) {
+		echo "<div class='fields'>";
+		echo "<label>Education (when joining): </label>";
+		echo "<span class='val'>" . $model->edu_joining . "</span>";
+		echo "</div>";
+	}
+
+	if ($model->edu_present) {
+		echo "<div class='fields'>";
+		echo "<label>Education (at present): </label>";
+		echo "<span class='val'>" . $model->edu_present . "</span>";
+		echo "</div>";
+	}
+
 	echo "<div class='fields'>";
 	echo "<label>Father's Name: </label>";
 	if ($model->father_alive) {
