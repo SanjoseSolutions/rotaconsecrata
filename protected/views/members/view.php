@@ -94,9 +94,9 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'List Members', 'url'=>array('index')),
-	array('label'=>'Create Members', 'url'=>array('create')),
-	array('label'=>'Update Members', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Members', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Create Member', 'url'=>array('create')),
+	array('label'=>'Update Member', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Delete Member', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 	array('label'=>'Manage Members', 'url'=>array('admin')),
 );
 

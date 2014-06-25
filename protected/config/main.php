@@ -8,6 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'RotaConsecrata',
+	'sourceLanguage'=>'en-GB',
 
 	// preloading 'log' component
 	'preload'=>array('log'),

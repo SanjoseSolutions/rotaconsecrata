@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'List Members', 'url'=>array('index')),
-	array('label'=>'Create Members', 'url'=>array('create')),
+	array('label'=>'Create Member', 'url'=>array('create')),
 );
 
 if ($search) {

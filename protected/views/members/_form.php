@@ -71,12 +71,40 @@
 	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'dob'); ?>
-		<?php echo $form->dateField($model,'dob',array('placeholder'=>'Enter Date of Birth')); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'dob',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 		<?php echo $form->error($model,'dob'); ?>
 	</span>
 	<span class="rightHalf">
 		<?php echo $form->labelEx($model,'demise_dt'); ?>
-		<?php echo $form->dateField($model,'demise_dt'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'demise_dt',
+		'options'       => array(
+			'dateFormat' => FormatHelper::getDatePickerFormat(),
+			'yearRange'  => '1900:c+10',
+			'maxDate'    => 0,
+			'changeYear' => true,
+		),
+		'htmlOptions'	=> array(
+			'placeholder' => 'dd/mm/yyyy',
+			'size' => 10,
+			'maxlength' => 10,
+		),
+	)); ?>
 		<?php echo $form->error($model,'demise_dt'); ?>
 	</span>
 	</div>
@@ -96,12 +124,40 @@
 	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'joining_dt'); ?>
-		<?php echo $form->dateField($model,'joining_dt',array('placeholder'=>'Enter Date of Joining')); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'joining_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 		<?php echo $form->error($model,'joining_dt'); ?>
 	</span>
 	<span class="rightHalf">
 		<?php echo $form->labelEx($model,'vestation_dt'); ?>
-		<?php echo $form->dateField($model,'vestation_dt',array('placeholder'=>'Enter Date of Vestation')); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'vestation_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 		<?php echo $form->error($model,'vestation_dt'); ?>
 	</span>
 	</div>
@@ -109,12 +165,40 @@
 	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'first_commitment_dt'); ?>
-		<?php echo $form->dateField($model,'first_commitment_dt',array('placeholder'=>'Enter Date of First Commitment')); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'first_commitment_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 		<?php echo $form->error($model,'first_commitment_dt'); ?>
 	</span>
 	<span class="rightHalf">
 		<?php echo $form->labelEx($model,'final_commitment_dt'); ?>
-		<?php echo $form->dateField($model,'final_commitment_dt',array('placeholder'=>'Enter Date of Final')); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'final_commitment_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 		<?php echo $form->error($model,'final_commitment_dt'); ?>
 	</span>
 	</div>
@@ -201,7 +285,21 @@
 	<div class="row">
 	<span class="rightHalf">
 		<?php echo $form->labelEx($model,'leaving_dt'); ?>
-		<?php echo $form->dateField($model,'leaving_dt'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'leaving_dt',
+		'options'       => array(
+			'dateFormat' => FormatHelper::getDatePickerFormat(),
+			'yearRange'  => '1900:c+10',
+			'maxDate'    => 0,
+			'changeYear' => true,
+		),
+		'htmlOptions'	=> array(
+			'placeholder' => 'dd/mm/yyyy',
+			'size' => 10,
+			'maxlength' => 10,
+		),
+	)); ?>
 		<?php echo $form->error($model,'leaving_dt'); ?>
 	</span>
 	</div>
