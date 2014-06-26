@@ -5,6 +5,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
 
+	<link href="<?php echo Yii::app()->request->baseUrl; ?>/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
 	<!-- blueprint CSS framework -->
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
@@ -24,7 +26,7 @@
 
 	<div id="header">
 		<div id="logo"><?php $burl = Yii::app()->request->baseUrl;
-			echo CHtml::link(CHtml::image($burl . Yii::app()->params['logoPath'], Yii::app()->name), $burl); ?></div>
+			echo CHtml::link(CHtml::image($burl . Yii::app()->params['logoPath'], Yii::app()->name), "$burl/"); ?></div>
 	</div><!-- header -->
 
 	<div id="mainmenu">
