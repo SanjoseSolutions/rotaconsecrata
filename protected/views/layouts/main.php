@@ -23,7 +23,8 @@
 <div class="container" id="page">
 
 	<div id="header">
-		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
+		<div id="logo"><?php $burl = Yii::app()->request->baseUrl;
+			echo CHtml::link(CHtml::image($burl . Yii::app()->params['logoPath'], Yii::app()->name), $burl); ?></div>
 	</div><!-- header -->
 
 	<div id="mainmenu">
