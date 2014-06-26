@@ -93,7 +93,13 @@ CREATE TABLE renewal_courses_professional(
 CREATE TABLE education_courses(
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	name	VARCHAR(100),
-	year	VARCHAR(15),
+	institution VARCHAR(150),
+	board	VARCHAR(60),
+	class	VARCHAR(10),
+	certificate_dt	DATE,
+	subjects	VARCHAR(100),
+	medium	VARCHAR(100),
+	remarks	VARCHAR(150),
 	member_id	INTEGER NOT NULL,
 	CONSTRAINT member_education_courses FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

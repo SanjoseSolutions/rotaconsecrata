@@ -114,4 +114,28 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+        public function actionChangePassword()
+        {
+            $model = new ChangePasswordForm;
+            if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+            {
+              echo CActiveForm::validate($model);
+              Yii::app()->end();
+            }
+
+            // collect user input data
+            if(isset($_POST['ChangePasswordForm']))
+            {
+              $model->attributes=$_POST['ChangePasswordForm'];
+              // Validate input of the user
+              if($model->validate() && $model->changePassword())
+              {
+		      Yii::trace("Site/changePassword invoked ChangePasswordForm.changePassword", "application.controllers.SiteController");
+               Yii::app()->user->setFlash('success', '<strong>Success!</strong> Password changed successfully.');
+               $this->redirect(array('index'));
+              }
+            }
+            $this->render('changePassword',array('model'=>$model));
+        }
 }
