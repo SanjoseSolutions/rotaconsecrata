@@ -38,7 +38,7 @@ class CommunityTerms extends CActiveRecord
 			array('community_id, year_from, year_to, member_id', 'numerical', 'integerOnly'=>true),
 			array('designation', 'length', 'max'=>75),
 			array('duration', 'length', 'max'=>15),
-			array('communityNm', 'safe'),
+			array('communityName', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, community_id, year_from, year_to, designation, duration, member_id', 'safe', 'on'=>'search'),
@@ -148,4 +148,6 @@ class CommunityTerms extends CActiveRecord
 			$this->communityNm :
 			(isset($this->community) ? $this->community->name : null);
 	}
+
+	public $communityName;
 }

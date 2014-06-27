@@ -105,6 +105,10 @@ class CommunityTermsController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		if (!isset($model->communityName)) {
+			$model->communityName = $model->community->name;
+		}
+
 		$this->renderPartial('_form',array(
 			'model'=>$model,
 		));

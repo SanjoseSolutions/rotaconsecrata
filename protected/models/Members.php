@@ -221,11 +221,9 @@ class Members extends CActiveRecord
 		$criteria->compare('edu_present',$this->edu_present,true);
 		$criteria->compare('mission',$this->mission);
 		$criteria->compare('generalate',$this->generalate);
-		if (isset($this->community)) {
-			$criteria->mergeWith(array(
-				'join' => 'INNER JOIN community_terms c ON c.member_id = t.id',
-				'condition' => 'c.community_id = ' . $this->community
-			));
+		if (isset($this->community) and $this->community) {
+			$criteria = $criteria->addCondition("EXISTS (SELECT id FROM community_terms c " .
+				"WHERE c.member_id = t.id AND c.community_id = " . $this->community . ")");
 		}
 		$criteria->compare('updated_by',$this->updated_by);
 		$criteria->compare('updated_on',$this->updated_on,true);
@@ -327,4 +325,6 @@ class Members extends CActiveRecord
 	public function getSpecialization() {
 		return isset($this->specialization) ? $this->specialization : null;
 	}
+
+	private $_community;
 }
