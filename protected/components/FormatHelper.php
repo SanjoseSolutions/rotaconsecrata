@@ -40,8 +40,8 @@ class FormatHelper extends CComponent {
 
 	public static function dateConvDB($dt, $fmt=null) {
 		if ($fmt) {
-			$k = split('[-./]', $fmt);
-			$v = split('[-./]', $dt);
+			$k = preg_split('/[-.\/]/', $fmt);
+			$v = preg_split('/[-.\/]/', $dt);
 			Yii::trace("keys=".var_export($k, true), 'application.components.FormatHelper');
 			for($i=0; $i<3; ++$i) {
 				switch ($k[$i]) {
