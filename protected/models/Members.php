@@ -81,6 +81,7 @@ class Members extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'academicCourses' => array(self::HAS_MANY, 'AcademicCourses', 'member_id'),
 			'memberSpecs' => array(self::HAS_MANY, 'MemberSpecializations', 'member_id'),
 			'siblings' => array(self::HAS_MANY, 'Siblings', 'member_id'),
 			'communityTerms' => array(self::HAS_MANY, 'CommunityTerms', 'member_id'),

@@ -18,6 +18,7 @@ $this->widget('application.extensions.fancybox.EFancyBox', array(
 
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-siblings.js');
 #Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-communities.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-academicCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-spiritualRenewalCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-professionalRenewalCourses.js');
 Yii::app()->clientScript->registerScript('addSibs', "
@@ -56,6 +57,19 @@ function set_comm_autocomplete()
 		'source': " . json_encode(Communities::getAll()) . "
 	} );
 }
+$('#add-academic-courses').fancybox( {
+	'onComplete': function() {
+		set_academic_course_button_click();
+		set_academic_course_form_submit();
+	},
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'academicCoursesSummary', 'id'=>$model->id
+		)) . "', function(data) {
+			$('#academic-courses-summary .val').html(data);
+		} );
+	}
+} );
 $('#add-spiritual-courses').fancybox( {
 	'onComplete': function() {
                 set_spiritual_course_button_click();
@@ -269,6 +283,19 @@ $this->menu=array(
 		$lbl = "Add Communities";
 		echo CHtml::link($lbl, array('/members/communities', 'id' => $model->id), array('id' => 'add-comms'));
 	}
+	echo "</div>";
+
+	echo '<div id="academic-courses-summary" class="fields">';
+	if ($model->academicCourses) {
+		echo "<label>Academic Courses: </label>";
+		echo "<span class='val'>";
+		$this->renderPartial('/academicCourses/summary', array('academicCourses' => $model->academicCourses));
+		echo "</span> ";
+		$lbl = "Edit";
+	} else {
+		$lbl = "Add Academic Courses";
+	}
+	echo CHtml::link($lbl, array('/members/academicCourses', 'id'=>$model->id), array('id'=>'add-academic-courses'));
 	echo "</div>";
 
 	echo "<div id='renewal-courses-spiritual-summary' class='fields'>";

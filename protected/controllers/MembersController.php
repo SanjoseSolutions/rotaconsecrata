@@ -38,6 +38,7 @@ class MembersController extends Controller
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete','photo','crop',
 					'siblings', 'siblingsSummary', 'communities', 'communitiesSummary',
+					'academicCourses', 'academicCoursesSummary',
 					'spiritualRenewalCourses', 'spiritualRenewalCoursesSummary',
 					'professionalRenewalCourses', 'professionalRenewalCoursesSummary'),
 				'users'=>array('admin'),
@@ -234,6 +235,22 @@ class MembersController extends Controller
 		$model=$this->loadModel($id);
 		$this->renderPartial('/siblings/summary', array(
 			'siblings' => $model->siblings,
+		));
+	}
+
+	public function actionAcademicCourses($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('academicCourses', array(
+			'model' => $model,
+		));
+	}
+
+	public function actionAcademicCoursesSummary($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('/academicCourses/summary', array(
+			'academicCourses' => $model->academicCourses,
 		));
 	}
 
