@@ -56,8 +56,8 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 
 	<div class="row">
 	<span class="leftHalf">
-		<?php echo $form->label($model,'vestation_dt'); ?>
-		<?php echo $form->textField($model,'vestation_dt'); ?>
+		<?php echo $form->label($model,'vestition_dt'); ?>
+		<?php echo $form->textField($model,'vestition_dt'); ?>
 	</div>
 
 	<div class="row">

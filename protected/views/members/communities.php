@@ -5,8 +5,9 @@ if ($comms = $model->communityTerms) {
 	$provider = new CArrayDataProvider($comms, array(
 		'id' => 'communities',
 		'sort' => array(
+			'defaultOrder' => 'year_from DESC',
 			'attributes' => array(
-				'year_from'
+				'name', 'year_from', 'designation', 'duration'
 			),
 		),
 		'pagination' => array(

@@ -12,7 +12,7 @@
  * @property string $email
  * @property string $dob
  * @property string $joining_dt
- * @property string $vestation_dt
+ * @property string $vestition_dt
  * @property string $first_commitment_dt
  * @property string $final_commitment_dt
  * @property string $fathers_name
@@ -65,11 +65,11 @@ class Members extends CActiveRecord
 			array('photo, email, parish, edu_joining, edu_present', 'length', 'max'=>50),
 			array('mobile, home_phone, home_mobile', 'length', 'max'=>15),
 			array('diocese', 'length', 'max'=>30),
-			array('vestation_dt, first_commitment_dt, final_commitment_dt, address, health_data, demise_dt, leaving_dt, updated_on', 'safe'),
-			array('dob, vestation_dt, first_commitment_dt, final_commitment_dt, demise_dt, leaving_dt, updated_on, made_final, father_alive, mother_alive', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('vestition_dt, first_commitment_dt, final_commitment_dt, address, health_data, demise_dt, leaving_dt, updated_on', 'safe'),
+			array('dob, vestition_dt, first_commitment_dt, final_commitment_dt, demise_dt, leaving_dt, updated_on, made_final, father_alive, mother_alive', 'default', 'setOnEmpty' => true, 'value' => null),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fullname, age, maiden_name, made_final, mobile, dob, joining_dt, vestation_dt, first_commitment_dt, final_commitment_dt, made_final, fathers_name, mothers_name, father_alive, mother_alive, address, home_phone, home_mobile, parish, diocese, demise_dt, leaving_dt, mission, generalate, community, updated_by, updated_on, swiss_visit, holyland_visit, family_abroad, specialization', 'safe', 'on'=>'search'),
+			array('id, fullname, age, maiden_name, made_final, mobile, dob, joining_dt, vestition_dt, first_commitment_dt, final_commitment_dt, made_final, fathers_name, mothers_name, father_alive, mother_alive, address, home_phone, home_mobile, parish, diocese, demise_dt, leaving_dt, mission, generalate, community, updated_by, updated_on, swiss_visit, holyland_visit, family_abroad, specialization', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -103,7 +103,7 @@ class Members extends CActiveRecord
 			'email' => 'Email',
 			'dob' => 'Date of Birth',
 			'joining_dt' => 'Joining Date',
-			'vestation_dt' => 'Vestation Date',
+			'vestition_dt' => 'Vestition Date',
 			'first_commitment_dt' => 'First Commitment Date',
 			'final_commitment_dt' => 'Final Commitment Date',
 			'fathers_name' => 'Fathers Name',
@@ -190,7 +190,7 @@ class Members extends CActiveRecord
                         $this->date_search($criteria, 'dob', 'age');
                 }
 		$criteria->compare('joining_dt',$this->joining_dt,true);
-		$criteria->compare('vestation_dt',$this->vestation_dt,true);
+		$criteria->compare('vestition_dt',$this->vestition_dt,true);
 		$criteria->compare('first_commitment_dt',$this->first_commitment_dt,true);
 		$criteria->compare('final_commitment_dt',$this->final_commitment_dt,true);
 		if (isset($this->made_final)) {

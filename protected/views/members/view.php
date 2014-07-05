@@ -157,9 +157,9 @@ $this->menu=array(
 	echo "<label>Joined: </label>";
 	echo "<span class='date val'>" . $model->joining_dt . "</span>&nbsp;&nbsp;";
 
-	if ($model->vestation_dt) {
+	if ($model->vestition_dt) {
 		echo "<label>Vestation: </label>";
-		echo "<span class='date val'>" . $model->vestation_dt . "</span>";
+		echo "<span class='date val'>" . $model->vestition_dt . "</span>";
 	}
 
 	echo "</div>";
@@ -242,17 +242,17 @@ $this->menu=array(
 		echo "</div>";
 	}
 
+	echo '<div id="siblings-summary" class="fields">';
 	if ($model->siblings) {
-		echo '<div id="siblings-summary" class="fields">';
 		echo "<label>Siblings: </label>";
 		echo "<span class='val'>";
 		$this->renderPartial('/siblings/summary', array('siblings' => $model->siblings));
 		echo "</span> ";
 		echo CHtml::link("Edit", array('/members/siblings', 'id' => $model->id), array('id' => 'add-sibs'));
-		echo "</div>";
 	} else {
 		echo CHtml::link("Add Siblings", array('/members/siblings', 'id' => $model->id), array('id' => 'add-sibs'));
 	}
+	echo "</div>";
 
 	echo '<div id="communities-summary" class="fields">';
 	if ($model->communityTerms) {

@@ -42,8 +42,8 @@
 	<br />
 
 	<?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('vestation_dt')); ?>:</b>
-	<?php echo CHtml::encode($data->vestation_dt); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('vestition_dt')); ?>:</b>
+	<?php echo CHtml::encode($data->vestition_dt); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('first_commitment_dt')); ?>:</b>

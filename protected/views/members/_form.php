@@ -142,10 +142,10 @@
 		<?php echo $form->error($model,'joining_dt'); ?>
 	</span>
 	<span class="rightHalf">
-		<?php echo $form->labelEx($model,'vestation_dt'); ?>
+		<?php echo $form->labelEx($model,'vestition_dt'); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			'model' => $model,
-			'attribute' => 'vestation_dt',
+			'attribute' => 'vestition_dt',
 			'options'       => array(
 				'dateFormat' => FormatHelper::getDatePickerFormat(),
 				'yearRange'  => '1900:c+10',
@@ -158,7 +158,7 @@
 				'maxlength' => 10,
 			),
 		)); ?>
-		<?php echo $form->error($model,'vestation_dt'); ?>
+		<?php echo $form->error($model,'vestition_dt'); ?>
 	</span>
 	</div>
 
