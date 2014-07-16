@@ -16,12 +16,27 @@ $this->widget('application.extensions.fancybox.EFancyBox', array(
         'config'=>array(),
 ));
 
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-renewals.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-siblings.js');
 #Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-communities.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-academicCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-spiritualRenewalCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-professionalRenewalCourses.js');
 Yii::app()->clientScript->registerScript('addSibs', "
+$('#add-renewals').fancybox( {
+	'onComplete': function() {
+		set_renewal_form_submit();
+		set_renewal_button_click();
+	},
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'/members/renewalsSummary',
+			'id' => $model->id
+		)) . "', function(data) {
+			$('#renewals-summary .val').html(data);
+		} );
+	}
+} );
 $('#add-sibs').fancybox( {
 	'onComplete': function() {
 		set_form_submit();
@@ -190,6 +205,19 @@ $this->menu=array(
 
 		echo "</div>";
 	}
+
+	echo '<div id="renewals-summary" class="fields">';
+	if ($model->renewals) {
+		echo "<label>Renewals: </label>";
+		echo "<span class='val'>";
+		$this->renderPartial('/renewals/summary', array('renewals' => $model->renewals));
+		echo "</span> ";
+		$lbl = "Edit";
+	} else {
+		$lbl = "Add Renewals";
+	}
+	echo CHtml::link($lbl, array('/members/renewals', 'id' => $model->id), array('id' => 'add-renewals'));
+	echo '</div>';
 
 	$specs = array();
 	foreach($model->memberSpecs as $spec) {

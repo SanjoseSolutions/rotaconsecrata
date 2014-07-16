@@ -94,7 +94,7 @@ CREATE TABLE renewal_courses_professional(
 	CONSTRAINT member_courses_professional FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE education_courses(
+CREATE TABLE academic_courses(
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	name	VARCHAR(100),
 	institution VARCHAR(150),
@@ -115,3 +115,10 @@ CREATE TABLE tbl_user (
     email VARCHAR(128) NOT NULL
 );
 
+CREATE TABLE renewals(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	member_id INTEGER NOT NULL,
+	renewal_dt DATE NOT NULL,
+	place VARCHAR(75),
+	CONSTRAINT member_renewals FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
+);

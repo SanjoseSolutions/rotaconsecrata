@@ -87,6 +87,7 @@ class Members extends CActiveRecord
 			'communityTerms' => array(self::HAS_MANY, 'CommunityTerms', 'member_id'),
 			'renewalCoursesSpiritual' => array(self::HAS_MANY, 'RenewalCoursesSpiritual', 'member_id'),
 			'renewalCoursesProfessional' => array(self::HAS_MANY, 'RenewalCoursesProfessional', 'member_id'),
+			'renewals' => array(self::HAS_MANY, 'Renewals', 'member_id'),
 		);
 	}
 
