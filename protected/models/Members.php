@@ -69,7 +69,12 @@ class Members extends CActiveRecord
 			array('dob, vestition_dt, first_commitment_dt, final_commitment_dt, demise_dt, leaving_dt, updated_on, made_final, father_alive, mother_alive', 'default', 'setOnEmpty' => true, 'value' => null),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fullname, age, maiden_name, made_final, mobile, dob, joining_dt, vestition_dt, first_commitment_dt, final_commitment_dt, made_final, fathers_name, mothers_name, father_alive, mother_alive, address, home_phone, home_mobile, parish, diocese, demise_dt, leaving_dt, mission, generalate, community, updated_by, updated_on, swiss_visit, holyland_visit, family_abroad, specialization', 'safe', 'on'=>'search'),
+			array('id, fullname, age, maiden_name, made_final, mobile, dob, joining_dt, vestition_dt, ' .
+				'first_commitment_dt, final_commitment_dt, made_final, fathers_name, mothers_name, ' .
+				'father_alive, mother_alive, address, home_phone, home_mobile, parish, diocese, ' .
+				'demise_dt, leaving_dt, mission, generalate, community, updated_by, updated_on, ' .
+				'swiss_visit, holyland_visit, family_abroad, specialization, ' .
+				'current_community, current_designation, bday_from, bday_to', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -104,6 +109,9 @@ class Members extends CActiveRecord
 			'mobile' => 'Mobile',
 			'email' => 'Email',
 			'dob' => 'Date of Birth',
+			'age' => 'Age',
+			'bday_from' => 'Birthday From',
+			'bday_to' => 'Birthday To',
 			'joining_dt' => 'Joining Date',
 			'vestition_dt' => 'Vestition Date',
 			'first_commitment_dt' => 'First Commitment Date',
@@ -124,6 +132,8 @@ class Members extends CActiveRecord
 			'mission' => 'Opted for Mission',
 			'generalate' => 'Under Generalate',
 			'community' => 'Community',
+			'current_community' => 'Current Community',
+			'current_designation' => 'Current Designation',
 			'updated_by' => 'Updated By',
 			'updated_on' => 'Updated On',
 			'swiss_visit' => 'Swiss Visit',
@@ -227,6 +237,25 @@ class Members extends CActiveRecord
 			$criteria = $criteria->addCondition("EXISTS (SELECT id FROM community_terms c " .
 				"WHERE c.member_id = t.id AND c.community_id = " . $this->community . ")");
 		}
+		if (isset($this->current_community) and $this->current_community) { 
+			$criteria = $criteria->addCondition("EXISTS (SELECT id FROM community_terms c " .
+				"WHERE c.member_id = t.id AND c.year_to IS NULL " .
+				"AND c.community_id = " . $this->current_community . ")");
+		}
+		if (isset($this->current_designation) and $this->current_designation) { 
+			$criteria = $criteria->addCondition("EXISTS (SELECT id FROM community_terms c " .
+				"WHERE c.member_id = t.id AND c.year_to IS NULL " .
+				"AND c.designation LIKE '%" . $this->current_designation . "%')");
+		}
+		if (isset($this->bday_from) and $this->bday_from and
+				isset($this->bday_to) and $this->bday_to) {
+			$dt = FormatHelper::dateConvDB(
+			    	$this->bday_from, Yii::app()->locale->getDateFormat('short'));
+			$nxt_bday = "MAKEDATE(YEAR('$dt')+IF(DAYOFYEAR(t.dob)<DAYOFYEAR('$dt'),1,0),DAYOFYEAR(t.dob))";
+			$to_dt = FormatHelper::dateConvDB(
+			    	$this->bday_to, Yii::app()->locale->getDateFormat('short'));
+			$criteria = $criteria->addCondition("$nxt_bday BETWEEN '$dt' AND '$to_dt' ORDER BY $nxt_bday");
+		}
 		$criteria->compare('updated_by',$this->updated_by);
 		$criteria->compare('updated_on',$this->updated_on,true);
 		$criteria->compare('swiss_visit',$this->swiss_visit);
@@ -329,4 +358,9 @@ class Members extends CActiveRecord
 	}
 
 	private $_community;
+
+	public $current_community;
+	public $current_designation;
+	public $bday_from;
+	public $bday_to;
 }

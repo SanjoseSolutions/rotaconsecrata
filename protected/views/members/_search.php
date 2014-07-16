@@ -134,22 +134,62 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 
 	<div class="row">
 		<?php echo $form->label($model,'demise_dt'); ?>
-		<?php echo $form->textField($model,'demise_dt'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'demise_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->label($model,'leaving_dt'); ?>
-		<?php echo $form->textField($model,'leaving_dt'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'leaving_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->label($model,'community'); ?>
 		<?php echo $form->dropDownList($model,'community', Communities::getAllHash(), array('prompt' => '-- Select one --')); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->label($model,'current_community'); ?>
+		<?php echo $form->dropDownList($model,'current_community', Communities::getAllHash(), array('prompt' => '-- Select one --')); ?>
+	</span>
 	</div>
 
 	<div class="row">
+	<span class="leftHalf">
+		<?php echo $form->label($model,'current_designation'); ?>
+		<?php echo $form->textField($model,'current_designation'); ?>
+	</span>
+	<span class="rightHalf">
 		<?php echo $form->label($model,'updated_on'); ?>
 		<?php echo $form->textField($model,'updated_on'); ?>
+	</span>
 	</div>
 
 	<div class="row">
