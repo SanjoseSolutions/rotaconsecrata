@@ -187,7 +187,7 @@ $this->menu=array(
 	echo "<span class='date val'>" . $model->joining_dt . "</span>&nbsp;&nbsp;";
 
 	if ($model->vestition_dt) {
-		echo "<label>Vestation: </label>";
+		echo "<label>Vestition: </label>";
 		echo "<span class='date val'>" . $model->vestition_dt . "</span>";
 	}
 
