@@ -201,10 +201,26 @@ class Members extends CActiveRecord
                 if (isset($this->age)) {
                         $this->date_search($criteria, 'dob', 'age');
                 }
-		$criteria->compare('joining_dt',$this->joining_dt,true);
-		$criteria->compare('vestition_dt',$this->vestition_dt,true);
-		$criteria->compare('first_commitment_dt',$this->first_commitment_dt,true);
-		$criteria->compare('final_commitment_dt',$this->final_commitment_dt,true);
+		if (isset($this->joining_dt) and $this->joining_dt) {
+			$this->joining_dt = FormatHelper::dateConvDB(
+				$this->joining_dt, Yii::app()->locale->getDateFormat('short'));
+			$criteria->compare('joining_dt',$this->joining_dt,true);
+		}
+		if (isset($this->vestition_dt) and $this->vestition_dt) {
+			$this->vestition_dt = FormatHelper::dateConvDB(
+				$this->vestition_dt, Yii::app()->locale->getDateFormat('short'));
+			$criteria->compare('vestition_dt',$this->vestition_dt,true);
+		}
+		if (isset($this->first_commitment_dt) and $this->first_commitment_dt) {
+			$this->first_commitment_dt = FormatHelper::dateConvDB(
+				$this->first_commitment_dt, Yii::app()->locale->getDateFormat('short'));
+			$criteria->compare('first_commitment_dt',$this->first_commitment_dt,true);
+		}
+		if (isset($this->final_commitment_dt) and $this->final_commitment_dt) {
+			$this->final_commitment_dt = FormatHelper::dateConvDB(
+				$this->final_commitment_dt, Yii::app()->locale->getDateFormat('short'));
+			$criteria->compare('final_commitment_dt',$this->final_commitment_dt,true);
+		}
 		if (isset($this->made_final)) {
 			switch ($this->made_final) {
 				case 0: $cond = "IS"; break;

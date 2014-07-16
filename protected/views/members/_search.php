@@ -37,7 +37,21 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->label($model,'dob'); ?>
-		<?php echo $form->textField($model,'dob'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'dob',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 	</span>
 	<span class="rightHalf">
 		<?php echo $form->label($model,'age'); ?>
@@ -45,10 +59,63 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	</span>
 	</div>
 
+	<div>
+	<span class="leftHalf">
+		<?php echo $form->label($model,'bday_from'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'bday_from',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->label($model,'bday_to'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'bday_to',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
+	</span>
+	</div>
+
 	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->label($model,'joining_dt'); ?>
-		<?php echo $form->textField($model,'joining_dt'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'joining_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 	</span>
 	<span class="rightHalf">
 	</span>
@@ -57,13 +124,41 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->label($model,'vestition_dt'); ?>
-		<?php echo $form->textField($model,'vestition_dt'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'vestition_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 	</div>
 
 	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->label($model,'first_commitment_dt'); ?>
-		<?php echo $form->textField($model,'first_commitment_dt'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'first_commitment_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 	</span>
 	<span class="rightHalf">
 	</span>
@@ -72,7 +167,21 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->label($model,'final_commitment_dt'); ?>
-		<?php echo $form->textField($model,'final_commitment_dt'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'final_commitment_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 	</span>
 	<span class="rightHalf">
 		<?php echo $form->label($model,'made_final'); ?>
