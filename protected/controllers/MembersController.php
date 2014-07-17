@@ -78,6 +78,8 @@ class MembersController extends Controller
 		{
 			$model->attributes=$_POST['Members'];
 			$specs = isset($_POST['specialization']) ? $_POST['specialization'] : array();
+			$model->updated_on = date_format(new DateTime(), 'd/m/Y');
+			$model->updated_by = Yii::app()->user->id;
 			Yii::trace("specs: ".var_export($specs, true), 'application.controllers.MembersController');
 			if($model->save()) {
 				foreach($specs as $spec) {
@@ -139,6 +141,8 @@ class MembersController extends Controller
 					$memSpec->delete();
 				}
 			}
+			$model->updated_on = date_format(new DateTime(), 'd/m/Y');
+			$model->updated_by = Yii::app()->user->id;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

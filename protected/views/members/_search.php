@@ -308,7 +308,21 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	</span>
 	<span class="rightHalf">
 		<?php echo $form->label($model,'updated_on'); ?>
-		<?php echo $form->textField($model,'updated_on'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'updated_on',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
 	</span>
 	</div>
 
