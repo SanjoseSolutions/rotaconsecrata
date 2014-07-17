@@ -124,4 +124,18 @@ class AcademicCourses extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public static function getDegrees() {
+		$deg_list = array();
+		$education = AcademicCourses::model()->findAll();
+		$degs = array();
+		foreach($education as $edu) {
+			$deg = $edu->name;
+			if (!isset($degs[$deg])) {
+				$degs[$deg] = 1;
+				array_push($deg_list, $deg);
+			}
+		}
+		return $deg_list;
+	}
 }

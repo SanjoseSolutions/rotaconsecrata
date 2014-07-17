@@ -73,7 +73,7 @@ class Members extends CActiveRecord
 				'first_commitment_dt, final_commitment_dt, made_final, fathers_name, mothers_name, ' .
 				'father_alive, mother_alive, address, home_phone, home_mobile, parish, diocese, ' .
 				'demise_dt, leaving_dt, mission, generalate, community, updated_by, updated_on, ' .
-				'swiss_visit, holyland_visit, family_abroad, specialization, ' .
+				'swiss_visit, holyland_visit, family_abroad, specialization, education, ' .
 				'current_community, current_designation, bday_from, bday_to', 'safe', 'on'=>'search'),
 		);
 	}
@@ -279,6 +279,10 @@ class Members extends CActiveRecord
 		$criteria->compare('family_abroad',$this->family_abroad);
 		$criteria->compare('annual_checkups',$this->annual_checkups);
 		$criteria->compare('health_data',$this->health_data);
+		if (isset($this->education) and $this->education) {
+			$criteria = $criteria->addCondition("EXISTS (SELECT id FROM academic_courses c " .
+				"WHERE c.member_id = t.id AND c.name LIKE '%" . $this->education . "%')");
+		}
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -379,4 +383,5 @@ class Members extends CActiveRecord
 	public $current_designation;
 	public $bday_from;
 	public $bday_to;
+	public $education;
 }

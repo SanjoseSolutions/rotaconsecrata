@@ -190,9 +190,20 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	</div>
 
 	<div>
+	<span class="leftHalf">
 		<?php echo $form->label($model,'specialization'); ?>
 		<?php echo $form->dropDownList($model, 'specialization', Specializations::getAll(), array(
 			'prompt'=>'-- Select one --')); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->label($model,'education'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+			'model' => $model,
+			'attribute' => 'education',
+			'source' => AcademicCourses::getDegrees(),
+			'htmlOptions' => array('size' => 15, 'maxlength' => 25)
+		)); ?>
+	</span>
 	</div>
 
 	<div class="row">
