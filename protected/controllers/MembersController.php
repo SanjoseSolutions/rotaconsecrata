@@ -41,6 +41,7 @@ class MembersController extends Controller
 					'siblings', 'siblingsSummary',
 					'communities', 'communitiesSummary',
 					'academicCourses', 'academicCoursesSummary',
+					'booksWritten', 'booksWrittenSummary',
 					'travels', 'travelsSummary',
 					'spiritualRenewalCourses', 'spiritualRenewalCoursesSummary',
 					'professionalRenewalCourses', 'professionalRenewalCoursesSummary'),
@@ -269,6 +270,22 @@ class MembersController extends Controller
 		$model=$this->loadModel($id);
 		$this->renderPartial('/renewals/summary', array(
 			'renewals' => $model->renewals,
+		));
+	}
+
+	public function actionBooksWritten($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('booksWritten', array(
+			'model' => $model,
+		));
+	}
+
+	public function actionBooksWrittenSummary($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('/booksWritten/summary', array(
+			'booksWritten' => $model->booksWritten,
 		));
 	}
 

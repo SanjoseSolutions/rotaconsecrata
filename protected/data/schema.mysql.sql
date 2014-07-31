@@ -141,3 +141,14 @@ CREATE TABLE travels(
 	member_id INTEGER NOT NULL,
 	CONSTRAINT member_travels FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE books_written(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	authors VARCHAR(150),
+	year INTEGER,
+	title VARCHAR(100),
+	publisher VARCHAR(100),
+	member_id INTEGER NOT NULL,
+	CONSTRAINT member_books FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+

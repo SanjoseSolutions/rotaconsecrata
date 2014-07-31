@@ -17,6 +17,7 @@ $this->widget('application.extensions.fancybox.EFancyBox', array(
 ));
 
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-renewals.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-booksWritten.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-siblings.js');
 #Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-communities.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-academicCourses.js');
@@ -83,6 +84,19 @@ $('#add-academic-courses').fancybox( {
 			'academicCoursesSummary', 'id'=>$model->id
 		)) . "', function(data) {
 			$('#academic-courses-summary .val').html(data);
+		} );
+	}
+} );
+$('#add-books-written').fancybox( {
+	'onComplete': function() {
+		set_book_written_button_click();
+		set_book_written_form_submit();
+	},
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'booksWrittenSummary', 'id'=>$model->id
+		)) . "', function(data) {
+			$('#books-written-summary .val').html(data);
 		} );
 	}
 } );
@@ -197,24 +211,24 @@ $this->menu=array(
 	echo "</div>";
 
 	echo '<div class="joining fields">';
-	echo "<label>Joined: </label>";
-	echo "<span class='date val'>" . $model->joining_dt . "</span>&nbsp;&nbsp;";
+	echo CHtml::label($model->getAttributeLabel('joining_dt'). ': ', false);
+	echo CHtml::tag('span', array('class'=>'date val'), $model->joining_dt) . '&nbsp;&nbsp;';
 
 	if ($model->vestition_dt) {
-		echo "<label>Vestition: </label>";
-		echo "<span class='date val'>" . $model->vestition_dt . "</span>";
+		echo CHtml::label($model->getAttributeLabel('vestition_dt'). ': ', false);
+		echo CHtml::tag('span', array('class'=>'date val'), $model->vestition_dt);
 	}
 
 	echo "</div>";
 
 	if ($model->first_commitment_dt) {
 		echo '<div class="commitment fields">';
-		echo "<label>First Commitment: </label>";
-		echo "<span class='date val'>" . $model->first_commitment_dt . "</span>&nbsp;";
+		echo CHtml::label($model->getAttributeLabel('first_commitment_dt'). ': ', false);
+		echo CHtml::tag('span', array('class'=>'date val'), $model->first_commitment_dt);
 
 		if ($model->final_commitment_dt) {
-			echo "<label>Final: </label>";
-			echo "<span class='date val'>" . $model->final_commitment_dt . "</span>";
+			echo CHtml::label($model->getAttributeLabel('final_commitment_dt'). ': ', false);
+			echo CHtml::tag('span', array('class'=>'date val'), $model->final_commitment_dt);
 		}
 
 		echo "</div>";
@@ -264,6 +278,14 @@ $this->menu=array(
 	}
 	echo "</div>";
 
+	echo "<div class='fields'>";
+	if ($model->mother_tongue) {
+		echo CHtml::label($model->getAttributeLabel('mother_tongue') . ': ', false);
+		echo CHtml::tag('span', array('class'=>'val'),
+			FieldValues::decode('languages', $model->mother_tongue));
+	}
+	echo "</div>";
+
 	if ($model->parish) {
 		echo "<div class='fields'>";
 		echo "<label>Parish: </label>";
@@ -287,15 +309,15 @@ $this->menu=array(
 
 	if ($model->edu_joining) {
 		echo "<div class='fields'>";
-		echo "<label>Education (when joining): </label>";
-		echo "<span class='val'>" . $model->edu_joining . "</span>";
+		echo CHtml::label($model->getAttributeLabel('edu_joining') . ': ', false);
+		echo CHtml::tag('span', array('class'=>'val'), $model->edu_joining);
 		echo "</div>";
 	}
 
 	if ($model->edu_present) {
 		echo "<div class='fields'>";
-		echo "<label>Education (at present): </label>";
-		echo "<span class='val'>" . $model->edu_present . "</span>";
+		echo CHtml::label($model->getAttributeLabel('edu_present') . ': ', false);
+		echo CHtml::tag('span', array('class'=>'val'), $model->edu_present);
 		echo "</div>";
 	}
 
@@ -309,10 +331,23 @@ $this->menu=array(
 
 	if ($model->teach_lang) {
 		echo "<div class='fields'>";
-		echo "<label>Language qualified to teach: </label>";
-		echo "<span class='val'>" . FieldValues::value($model->teach_lang) . "</span>";
+		echo CHtml::label($model->getAttributeLabel('teach_lang') . ': ', false);
+		echo CHtml::tag('span', array('class'=>'val'), FieldValues::value($model->teach_lang));
 		echo "</div>";
 	}
+
+	echo '<div id="books-written-summary" class="fields">';
+	if ($model->booksWritten) {
+		echo CHtml::label($model->getAttributeLabel('books_written') . ': ', false);
+		echo CHtml::openTag('span', array('class'=>'val'));
+		$this->renderPartial('/booksWritten/summary', array('booksWritten' => $model->booksWritten));
+		echo CHtml::closeTag('span') . ' ';
+		$lbl = "Edit";
+	} else {
+		$lbl = "Add Books Written";
+	}
+	echo CHtml::link($lbl, array('/members/booksWritten', 'id'=>$model->id), array('id'=>'add-books-written'));
+	echo "</div>";
 
 	$specs = array();
 	foreach($model->memberSpecs as $spec) {

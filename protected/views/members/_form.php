@@ -261,6 +261,12 @@
 	</span>
 	</div>
 
+	<div class="row">
+	<?php	echo $form->labelEx($model,'mother_tongue');
+		echo $form->dropDownList($model,'mother_tongue',FieldNames::values('languages'),array('prompt'=>'-- Select --'));
+		echo $form->error($model,'mother_tongue'); ?>
+	</div>
+
 	<div style="clear:both">
 	<div class="row">
 		<?php echo $form->labelEx($model,'parish'); ?>

@@ -95,9 +95,12 @@ return array(
 
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
-	'params'=>array(
-		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
-		'logoPath'=>'/images/rc-logo1.png',
+	'params'=>CMap::mergeArray(
+		array(
+			// this is used in contact page
+			'adminEmail'=>'webmaster@example.com',
+			'logoPath'=>'/images/rc-logo1.png',
+		),
+		require(dirname(__FILE__).DIRECTORY_SEPARATOR.'params.php')
 	),
 );
