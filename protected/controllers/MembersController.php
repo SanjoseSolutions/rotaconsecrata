@@ -41,6 +41,7 @@ class MembersController extends Controller
 					'siblings', 'siblingsSummary',
 					'communities', 'communitiesSummary',
 					'academicCourses', 'academicCoursesSummary',
+					'travels', 'travelsSummary',
 					'spiritualRenewalCourses', 'spiritualRenewalCoursesSummary',
 					'professionalRenewalCourses', 'professionalRenewalCoursesSummary'),
 				'users'=>array('admin'),
@@ -350,6 +351,22 @@ class MembersController extends Controller
                 $this->renderPartial('/renewalCoursesProfessional/summary', array(
                         'professionalCourses' => $model->renewalCoursesProfessional
                 )); 
+	}
+
+	public function actionTravels($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('travels', array(
+			'model' => $model,
+		));
+	}
+
+	public function actionTravelsSummary($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('/travels/summary', array(
+			'travels' => $model->travels,
+		));
 	}
 
 	public function actionPhoto($id)

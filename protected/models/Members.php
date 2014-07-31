@@ -86,6 +86,7 @@ class Members extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'province' => array(self::BELONGS_TO, 'Provinces', 'province_id'),
 			'academicCourses' => array(self::HAS_MANY, 'AcademicCourses', 'member_id'),
 			'memberSpecs' => array(self::HAS_MANY, 'MemberSpecializations', 'member_id'),
 			'siblings' => array(self::HAS_MANY, 'Siblings', 'member_id'),
@@ -94,7 +95,7 @@ class Members extends CActiveRecord
 			'renewalCoursesProfessional' => array(self::HAS_MANY, 'RenewalCoursesProfessional', 'member_id'),
 			'renewals' => array(self::HAS_MANY, 'Renewals', 'member_id'),
 			'spokenLangs' => array(self::HAS_MANY, 'SpokenLangs', 'member_id'),
-			'province' => array(self::BELONGS_TO, 'Provinces', 'province_id'),
+			'travels' => array(self::HAS_MANY, 'Travels', 'member_id'),
 		);
 	}
 

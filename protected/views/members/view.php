@@ -22,6 +22,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-sibl
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-academicCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-spiritualRenewalCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-professionalRenewalCourses.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-travels.js');
 Yii::app()->clientScript->registerScript('addSibs', "
 $('#add-renewals').fancybox( {
 	'onComplete': function() {
@@ -82,6 +83,19 @@ $('#add-academic-courses').fancybox( {
 			'academicCoursesSummary', 'id'=>$model->id
 		)) . "', function(data) {
 			$('#academic-courses-summary .val').html(data);
+		} );
+	}
+} );
+$('#add-travels').fancybox( {
+	'onComplete': function() {
+		set_travel_button_click();
+		set_travel_form_submit();
+	},
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'travelsSummary', 'id'=>$model->id
+		)) . "', function(data) {
+			$('#travels-summary .val').html(data);
 		} );
 	}
 } );
@@ -380,6 +394,19 @@ $this->menu=array(
 		'id'=>'add-professional-courses')
 	);
 	echo "</div>";
+	echo '<div id="travels-summary" class="fields">';
+	if ($model->travels) {
+		echo "<label>Travels: </label>";
+		echo "<span class='val'>";
+		$this->renderPartial('/travels/summary', array('travels' => $model->travels));
+		echo "</span> ";
+		$lbl = "Edit";
+	} else {
+		$lbl = "Add Travels";
+	}
+	echo CHtml::link($lbl, array('/members/travels', 'id'=>$model->id), array('id'=>'add-travels'));
+	echo "</div>";
+
 	echo "</div><!-- end of rightSection -->";
 
 	echo "<div class='fields'>";

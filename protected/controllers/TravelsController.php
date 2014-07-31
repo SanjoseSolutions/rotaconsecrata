@@ -70,8 +70,10 @@ class TravelsController extends Controller
 		if(isset($_POST['Travels']))
 		{
 			$model->attributes=$_POST['Travels'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->save()) {
+				Yii::trace("Create successful for id " . $model->$id, "application.controllers.AcademicCoursesController");
+				return;
+			}
 		}
 
 		$this->render('create',array(
@@ -95,10 +97,10 @@ class TravelsController extends Controller
 		{
 			$model->attributes=$_POST['Travels'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				return;
 		}
 
-		$this->render('update',array(
+		$this->renderPartial('_form',array(
 			'model'=>$model,
 		));
 	}
@@ -113,8 +115,12 @@ class TravelsController extends Controller
 		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		if(!isset($_GET['ajax'])) {
+			$msg = "Delete successful for id $id";
+			Yii::trace($msg, "application.controllers.AcademicCoursesController");
+			echo $msg;
+			return;
+		}
 	}
 
 	/**
