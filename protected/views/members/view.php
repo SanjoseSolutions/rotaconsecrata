@@ -219,31 +219,6 @@ $this->menu=array(
 	echo CHtml::link($lbl, array('/members/renewals', 'id' => $model->id), array('id' => 'add-renewals'));
 	echo '</div>';
 
-	$specs = array();
-	foreach($model->memberSpecs as $spec) {
-		array_push($specs, $spec->spec->name);
-	}
-	if ($specs) {
-		echo "<div class='fields'>";
-		echo "<label>Specializations: </label>";
-		echo "<span class='val'>" . implode(', ', $specs) . "</span>";
-		echo "</div>";
-	}
-
-	if ($model->edu_joining) {
-		echo "<div class='fields'>";
-		echo "<label>Education (when joining): </label>";
-		echo "<span class='val'>" . $model->edu_joining . "</span>";
-		echo "</div>";
-	}
-
-	if ($model->edu_present) {
-		echo "<div class='fields'>";
-		echo "<label>Education (at present): </label>";
-		echo "<span class='val'>" . $model->edu_present . "</span>";
-		echo "</div>";
-	}
-
 	echo "<div class='fields'>";
 	echo "<label>Father's Name: </label>";
 	if ($model->father_alive) {
@@ -295,6 +270,46 @@ $this->menu=array(
 		echo CHtml::link("Add Siblings", array('/members/siblings', 'id' => $model->id), array('id' => 'add-sibs'));
 	}
 	echo "</div>";
+
+	if ($model->edu_joining) {
+		echo "<div class='fields'>";
+		echo "<label>Education (when joining): </label>";
+		echo "<span class='val'>" . $model->edu_joining . "</span>";
+		echo "</div>";
+	}
+
+	if ($model->edu_present) {
+		echo "<div class='fields'>";
+		echo "<label>Education (at present): </label>";
+		echo "<span class='val'>" . $model->edu_present . "</span>";
+		echo "</div>";
+	}
+
+	$slangs = array_map(function($el) { return $el->lang->value; }, $model->spokenLangs);
+	if ($slangs) {
+		echo "<div class='fields'>";
+		echo "<label>Spoken Languages: </label>";
+		echo "<span class='val'>" . implode(', ', $slangs) . "</span>";
+		echo "</div>";
+	}
+
+	if ($model->teach_lang) {
+		echo "<div class='fields'>";
+		echo "<label>Language qualified to teach: </label>";
+		echo "<span class='val'>" . FieldValues::value($model->teach_lang) . "</span>";
+		echo "</div>";
+	}
+
+	$specs = array();
+	foreach($model->memberSpecs as $spec) {
+		array_push($specs, $spec->spec->name);
+	}
+	if ($specs) {
+		echo "<div class='fields'>";
+		echo "<label>Specializations: </label>";
+		echo "<span class='val'>" . implode(', ', $specs) . "</span>";
+		echo "</div>";
+	}
 
 	echo '<div id="communities-summary" class="fields">';
 	if ($model->communityTerms) {

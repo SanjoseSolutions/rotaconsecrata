@@ -78,6 +78,7 @@ class MembersController extends Controller
 		{
 			$model->attributes=$_POST['Members'];
 			$specs = isset($_POST['specialization']) ? $_POST['specialization'] : array();
+			$spokenLangs = isset($_POST['spokenLang']) ? $_POST['spokenLang'] : array();
 			$model->updated_on = date_format(new DateTime(), 'd/m/Y');
 			$model->updated_by = Yii::app()->user->id;
 			Yii::trace("specs: ".var_export($specs, true), 'application.controllers.MembersController');
@@ -88,6 +89,13 @@ class MembersController extends Controller
 					$memSpec->spec_id = $spec;
 					$memSpec->save();
 				}
+				foreach($spokenLangs as $slang) {
+					$sl = new SpokenLangs;
+					$sl->member_id = $model->id;
+					$sl->lang_id = $slang;
+					$sl->save();
+				}
+					
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
@@ -111,36 +119,43 @@ class MembersController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		$setSpecs = array();
-		$memSpecs = $model->memberSpecs;
-		Yii::trace("memSpecs: " . var_export($memSpecs, true), 'application.controllers.MembersController');
-		foreach($memSpecs as $spec) {
-			array_push($setSpecs, $spec->spec_id);
-		}
-		Yii::trace("setSpecs: " . var_export($setSpecs, true), 'application.controllers.MembersController');
+		$setSpecs = array_map(function($ms) { return $ms->spec_id; }, $model->memberSpecs);
+		$setSpokenLangs = array_map(function($sl) { return $sl->lang_id; }, $model->spokenLangs);
 
 		if(isset($_POST['Members']))
 		{
 			$model->attributes=$_POST['Members'];
 			$specs = isset($_POST['specialization']) ? $_POST['specialization'] : array();
-			Yii::trace("specs: ".var_export($specs, true), 'application.controllers.MembersController');
-			foreach($specs as $spec) {
-				if (!in_array($spec, $setSpecs)) {
-					$memSpec = new MemberSpecializations;
-					$memSpec->member_id = $id;
-					$memSpec->spec_id = $spec;
-					$memSpec->save();
-				}
+			foreach(array_diff($specs, $setSpecs) as $spec) {
+				$memSpec = new MemberSpecializations;
+				$memSpec->member_id = $id;
+				$memSpec->spec_id = $spec;
+				$memSpec->save();
 			}
-			foreach($setSpecs as $spec) {
-				if (!in_array($spec, $specs)) {
-					$memSpec = MemberSpecializations::model()->findByAttributes(array(
-						'member_id' => $id,
-						'spec_id' => $spec
-					));
-					$memSpec->delete();
-				}
+			foreach(array_diff($setSpecs, $specs) as $spec) {
+				$memSpec = MemberSpecializations::model()->findByAttributes(array(
+					'member_id' => $id,
+					'spec_id' => $spec
+				));
+				$memSpec->delete();
 			}
+			$spokenLangs = isset($_POST['spokenLang']) ? $_POST['spokenLang'] : array();
+			$newSpokenLangs = array_diff($spokenLangs, $setSpokenLangs);
+			foreach($newSpokenLangs as $slang) {
+				$sl = new SpokenLangs;
+				$sl->member_id = $id;
+				$sl->lang_id = $slang;
+				$sl->save();
+			}
+			$delSpokenLangs = array_diff($setSpokenLangs, $spokenLangs);
+			foreach($delSpokenLangs as $slang) {
+				$sl = SpokenLangs::model()->findByAttributes(array(
+					'member_id' => $id,
+					'lang_id' => $slang,
+				));
+				$sl->delete();
+			}
+
 			$model->updated_on = date_format(new DateTime(), 'd/m/Y');
 			$model->updated_by = Yii::app()->user->id;
 			if($model->save())
@@ -151,6 +166,7 @@ class MembersController extends Controller
 			'model'=>$model,
 			'specializations'=>$specs,
 			'setSpecs'=>$setSpecs,
+			'setSpokenLangs'=>$setSpokenLangs,
 		));
 	}
 
@@ -173,10 +189,21 @@ class MembersController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Members');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$u = Yii::app()->user;
+		$params = array();
+		if ($u->checkAccess('ProvAdm')) {
+			if (!$u->checkAccess('Admin')) {
+				$params['criteria'] = array(
+					'condition' => "province_id = " . $u->profile->member->province_id
+				);
+			}
+			$dataProvider=new CActiveDataProvider('Members', $params);
+			$this->render('index',array(
+				'dataProvider'=>$dataProvider,
+			));
+		} else {
+			throw new CHttpException(403, "Access denied. You are not allowed to access this page.");
+		}
 	}
 
 	/**

@@ -15,7 +15,7 @@ $this->menu=array(
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'members-grid',
-	'dataProvider'=>$model->search(),
+	'dataProvider'=>$provider,
 	'enableSorting'=>true,
 	'columns'=>array(
 		'id',

@@ -1,3 +1,9 @@
+CREATE TABLE provinces(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(50) NOT NULL,
+	disabled TINYINT NOT NULL DEFAULT 0
+);
+
 CREATE TABLE members(
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	fullname VARCHAR(100) NOT NULL,
@@ -32,7 +38,9 @@ CREATE TABLE members(
 	holyland_visit TINYINT,
 	family_abroad TINYINT,
 	annual_checkups TINYINT,
-	health_data TEXT
+	province_id INTEGER,
+	health_data TEXT,
+	CONSTRAINT member_province FOREIGN KEY (province_id) REFERENCES provinces(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE specializations(
@@ -109,10 +117,12 @@ CREATE TABLE academic_courses(
 );
 
 CREATE TABLE tbl_user (
-    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(128) NOT NULL,
-    password VARCHAR(128) NOT NULL,
-    email VARCHAR(128) NOT NULL
+	id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	username VARCHAR(128) NOT NULL,
+	password VARCHAR(128) NOT NULL,
+	email VARCHAR(128) NOT NULL,
+	province_id INTEGER NOT NULL DEFAULT 1,
+	CONSTRAINT user_province FOREIGN KEY (province_id) REFERENCES provinces(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE renewals(
@@ -121,4 +131,13 @@ CREATE TABLE renewals(
 	renewal_dt DATE NOT NULL,
 	place VARCHAR(75),
 	CONSTRAINT member_renewals FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE travels(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	year INTEGER,
+	places VARCHAR(100),
+	nature VARCHAR(50),
+	member_id INTEGER NOT NULL,
+	CONSTRAINT member_travels FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

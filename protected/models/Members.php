@@ -60,7 +60,7 @@ class Members extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('fullname, dob, joining_dt, fathers_name, mothers_name', 'required'),
-			array('father_alive, mother_alive, mission, generalate, community, updated_by, swiss_visit, holyland_visit, family_abroad, annual_checkups', 'numerical', 'integerOnly'=>true),
+			array('province_id, father_alive, mother_alive, mission, generalate, community, updated_by, swiss_visit, holyland_visit, family_abroad, annual_checkups, teach_lang', 'numerical', 'integerOnly'=>true),
 			array('fullname, maiden_name, fathers_name, mothers_name', 'length', 'max'=>100),
 			array('photo, email, parish, edu_joining, edu_present', 'length', 'max'=>50),
 			array('mobile, home_phone, home_mobile', 'length', 'max'=>15),
@@ -93,6 +93,8 @@ class Members extends CActiveRecord
 			'renewalCoursesSpiritual' => array(self::HAS_MANY, 'RenewalCoursesSpiritual', 'member_id'),
 			'renewalCoursesProfessional' => array(self::HAS_MANY, 'RenewalCoursesProfessional', 'member_id'),
 			'renewals' => array(self::HAS_MANY, 'Renewals', 'member_id'),
+			'spokenLangs' => array(self::HAS_MANY, 'SpokenLangs', 'member_id'),
+			'province' => array(self::BELONGS_TO, 'Provinces', 'province_id'),
 		);
 	}
 
@@ -103,6 +105,8 @@ class Members extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'member_no' => 'Member Admission No.',
+			'province_id' => 'Province',
 			'fullname' => 'Fullname',
 			'photo' => 'Photo',
 			'maiden_name' => 'Maiden Name',
@@ -112,6 +116,7 @@ class Members extends CActiveRecord
 			'age' => 'Age',
 			'bday_from' => 'Birthday From',
 			'bday_to' => 'Birthday To',
+			'teach_lang' => 'Language qualified to teach',
 			'joining_dt' => 'Joining Date',
 			'vestition_dt' => 'Vestition Date',
 			'first_commitment_dt' => 'First Commitment Date',

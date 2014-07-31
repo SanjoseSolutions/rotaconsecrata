@@ -20,9 +20,9 @@
 #
 
 return array (
-  'connectionString' => 'mysql:host=localhost;dbname=tejasdb',
+  'connectionString' => 'mysql:host=localhost;dbname=rcdb',
   'emulatePrepare' => true,
-  'username' => 'tejas',
-  'password' => 'T3ja5',
+  'username' => 'rcuser',
+  'password' => 'rcpass',
   'charset' => 'utf8',
 );

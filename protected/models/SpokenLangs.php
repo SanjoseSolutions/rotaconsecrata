@@ -1,22 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "tbl_user".
+ * This is the model class for table "spoken_langs".
  *
- * The followings are the available columns in table 'tbl_user':
+ * The followings are the available columns in table 'spoken_langs':
  * @property integer $id
- * @property string $username
- * @property string $password
- * @property string $email
+ * @property integer $lang_id
+ * @property integer $member_id
+ *
+ * The followings are the available model relations:
+ * @property Members $member
+ * @property FieldValues $lang
  */
-class Users extends CActiveRecord
+class SpokenLangs extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'tbl_user';
+		return 'spoken_langs';
 	}
 
 	/**
@@ -27,11 +30,11 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, password', 'required'),
-			array('username, password, email', 'length', 'max'=>128),
+			array('lang_id, member_id', 'required'),
+			array('lang_id, member_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, username, password, email', 'safe', 'on'=>'search'),
+			array('id, lang_id, member_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -44,6 +47,7 @@ class Users extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'member' => array(self::BELONGS_TO, 'Members', 'member_id'),
+			'lang' => array(self::BELONGS_TO, 'FieldValues', 'lang_id'),
 		);
 	}
 
@@ -54,9 +58,8 @@ class Users extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'username' => 'Username',
-			'password' => 'Password',
-			'email' => 'Email',
+			'lang_id' => 'Lang',
+			'member_id' => 'Member',
 		);
 	}
 
@@ -79,9 +82,8 @@ class Users extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('username',$this->username,true);
-		$criteria->compare('password',$this->password,true);
-		$criteria->compare('email',$this->email,true);
+		$criteria->compare('lang_id',$this->lang_id);
+		$criteria->compare('member_id',$this->member_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -92,20 +94,10 @@ class Users extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Users the static model class
+	 * @return SpokenLangs the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
-        public function beforeSave()
-        {
-                if(parent::beforeSave()) {
-                        $this->password = crypt($this->password, CryptoHelper::blowfishSalt());
-                        return true;
-                } else {
-                        return false;
-                }
-        }
 }

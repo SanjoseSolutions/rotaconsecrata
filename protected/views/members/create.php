@@ -19,4 +19,5 @@ $this->menu=array(
 	'model'=>$model,
 	'specializations'=>$specializations,
 	'setSpecs'=>array(),
+	'setSpokenLangs'=>array(),
 )); ?>

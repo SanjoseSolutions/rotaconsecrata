@@ -21,6 +21,26 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
+	<span class="left34">
+	<?php
+		echo $form->labelEx($model, 'member_no');
+		echo $form->textField($model, 'member_no', array('size'=>32, 'maxlength'=>32, 'placeholder'=>'Member admission no'));
+	?>
+	</span>
+	<span class="right14">
+	<?php 
+		$u = Yii::app()->user;
+		if ($u->checkAccess('ProvAdm') and !$u->checkAccess('Admin')) {
+			echo $form->hiddenField($model, 'province_id', array('value' => $u->profile->member->province_id));
+		} else {
+			echo $form->labelEx($model, 'province_id');
+			echo $form->dropDownList($model, 'province_id', Provinces::getAll(), array('prompt' => '-- Select --'));
+		}
+	?>
+	</span>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'fullname'); ?>
 		<?php echo $form->textField($model,'fullname',array('size'=>80,'maxlength'=>100,'placeholder'=>'Enter Sister Fullname')); ?>
 		<?php echo $form->error($model,'fullname'); ?>
@@ -51,7 +71,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'maiden_name'); ?>
-		<?php echo $form->textField($model,'maiden_name',array('size'=>54,'maxlength'=>100,'placeholder'=>'Enter Maiden Name')); ?>
+		<?php echo $form->textField($model,'maiden_name',array('size'=>34,'maxlength'=>100,'placeholder'=>'Enter Maiden Name')); ?>
 		<?php echo $form->error($model,'maiden_name'); ?>
 	</div>
 
@@ -107,18 +127,6 @@
 	)); ?>
 		<?php echo $form->error($model,'demise_dt'); ?>
 	</span>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'edu_joining'); ?>
-		<?php echo $form->textField($model,'edu_joining',array('size'=>50,'maxlength'=>50,'placeholder'=>'Enter Education when Joining')); ?>
-		<?php echo $form->error($model,'edu_joining'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'edu_present'); ?>
-		<?php echo $form->textField($model,'edu_present',array('size'=>50,'maxlength'=>50,'placeholder'=>'Enter Education at Present')); ?>
-		<?php echo $form->error($model,'edu_present'); ?>
 	</div>
 
 	<div class="row">
@@ -203,21 +211,6 @@
 	</span>
 	</div>
 
-	<div class="row">
-	<?php echo CHtml::label('Specialization', null);
-		foreach ($specializations as $spec) {
-			echo '<label class="cblabel" for="spec_'.$spec->id.'">'.$spec->name." ";
-			echo CHtml::checkBox('specialization[]', in_array($spec->id, $setSpecs), array('id'=>"spec_".$spec->id, 'value' => $spec->id));
-			echo '</label>';
-		} ?>
-		<?php /* $data = array();
-		foreach ($specializations as $spec) {
-			$data[$spec->id] = $spec->name;			
-		}
-		echo CHtml::checkBoxList('specialization', null, $data); 
-		*/ ?>
-	</div>
-
 	<?php if (!$model->isNewRecord): ?>
 	</div><!-- end of div.rightSection -->
 	<?php endif ?>
@@ -280,6 +273,44 @@
 		<?php echo $form->labelEx($model,'diocese'); ?>
 		<?php echo $form->textField($model,'diocese',array('size'=>30,'maxlength'=>30,'placeholder'=>'Enter Diocese')); ?>
 		<?php echo $form->error($model,'diocese'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'edu_joining'); ?>
+		<?php echo $form->textField($model,'edu_joining',array('size'=>50,'maxlength'=>50,'placeholder'=>'Enter Education when Joining')); ?>
+		<?php echo $form->error($model,'edu_joining'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'edu_present'); ?>
+		<?php echo $form->textField($model,'edu_present',array('size'=>50,'maxlength'=>50,'placeholder'=>'Enter Education at Present')); ?>
+		<?php echo $form->error($model,'edu_present'); ?>
+	</div>
+
+	<div class="row">
+	<?php echo CHtml::label('Languages Spoken', null);
+		$languages = FieldNames::values('languages');
+		foreach ($languages as $lid => $lv) {
+			echo '<label class="cblabel" for="slang_'.$lid.'">'.$lv." ";
+			echo CHtml::checkBox('spokenLang[]', in_array($lid, $setSpokenLangs), array('id'=>"slang_".$lid, 'value'=>$lid));
+			echo '</label>';
+		} ?>
+	</div>
+
+	<div class="row">
+	<?php echo $form->labelEx($model, 'teach_lang');
+		echo $form->dropDownList($model, 'teach_lang', $languages, array('prompt' => '-- Select one --'));
+		echo $form->error($model, 'teach_lang');
+	?>		
+	</div>
+
+	<div class="row">
+	<?php echo CHtml::label('Specialization', null);
+		foreach ($specializations as $spec) {
+			echo '<label class="cblabel" for="spec_'.$spec->id.'">'.$spec->name." ";
+			echo CHtml::checkBox('specialization[]', in_array($spec->id, $setSpecs), array('id'=>"spec_".$spec->id, 'value' => $spec->id));
+			echo '</label>';
+		} ?>
 	</div>
 
 	<div class="row">

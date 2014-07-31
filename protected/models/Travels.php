@@ -1,22 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "tbl_user".
+ * This is the model class for table "travels".
  *
- * The followings are the available columns in table 'tbl_user':
+ * The followings are the available columns in table 'travels':
  * @property integer $id
- * @property string $username
- * @property string $password
- * @property string $email
+ * @property integer $year
+ * @property string $places
+ * @property string $nature
+ * @property integer $member_id
+ *
+ * The followings are the available model relations:
+ * @property Members $member
  */
-class Users extends CActiveRecord
+class Travels extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'tbl_user';
+		return 'travels';
 	}
 
 	/**
@@ -27,11 +31,13 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, password', 'required'),
-			array('username, password, email', 'length', 'max'=>128),
+			array('member_id', 'required'),
+			array('year, member_id', 'numerical', 'integerOnly'=>true),
+			array('places', 'length', 'max'=>100),
+			array('nature', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, username, password, email', 'safe', 'on'=>'search'),
+			array('id, year, places, nature, member_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,9 +60,10 @@ class Users extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'username' => 'Username',
-			'password' => 'Password',
-			'email' => 'Email',
+			'year' => 'Year',
+			'places' => 'Places',
+			'nature' => 'Nature',
+			'member_id' => 'Member',
 		);
 	}
 
@@ -79,9 +86,10 @@ class Users extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('username',$this->username,true);
-		$criteria->compare('password',$this->password,true);
-		$criteria->compare('email',$this->email,true);
+		$criteria->compare('year',$this->year);
+		$criteria->compare('places',$this->places,true);
+		$criteria->compare('nature',$this->nature,true);
+		$criteria->compare('member_id',$this->member_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -92,20 +100,10 @@ class Users extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Users the static model class
+	 * @return Travels the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
-        public function beforeSave()
-        {
-                if(parent::beforeSave()) {
-                        $this->password = crypt($this->password, CryptoHelper::blowfishSalt());
-                        return true;
-                } else {
-                        return false;
-                }
-        }
 }

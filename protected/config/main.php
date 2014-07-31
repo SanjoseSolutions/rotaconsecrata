@@ -17,6 +17,8 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'application.modules.rights.*',
+		'application.modules.rights.components.*',
 	),
 
 	'modules'=>array(
@@ -27,13 +29,25 @@ return array(
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
+		'rights'=>array(
+			'userClass' => 'Users',
+			'install'=>false
+		),
 	),
 
 	// application components
 	'components'=>array(
 		'user'=>array(
 			// enable cookie-based authentication
-			'allowAutoLogin'=>true,
+#			'allowAutoLogin'=>true,
+			'class'=>'MyWebUser',
+		),
+		'authManager' => array(
+			'class' => 'RDbAuthManager',
+			'assignmentTable' => 'authassignment',
+			'itemTable' => 'authitem',
+			'itemChildTable' => 'authitemchild',
+			'rightsTable' => 'rights',
 		),
 		// uncomment the following to enable URLs in path-format
 		/*

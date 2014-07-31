@@ -30,13 +30,22 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		if (Yii::app()->user->isGuest) {
+		$u = Yii::app()->user;
+		if ($u->isGuest) {
 			$this->redirect(array('login'));
 		} else {
-			$model=new Members('search');
-			$this->render('index', array(
-				'model'=>$model
-			));
+			$params = array();
+			if ($u->checkAccess('ProvAdm')) {
+				if (!$u->checkAccess('Admin')) {
+					$params['criteria'] = array(
+						'condition' => "province_id = " . $u->profile->member->province_id
+					);
+				}
+				$provider = new CActiveDataProvider('Members', $params);
+				$this->render('index', array(
+					'provider'=>$provider
+				));
+			}
 		}
 	}
 
