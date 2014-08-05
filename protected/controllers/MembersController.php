@@ -27,24 +27,26 @@ class MembersController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
+#			array('allow',  // allow all users to perform 'index' and 'view' actions
+#				'actions'=>array('index','view'),
+#				'users'=>array('*'),
+#			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','photo','crop',
+				'actions'=>array('create','update','index',
+					'view','photo','crop',
 					'renewals', 'renewalsSummary',
 					'siblings', 'siblingsSummary',
 					'communities', 'communitiesSummary',
 					'academicCourses', 'academicCoursesSummary',
 					'booksWritten', 'booksWrittenSummary',
 					'travels', 'travelsSummary',
+					'multiFieldData', 'multiFieldDataSummary',
 					'spiritualRenewalCourses', 'spiritualRenewalCoursesSummary',
 					'professionalRenewalCourses', 'professionalRenewalCoursesSummary'),
+				'users'=>array('@'),
+			),
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array('delete','admin'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -286,6 +288,38 @@ class MembersController extends Controller
 		$model=$this->loadModel($id);
 		$this->renderPartial('/booksWritten/summary', array(
 			'booksWritten' => $model->booksWritten,
+		));
+	}
+
+	public function actionMultiFieldData($id, $fieldName)
+	{
+		$field = MultiFieldNames::get($fieldName);
+
+		$model=MultiFieldData::model()->findAllByAttributes(array(
+			'member_id' => $id,
+			'field_id' => $field->id
+		));
+
+		$this->renderPartial('memberFieldData', array(
+			'field' => $field,
+			'member_id' => $id,
+			'model' => $model
+		));
+	}
+
+	public function actionMultiFieldDataSummary($id, $fieldName)
+	{
+		$field = MultiFieldNames::get($fieldName);
+
+		$model=MultiFieldData::model()->findAllByAttributes(array(
+			'member_id' => $id,
+			'field_id' => $field->id
+		));
+
+		$this->renderPartial('/multiFieldData/summary', array(
+			'field' => $field,
+			'member_id' => $id,
+			'data' => $model
 		));
 	}
 

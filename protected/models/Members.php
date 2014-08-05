@@ -103,6 +103,7 @@ class Members extends CActiveRecord
 			'renewals' => array(self::HAS_MANY, 'Renewals', 'member_id'),
 			'spokenLangs' => array(self::HAS_MANY, 'SpokenLangs', 'member_id'),
 			'travels' => array(self::HAS_MANY, 'Travels', 'member_id'),
+			'multi_field_data' => array(self::HAS_MANY, 'MultiFieldData', 'member_id'),
 		);
 	}
 
@@ -392,6 +393,14 @@ class Members extends CActiveRecord
 
 	public function getSpecialization() {
 		return isset($this->specialization) ? $this->specialization : null;
+	}
+
+	public function getMemberFieldData($fieldName) {
+		$field = MultiFieldNames::get($fieldName);
+		return MultiFieldData::model()->findAllByAttributes(array(
+			'field_id' => $field->id,
+			'member_id' => $this->id
+		));
 	}
 
 	private $_community;

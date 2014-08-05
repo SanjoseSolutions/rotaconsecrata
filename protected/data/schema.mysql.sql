@@ -152,3 +152,17 @@ CREATE TABLE books_written(
 	CONSTRAINT member_books FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE multi_field_name(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(50),
+	descr VARCHAR(100)
+);
+
+CREATE TABLE multi_field_data(
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	descr VARCHAR(100),
+	member_id INTEGER NOT NULL,
+	field_id INTEGER NOT NULL,
+	CONSTRAINT member_multi_fields FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT multi_fields_field FOREIGN KEY (field_id) REFERENCES multi_field_name(id) ON DELETE CASCADE ON UPDATE CASCADE
+);

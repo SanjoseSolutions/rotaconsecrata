@@ -24,6 +24,10 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-acad
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-spiritualRenewalCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-professionalRenewalCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-travels.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-membersMultiData.js');
+$flds = array("awards", "articles", "research_works", "bodies_membership", "special_services", "interest_areas");
+$models = array();
+for($i=0; $i<count($flds); ++$i) array_push($models, $model);
 Yii::app()->clientScript->registerScript('addSibs', "
 $('#add-renewals').fancybox( {
 	'onComplete': function() {
@@ -139,7 +143,23 @@ $('#add-professional-courses').fancybox( {
 		} );
 	}
 } );
-".file_get_contents(dirname(__FILE__).'/../../../js/add-communities.js'));
+".
+implode("\n", array_map(function($fld, $model) {
+return "$('#add-$fld').fancybox( {
+	'onComplete': function() {
+		set_multi_field_data_button_click('$fld');
+		set_multi_field_data_form_submit('$fld');
+	},
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'multiFieldDataSummary', 'id'=>$model->id, 'fieldName'=>$fld
+		)) . "', function(data) {
+			$('#$fld-summary .val').html(data);
+		} );
+	}
+} );";
+}, $flds, $models))
+.file_get_contents(dirname(__FILE__).'/../../../js/add-communities.js'));
 
 /* @var $this MembersController */
 /* @var $model Members */
@@ -211,11 +231,11 @@ $this->menu=array(
 	echo "</div>";
 
 	echo '<div class="joining fields">';
-	echo CHtml::label($model->getAttributeLabel('joining_dt'). ': ', false);
+	echo CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('joining_dt')). ': ', false);
 	echo CHtml::tag('span', array('class'=>'date val'), $model->joining_dt) . '&nbsp;&nbsp;';
 
 	if ($model->vestition_dt) {
-		echo CHtml::label($model->getAttributeLabel('vestition_dt'). ': ', false);
+		echo CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('vestition_dt')). ': ', false);
 		echo CHtml::tag('span', array('class'=>'date val'), $model->vestition_dt);
 	}
 
@@ -223,11 +243,11 @@ $this->menu=array(
 
 	if ($model->first_commitment_dt) {
 		echo '<div class="commitment fields">';
-		echo CHtml::label($model->getAttributeLabel('first_commitment_dt'). ': ', false);
+		echo CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('first_commitment_dt')). ': ', false);
 		echo CHtml::tag('span', array('class'=>'date val'), $model->first_commitment_dt);
 
 		if ($model->final_commitment_dt) {
-			echo CHtml::label($model->getAttributeLabel('final_commitment_dt'). ': ', false);
+			echo ',&nbsp;&nbsp;'.CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('final_commitment_dt')). ': ', false);
 			echo CHtml::tag('span', array('class'=>'date val'), $model->final_commitment_dt);
 		}
 
@@ -336,6 +356,10 @@ $this->menu=array(
 		echo "</div>";
 	}
 
+	$this->renderPartial('memberFieldSummary', array(
+		'model'=>$model,
+		'fld'=>'awards'));
+
 	echo '<div id="books-written-summary" class="fields">';
 	if ($model->booksWritten) {
 		echo CHtml::label($model->getAttributeLabel('books_written') . ': ', false);
@@ -348,6 +372,26 @@ $this->menu=array(
 	}
 	echo CHtml::link($lbl, array('/members/booksWritten', 'id'=>$model->id), array('id'=>'add-books-written'));
 	echo "</div>";
+
+	$this->renderPartial('memberFieldSummary', array(
+		'model'=>$model,
+		'fld'=>'articles'));
+
+	$this->renderPartial('memberFieldSummary', array(
+		'model'=>$model,
+		'fld'=>'research_works'));
+
+	$this->renderPartial('memberFieldSummary', array(
+		'model'=>$model,
+		'fld'=>'bodies_membership'));
+
+	$this->renderPartial('memberFieldSummary', array(
+		'model'=>$model,
+		'fld'=>'special_services'));
+
+	$this->renderPartial('memberFieldSummary', array(
+		'model'=>$model,
+		'fld'=>'interest_areas'));
 
 	$specs = array();
 	foreach($model->memberSpecs as $spec) {
