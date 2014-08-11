@@ -62,13 +62,17 @@ class Members extends CActiveRecord
 			array('fullname, dob, joining_dt, fathers_name, mothers_name', 'required'),
 			array('province_id, father_alive, mother_alive, mission, generalate, community,
 				updated_by, swiss_visit, holyland_visit, family_abroad, annual_checkups,
-				teach_lang, mother_tongue', 'numerical', 'integerOnly'=>true),
+				teach_lang, mother_tongue, num_brothers, num_sisters,
+				num_priests, num_nuns, place_family', 'numerical', 'integerOnly'=>true),
 			array('fullname, maiden_name, fathers_name, mothers_name', 'length', 'max'=>100),
 			array('photo, email, parish, edu_joining, edu_present', 'length', 'max'=>50),
 			array('mobile, home_phone, home_mobile', 'length', 'max'=>15),
 			array('diocese', 'length', 'max'=>30),
 			array('vestition_dt, first_commitment_dt, final_commitment_dt, address, health_data,
-				demise_dt, leaving_dt, updated_on', 'safe'),
+				demise_dt, leaving_dt, updated_on, joining_place, vestition_place,
+				baptism_dt, baptism_place, confirmation_dt, confirmation_place,
+				first_commitment_place, final_commitment_place, num_brothers, num_sisters,
+				num_priensts, num_nuns, birth_state, birth_district', 'safe'),
 			array('dob, vestition_dt, first_commitment_dt, final_commitment_dt, demise_dt,
 				leaving_dt, updated_on, made_final, father_alive, mother_alive',
 				'default', 'setOnEmpty' => true, 'value' => null),
@@ -104,6 +108,8 @@ class Members extends CActiveRecord
 			'spokenLangs' => array(self::HAS_MANY, 'SpokenLangs', 'member_id'),
 			'travels' => array(self::HAS_MANY, 'Travels', 'member_id'),
 			'multi_field_data' => array(self::HAS_MANY, 'MultiFieldData', 'member_id'),
+			'outside_services' => array(self::HAS_MANY, 'OutsideServices', 'member_id'),
+			'living_outside' => array(self::HAS_MANY, 'LivingOutside', 'member_id'),
 		);
 	}
 
@@ -123,6 +129,12 @@ class Members extends CActiveRecord
 				'mobile' => 'Mobile',
 				'email' => 'Email',
 				'dob' => 'Date of Birth',
+				'birth_state' => 'Birth State',
+				'birth_district' => 'Birth District',
+				'baptism_dt' => 'Baptism Date',
+				'baptism_place' => 'Baptism Place',
+				'confirmation_dt' => 'Confirmation Date',
+				'confirmation_place' => 'Confirmation Place',
 				'age' => 'Age',
 				'bday_from' => 'Birthday From',
 				'bday_to' => 'Birthday To',
@@ -136,6 +148,11 @@ class Members extends CActiveRecord
 				'mothers_name' => 'Mothers Name',
 				'father_alive' => 'Father Alive',
 				'mother_alive' => 'Mother Alive',
+				'num_brothers' => 'Number of Brothers',
+				'num_sisters' => 'Number of Sisters',
+				'place_family' => 'Place in Family',
+				'num_priests' => 'Number of Priests',
+				'num_nuns' => 'Number of Nuns',
 				'address' => 'Address',
 				'home_phone' => 'Home Phone',
 				'home_mobile' => 'Home Mobile',
@@ -152,10 +169,11 @@ class Members extends CActiveRecord
 				'current_designation' => 'Current Designation',
 				'updated_by' => 'Updated By',
 				'updated_on' => 'Updated On',
-				'swiss_visit' => 'Swiss Visit',
+				'swiss_visit' => 'Motherhouse Visit',
 				'holyland_visit' => 'Holyland Visit',
 				'family_abroad' => 'Family Abroad',
 				'annual_checkups' => 'Annual Checkups',
+				'living_outside' => 'Living Outside',
 				'health_data' => 'Health Data',
 			),
 			Yii::app()->params['memberLabels']
@@ -383,8 +401,24 @@ class Members extends CActiveRecord
 	}
 
 	public function getPresentCommunity() {
-		$mid = $this->id;
-		return CommunityTerms::model()->find("member_id = $mid AND year_to IS NULL");
+		return CommunityTerms::model()->find(array(
+			'condition' => "member_id = ".$this->id,
+			'order' => 'year_from DESC'
+		));
+	}
+
+	public function getLatestOutsideService() {
+		return OutsideServices::model()->find(array(
+			'condition' => "member_id = ".$this->id,
+			'order' => 'year_from DESC',
+		));
+	}
+
+	public function getLatestLivingOutside() {
+		return LivingOutside::model()->find(array(
+			'condition' => "member_id = ".$this->id,
+			'order' => 'year_from DESC',
+		));
 	}
 
 	public function setSpecialization($val) {
@@ -400,6 +434,14 @@ class Members extends CActiveRecord
 		return MultiFieldData::model()->findAllByAttributes(array(
 			'field_id' => $field->id,
 			'member_id' => $this->id
+		));
+	}
+
+	public function getCourseData($courseName) {
+		$course = AcademicCourseNames::get($courseName);
+		return AcademicCourses::model()->findAllByAttributes(array(
+			'course_id' => $course->id,
+			'member_id' => $this->id,
 		));
 	}
 

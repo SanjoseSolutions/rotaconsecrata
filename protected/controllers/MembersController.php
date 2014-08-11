@@ -37,10 +37,12 @@ class MembersController extends Controller
 					'renewals', 'renewalsSummary',
 					'siblings', 'siblingsSummary',
 					'communities', 'communitiesSummary',
+					'outsideServices', 'outsideServicesSummary',
 					'academicCourses', 'academicCoursesSummary',
 					'booksWritten', 'booksWrittenSummary',
 					'travels', 'travelsSummary',
 					'multiFieldData', 'multiFieldDataSummary',
+					'livingOutside', 'livingOutsideSummary',
 					'spiritualRenewalCourses', 'spiritualRenewalCoursesSummary',
 					'professionalRenewalCourses', 'professionalRenewalCoursesSummary'),
 				'users'=>array('@'),
@@ -339,19 +341,30 @@ class MembersController extends Controller
 		));
 	}
 
-	public function actionAcademicCourses($id)
+	public function actionAcademicCourses($id, $course)
 	{
 		$model=$this->loadModel($id);
+		$course = AcademicCourseNames::get($course);
+		$courses=AcademicCourses::model()->findAllByAttributes(array(
+			'member_id' => $id,
+			'course_id' => $course->id,
+		));
 		$this->renderPartial('academicCourses', array(
 			'model' => $model,
+			'courses' => $courses,
+			'course' => $course,
 		));
 	}
 
-	public function actionAcademicCoursesSummary($id)
+	public function actionAcademicCoursesSummary($id, $course)
 	{
-		$model=$this->loadModel($id);
+		$courses=AcademicCourses::model()->findAllByAttributes(array(
+			'member_id' => $id,
+			'course_id' => AcademicCourseNames::getId($course),
+		));
 		$this->renderPartial('/academicCourses/summary', array(
-			'academicCourses' => $model->academicCourses,
+			'courses' => $courses,
+			'coures' => $course,
 		));
 	}
 
@@ -369,6 +382,40 @@ class MembersController extends Controller
 		$this->renderPartial('/communityTerms/summary', array(
 			'model' => $model,
 			'commTerms' => $model->communityTerms,
+		));
+	}
+
+	public function actionOutsideServices($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('outsideServices', array(
+			'model' => $model
+		));
+	}
+
+	public function actionOutsideServicesSummary($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('/outsideService/summary', array(
+			'model' => $model,
+			'outsideServices' => $model->outside_services,
+		));
+	}
+
+	public function actionLivingOutside($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('livingOutside', array(
+			'model' => $model
+		));
+	}
+
+	public function actionLivingOutsideSummary($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('/livingOutside/summary', array(
+			'model' => $model,
+			'livingOutside' => $model->living_outside,
 		));
 	}
 

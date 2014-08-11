@@ -1,14 +1,14 @@
 <?php
-	$courses = array();
+	$a_courses = array();
 	$i = 0;
 	$xtra = "";
-	foreach($academicCourses as $course) {
+	foreach($courses as $course) {
 		if (++$i > 2) {
-			$xtra = " +" . (count($academicCourses) - $i + 1);
+			$xtra = " +" . (count($courses) - $i + 1);
 			break;
 		}
-		array_push($courses, $course->name);
+		array_push($a_courses, $course->name);
 	}
-	$coursestr = implode(", ", $courses) . $xtra;
+	$coursestr = implode(", ", $a_courses) . $xtra;
 	echo $coursestr;
 ?>

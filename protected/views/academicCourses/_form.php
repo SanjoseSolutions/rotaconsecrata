@@ -5,7 +5,7 @@ $action = $model->isNewRecord ? array('/academicCourses/create') : array('/acade
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'academicCourses-form',
+	'id'=>$course->name.'Courses-form',
 	'action' => $action,
 	'enableAjaxValidation'=>false,
 )); ?>
@@ -65,6 +65,7 @@ $action = $model->isNewRecord ? array('/academicCourses/create') : array('/acade
 	<span>
 	<?php
 		echo $form->hiddenField($model, 'member_id');
+		echo $form->hiddenField($model, 'course_id');
 		if (!$model->isNewRecord) {
 			echo $form->hiddenField($model, 'id', array('value'=>$model->id));
 		}

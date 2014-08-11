@@ -131,6 +131,119 @@
 
 	<div class="row">
 	<span class="leftHalf">
+		<?php echo $form->labelEx($model,'birth_state'); ?>
+		<?php echo $form->textField($model,'birth_state',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('birth_state'),
+			'size'=>25,
+			'maxlength'=>50
+		)); ?>
+		<?php echo $form->error($model,'birth_state'); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->labelEx($model,'birth_district'); ?>
+		<?php echo $form->textField($model,'birth_district',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('birth_district'),
+			'size'=>25,
+			'maxlength'=>50
+		)); ?>
+		<?php echo $form->error($model,'birth_district'); ?>
+	</span>
+	</div>
+
+	<div class="row">
+	<span class="left13">
+		<?php echo $form->labelEx($model,'place_family'); ?>
+		<?php echo $form->textField($model,'place_family',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('place_family'),
+			'size'=>10,
+			'maxlength'=>10
+		)); ?>
+		<?php echo $form->error($model,'place_family'); ?>
+	</span>
+	<span class="right13">
+		<?php echo $form->labelEx($model,'num_priests'); ?>
+		<?php echo $form->textField($model,'num_priests',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('num_priests'),
+			'size'=>10,
+			'maxlength'=>10
+		)); ?>
+		<?php echo $form->error($model,'num_priests'); ?>
+	</span>
+	<span class="right13">
+		<?php echo $form->labelEx($model,'num_nuns'); ?>
+		<?php echo $form->textField($model,'num_nuns',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('num_nuns'),
+			'size'=>10,
+			'maxlength'=>10
+		)); ?>
+		<?php echo $form->error($model,'num_nuns'); ?>
+	</span>
+	</div>
+
+	<div class="row">
+	<span class="leftHalf">
+		<?php echo $form->labelEx($model,'baptism_dt'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'baptism_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
+		<?php echo $form->error($model,'baptism_dt'); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->labelEx($model,'baptism_place'); ?>
+		<?php echo $form->textField($model,'baptism_place',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('baptism_place'),
+			'size'=>30,
+			'maxlength'=>100
+		)); ?>
+		<?php echo $form->error($model,'baptism_place'); ?>
+	</span>
+	</div>
+
+	<div class="row">
+	<span class="leftHalf">
+		<?php echo $form->labelEx($model,'confirmation_dt'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'confirmation_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
+		<?php echo $form->error($model,'confirmation_dt'); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->labelEx($model,'confirmation_place'); ?>
+		<?php echo $form->textField($model,'confirmation_place',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('confirmation_place'),
+			'size'=>30,
+			'maxlength'=>100
+		)); ?>
+		<?php echo $form->error($model,'confirmation_place'); ?>
+	</span>
+	</div>
+
+	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'joining_dt'); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			'model' => $model,
@@ -150,6 +263,18 @@
 		<?php echo $form->error($model,'joining_dt'); ?>
 	</span>
 	<span class="rightHalf">
+		<?php echo $form->labelEx($model,'joining_place'); ?>
+		<?php echo $form->textField($model,'joining_place',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('joining_place'),
+			'size'=>30,
+			'maxlength'=>100
+		)); ?>
+		<?php echo $form->error($model,'joining_place'); ?>
+	</span>
+	</div>
+
+	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'vestition_dt'); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			'model' => $model,
@@ -167,6 +292,15 @@
 			),
 		)); ?>
 		<?php echo $form->error($model,'vestition_dt'); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->labelEx($model,'vestition_place'); ?>
+		<?php echo $form->textField($model,'vestition_place',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('vestition_place'),
+			'size'=>30,
+			'maxlength'=>100
+		)); ?>
+		<?php echo $form->error($model,'vestition_place'); ?>
 	</span>
 	</div>
 
@@ -191,6 +325,18 @@
 		<?php echo $form->error($model,'first_commitment_dt'); ?>
 	</span>
 	<span class="rightHalf">
+		<?php echo $form->labelEx($model,'first_commitment_place'); ?>
+		<?php echo $form->textField($model,'first_commitment_place',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('first_commitment_place'),
+			'size'=>30,
+			'maxlength'=>100
+		)); ?>
+		<?php echo $form->error($model,'first_commitment_place'); ?>
+	</span>
+	</div>
+
+	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'final_commitment_dt'); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			'model' => $model,
@@ -208,6 +354,15 @@
 			),
 		)); ?>
 		<?php echo $form->error($model,'final_commitment_dt'); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->labelEx($model,'final_commitment_place'); ?>
+		<?php echo $form->textField($model,'final_commitment_place',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('final_commitment_place'),
+			'size'=>30,
+			'maxlength'=>100
+		)); ?>
+		<?php echo $form->error($model,'final_commitment_place'); ?>
 	</span>
 	</div>
 

@@ -1,6 +1,6 @@
 <?php
 
-class AcademicCoursesController extends Controller
+class LivingOutsideController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -62,16 +62,15 @@ class AcademicCoursesController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new AcademicCourses;
+		$model=new LivingOutside;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['AcademicCourses']))
+		if(isset($_POST['LivingOutside']))
 		{
-			$model->attributes=$_POST['AcademicCourses'];
+			$model->attributes=$_POST['LivingOutside'];
 			if($model->save()) {
-				Yii::trace("Create successful for id " . $model->id, "application.controllers.AcademicCoursesController");
 #				$this->redirect(array('view','id'=>$model->id));
 				return;
 			}
@@ -94,17 +93,15 @@ class AcademicCoursesController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['AcademicCourses']))
+		if(isset($_POST['LivingOutside']))
 		{
-			$model->attributes=$_POST['AcademicCourses'];
-			if($model->save()) {
-				return;
-			}
+			$model->attributes=$_POST['LivingOutside'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->renderPartial('_form',array(
 			'model'=>$model,
-			'course'=>$model->course,
 		));
 	}
 
@@ -119,8 +116,7 @@ class AcademicCoursesController extends Controller
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			Yii::trace("Delete successful for id $id", "application.controllers.AcademicCoursesController");
-#			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
 	/**
@@ -128,7 +124,7 @@ class AcademicCoursesController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('AcademicCourses');
+		$dataProvider=new CActiveDataProvider('LivingOutside');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -139,10 +135,10 @@ class AcademicCoursesController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new AcademicCourses('search');
+		$model=new LivingOutside('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['AcademicCourses']))
-			$model->attributes=$_GET['AcademicCourses'];
+		if(isset($_GET['LivingOutside']))
+			$model->attributes=$_GET['LivingOutside'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -153,12 +149,12 @@ class AcademicCoursesController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return AcademicCourses the loaded model
+	 * @return LivingOutside the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=AcademicCourses::model()->findByPk($id);
+		$model=LivingOutside::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -166,11 +162,11 @@ class AcademicCoursesController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param AcademicCourses $model the model to be validated
+	 * @param LivingOutside $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='education-courses-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='living-outside-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

@@ -1,10 +1,9 @@
-<div id="academicCourses-view">
+<div id="<?php echo $course->name ?>Courses-view">
 <?php
-$courses = $model->academicCourses;
-echo "<div id='course-list'>";
+echo "<div id='".$course->name."course-list'>";
 if ($courses) {
 	$provider = new CArrayDataProvider($courses, array(
-		'id'=>'academicCourses',
+		'id'=>$course->name.'Courses',
 		'sort'=>array(
 			'defaultOrder' => 'certificate_dt ASC',
 			'attributes' => array(
@@ -17,7 +16,7 @@ if ($courses) {
 	));
 	$label = $courses[0]->attributeLabels();
 	$this->widget('zii.widgets.grid.CGridView', array(
-		'id'=>'academicCourses-grid',
+		'id'=>$course->name.'Courses-grid',
 		'dataProvider'=>$provider,
 		'columns'=>array(
 			array(
@@ -64,11 +63,13 @@ if ($courses) {
 	));
 }
 echo "</div>";
-echo "<div id='academicCourses-edit'>";
-$course = new AcademicCourses;
-$course->member_id = $model->id;
+echo "<div id='".$course->name."Courses-edit'>";
+$data = new AcademicCourses;
+$data->member_id = $model->id;
+$data->course_id = $course->id;
 $this->renderPartial("/academicCourses/_form", array(
-	'model' => $course,
+	'model' => $data,
+	'course' => $course,
 ));
 echo "</div>";
 ?>

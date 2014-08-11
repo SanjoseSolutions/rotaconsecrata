@@ -25,9 +25,47 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-spir
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-professionalRenewalCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-travels.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-membersMultiData.js');
-$flds = array("awards", "articles", "research_works", "bodies_membership", "special_services", "interest_areas");
+$mul_flds = array("awards", "articles", "research_works", "bodies_membership", "special_services", "interest_areas");
 $models = array();
-for($i=0; $i<count($flds); ++$i) array_push($models, $model);
+$mul_fld_script = "";
+foreach($mul_flds as $fld) {
+	$mul_fld_script .= "
+$('#add-$fld').fancybox( {
+	'onComplete': function() {
+		set_multi_field_data_button_click('$fld');
+		set_multi_field_data_form_submit('$fld');
+	},
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'multiFieldDataSummary', 'id'=>$model->id, 'fieldName'=>$fld
+		)) . "', function(data) {
+			$('#$fld-summary .val').html(data);
+		} );
+	}
+} );
+";
+}
+$courses_script = "";
+foreach(array('academic', 'professional', 'technical', 'other', 'special_skills') as $course) {
+	$courses_script .= "
+$('#add-$course-courses').fancybox( {
+	'onComplete': function() {
+		console.log('completed: $course');
+		set_academic_course_button_click('$course');
+		set_academic_course_form_submit('$course');
+	},
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'academicCoursesSummary',
+			'id' => $model->id,
+			'course' => $course
+		)) . "', function(data) {
+			$('#$course-courses-summary .val').html(data);
+		} );
+	}
+} );
+";
+}
 Yii::app()->clientScript->registerScript('addSibs', "
 $('#add-renewals').fancybox( {
 	'onComplete': function() {
@@ -72,25 +110,40 @@ $('#add-comms').fancybox( {
 		} );
 	}
 } );
+$('#add-outside-services').fancybox( {
+        'onComplete': function() {
+                set_os_form_submit();
+                set_os_button_click();
+        },
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'/members/outsideServicesSummary',
+			'id' => $model->id
+		)) . "', function(data) {
+			$('#outsideServices-summary .val').html(data);
+		} );
+	}
+} );
+$('#add-living-outside').fancybox( {
+        'onComplete': function() {
+                set_lo_form_submit();
+                set_lo_button_click();
+        },
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'/members/livingOutsideSummary',
+			'id' => $model->id
+		)) . "', function(data) {
+			$('#livingOutside-summary .val').html(data);
+		} );
+	}
+} );
 function set_comm_autocomplete()
 {
 	jQuery('#CommunityTerms_communityName').autocomplete( {
 		'source': " . json_encode(Communities::getAll()) . "
 	} );
 }
-$('#add-academic-courses').fancybox( {
-	'onComplete': function() {
-		set_academic_course_button_click();
-		set_academic_course_form_submit();
-	},
-	'onClosed': function() {
-		$.get('" . CHtml::normalizeUrl(array(
-			'academicCoursesSummary', 'id'=>$model->id
-		)) . "', function(data) {
-			$('#academic-courses-summary .val').html(data);
-		} );
-	}
-} );
 $('#add-books-written').fancybox( {
 	'onComplete': function() {
 		set_book_written_button_click();
@@ -143,23 +196,11 @@ $('#add-professional-courses').fancybox( {
 		} );
 	}
 } );
-".
-implode("\n", array_map(function($fld, $model) {
-return "$('#add-$fld').fancybox( {
-	'onComplete': function() {
-		set_multi_field_data_button_click('$fld');
-		set_multi_field_data_form_submit('$fld');
-	},
-	'onClosed': function() {
-		$.get('" . CHtml::normalizeUrl(array(
-			'multiFieldDataSummary', 'id'=>$model->id, 'fieldName'=>$fld
-		)) . "', function(data) {
-			$('#$fld-summary .val').html(data);
-		} );
-	}
-} );";
-}, $flds, $models))
-.file_get_contents(dirname(__FILE__).'/../../../js/add-communities.js'));
+".$mul_fld_script
+.$courses_script
+.file_get_contents(dirname(__FILE__).'/../../../js/add-communities.js')
+.file_get_contents(dirname(__FILE__).'/../../../js/add-outsideServices.js')
+.file_get_contents(dirname(__FILE__).'/../../../js/add-livingOutside.js'));
 
 /* @var $this MembersController */
 /* @var $model Members */
@@ -230,15 +271,54 @@ $this->menu=array(
 
 	echo "</div>";
 
+	if ($model->baptism_dt) {
+		echo '<div class="life-event fields">';
+		echo CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('baptism_dt')). ': ', false);
+		echo "<span class='date val'>" . $model->baptism_dt . "</span> ";
+
+		if ($model->baptism_place) {
+			echo ', '.CHtml::label($model->getAttributeLabel('baptism_place').': ', false);
+			echo CHtml::tag('span', array('class' => 'date val'), $model->baptism_place);
+		}
+
+		echo "</div>";
+	}
+
+	if ($model->confirmation_dt) {
+		echo '<div class="life-event fields">';
+		echo CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('confirmation_dt')). ': ', false);
+		echo "<span class='date val'>" . $model->confirmation_dt . "</span>";
+
+		if ($model->confirmation_place) {
+			echo ', '.CHtml::label($model->getAttributeLabel('confirmation_place').': ', false);
+			echo CHtml::tag('span', array('class' => 'date val'), $model->confirmation_place);
+		}
+
+		echo "</div>";
+	}
+
 	echo '<div class="joining fields">';
 	echo CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('joining_dt')). ': ', false);
-	echo CHtml::tag('span', array('class'=>'date val'), $model->joining_dt) . '&nbsp;&nbsp;';
+	echo CHtml::tag('span', array('class'=>'date val'), $model->joining_dt);
 
+	if ($model->joining_place) {
+		echo ',&nbsp;&nbsp;'.CHtml::label($model->getAttributeLabel('joining_place'). ': ', false);
+		echo CHtml::tag('span', array('class'=>'val'), $model->joining_place);
+	}
+
+	echo "</div>";
+
+	echo '<div class="joining fields">';
 	if ($model->vestition_dt) {
 		echo CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('vestition_dt')). ': ', false);
 		echo CHtml::tag('span', array('class'=>'date val'), $model->vestition_dt);
-	}
 
+		if ($model->vestition_place) {
+			echo ',&nbsp;&nbsp;'.CHtml::label($model->getAttributeLabel('vestition_place'). ': ', false);
+			echo CHtml::tag('span', array('class'=>'val'), $model->vestition_place);
+		}
+
+	}
 	echo "</div>";
 
 	if ($model->first_commitment_dt) {
@@ -246,9 +326,22 @@ $this->menu=array(
 		echo CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('first_commitment_dt')). ': ', false);
 		echo CHtml::tag('span', array('class'=>'date val'), $model->first_commitment_dt);
 
-		if ($model->final_commitment_dt) {
-			echo ',&nbsp;&nbsp;'.CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('final_commitment_dt')). ': ', false);
-			echo CHtml::tag('span', array('class'=>'date val'), $model->final_commitment_dt);
+		if ($model->first_commitment_place) {
+			echo ',&nbsp;&nbsp;'.CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('first_commitment_place')). ': ', false);
+			echo CHtml::tag('span', array('class'=>'date val'), $model->first_commitment_place);
+		}
+
+		echo "</div>";
+	}
+
+	if ($model->final_commitment_dt) {
+		echo '<div class="commitment fields">';
+		echo CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('final_commitment_dt')). ': ', false);
+		echo CHtml::tag('span', array('class'=>'date val'), $model->final_commitment_dt);
+
+		if ($model->final_commitment_place) {
+			echo ',&nbsp;&nbsp;'.CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('final_commitment_place')). ': ', false);
+			echo CHtml::tag('span', array('class'=>'date val'), $model->final_commitment_place);
 		}
 
 		echo "</div>";
@@ -324,6 +417,21 @@ $this->menu=array(
 		echo CHtml::link("Edit", array('/members/siblings', 'id' => $model->id), array('id' => 'add-sibs'));
 	} else {
 		echo CHtml::link("Add Siblings", array('/members/siblings', 'id' => $model->id), array('id' => 'add-sibs'));
+	}
+	echo "</div>";
+
+	echo "<div class='fields'>";
+	if ($model->place_family) {
+		echo CHtml::label($model->getAttributeLabel('place_family') . ': ', false);
+		echo CHtml::tag('span', array('class'=>'val'), $model->place_family);
+	}
+	if ($model->num_priests) {
+		echo ', '.CHtml::label($model->getAttributeLabel('num_priests') . ': ', false);
+		echo CHtml::tag('span', array('class'=>'val'), $model->num_priests);
+	}
+	if ($model->num_nuns) {
+		echo ', '.CHtml::label($model->getAttributeLabel('num_nuns') . ': ', false);
+		echo CHtml::tag('span', array('class'=>'val'), $model->num_nuns);
 	}
 	echo "</div>";
 
@@ -421,18 +529,41 @@ $this->menu=array(
 	}
 	echo "</div>";
 
-	echo '<div id="academic-courses-summary" class="fields">';
-	if ($model->academicCourses) {
-		echo "<label>Academic Courses: </label>";
+	echo '<div id="outsideServices-summary" class="fields">';
+	if ($model->outside_services) {
+		echo "<label>Outside Services: </label>";
 		echo "<span class='val'>";
-		$this->renderPartial('/academicCourses/summary', array('academicCourses' => $model->academicCourses));
+		$this->renderPartial('/outsideService/summary', array(
+			'model' => $model,
+			'outsideServices' => $model->outside_services
+		));
 		echo "</span> ";
 		$lbl = "Edit";
 	} else {
-		$lbl = "Add Academic Courses";
+		$lbl = "Add Outside Services";
 	}
-	echo CHtml::link($lbl, array('/members/academicCourses', 'id'=>$model->id), array('id'=>'add-academic-courses'));
+	echo CHtml::link($lbl, array('/members/outsideServices', 'id' => $model->id), array('id' => 'add-outside-services'));
 	echo "</div>";
+
+	$this->renderPartial('academicCourseSummary', array(
+		'model' => $model,
+		'course' => 'academic'));
+
+	$this->renderPartial('academicCourseSummary', array(
+		'model' => $model,
+		'course' => 'professional'));
+
+	$this->renderPartial('academicCourseSummary', array(
+		'model' => $model,
+		'course' => 'technical'));
+
+	$this->renderPartial('academicCourseSummary', array(
+		'model' => $model,
+		'course' => 'other'));
+
+	$this->renderPartial('academicCourseSummary', array(
+		'model' => $model,
+		'course' => 'special_skills'));
 
 	echo "<div id='renewal-courses-spiritual-summary' class='fields'>";
 	if ($model->renewalCoursesSpiritual) {
@@ -484,6 +615,22 @@ $this->menu=array(
 		$lbl = "Add Travels";
 	}
 	echo CHtml::link($lbl, array('/members/travels', 'id'=>$model->id), array('id'=>'add-travels'));
+	echo "</div>";
+
+	echo '<div id="livingOutside-summary" class="fields">';
+	if ($model->living_outside) {
+		echo CHtml::label($model->getAttributeLabel('living_outside').': ', false);
+		echo "<span class='val'>";
+		$this->renderPartial('/livingOutside/summary', array(
+			'model' => $model,
+			'livingOutside' => $model->living_outside
+		));
+		echo "</span> ";
+		$lbl = "Edit";
+	} else {
+		$lbl = "Add Living Outside";
+	}
+	echo CHtml::link($lbl, array('/members/livingOutside', 'id' => $model->id), array('id' => 'add-living-outside'));
 	echo "</div>";
 
 	echo "</div><!-- end of rightSection -->";
