@@ -43,6 +43,7 @@ class MembersController extends Controller
 					'travels', 'travelsSummary',
 					'multiFieldData', 'multiFieldDataSummary',
 					'livingOutside', 'livingOutsideSummary',
+					'separations', 'separationsSummary',
 					'spiritualRenewalCourses', 'spiritualRenewalCoursesSummary',
 					'professionalRenewalCourses', 'professionalRenewalCoursesSummary'),
 				'users'=>array('@'),
@@ -416,6 +417,23 @@ class MembersController extends Controller
 		$this->renderPartial('/livingOutside/summary', array(
 			'model' => $model,
 			'livingOutside' => $model->living_outside,
+		));
+	}
+
+	public function actionSeparations($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('separations', array(
+			'model' => $model
+		));
+	}
+
+	public function actionSeparationsSummary($id)
+	{
+		$model=$this->loadModel($id);
+		$this->renderPartial('/separation/summary', array(
+			'model' => $model,
+			'separations' => $model->separations,
 		));
 	}
 

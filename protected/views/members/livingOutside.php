@@ -32,7 +32,7 @@ if ($comms = $model->living_outside) {
 				'header' => $model->getAttributeLabel('institution'),
 			),
 			array(
-				'name' => 'designation',
+				'name' => 'purpose',
 				'header' => $model->getAttributeLabel('purpose'),
 			),
 			array(

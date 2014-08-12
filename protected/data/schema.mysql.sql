@@ -245,3 +245,14 @@ CREATE TABLE `living_outside` (
   CONSTRAINT `member_living_outside` FOREIGN KEY (`member_id`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE separations(
+	id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	year_from INTEGER,
+	year_to INTEGER,
+	nature VARCHAR(100),
+	member_id INTEGER NOT NULL,
+	CONSTRAINT member_separations FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+);
+

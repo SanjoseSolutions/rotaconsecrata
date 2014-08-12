@@ -196,11 +196,26 @@ $('#add-professional-courses').fancybox( {
 		} );
 	}
 } );
+$('#add-separations').fancybox( {
+        'onComplete': function() {
+                set_separations_form_submit();
+                set_separations_button_click();
+        },
+	'onClosed': function() {
+		$.get('" . CHtml::normalizeUrl(array(
+			'/members/separationsSummary',
+			'id' => $model->id
+		)) . "', function(data) {
+			$('#separations-summary .val').html(data);
+		} );
+	}
+} );
 ".$mul_fld_script
 .$courses_script
 .file_get_contents(dirname(__FILE__).'/../../../js/add-communities.js')
 .file_get_contents(dirname(__FILE__).'/../../../js/add-outsideServices.js')
-.file_get_contents(dirname(__FILE__).'/../../../js/add-livingOutside.js'));
+.file_get_contents(dirname(__FILE__).'/../../../js/add-livingOutside.js')
+.file_get_contents(dirname(__FILE__).'/../../../js/add-separations.js'));
 
 /* @var $this MembersController */
 /* @var $model Members */
@@ -631,6 +646,22 @@ $this->menu=array(
 		$lbl = "Add Living Outside";
 	}
 	echo CHtml::link($lbl, array('/members/livingOutside', 'id' => $model->id), array('id' => 'add-living-outside'));
+	echo "</div>";
+
+	echo '<div id="separations-summary" class="fields">';
+	if ($model->separations) {
+		echo CHtml::label($model->getAttributeLabel('separations').': ', false);
+		echo "<span class='val'>";
+		$this->renderPartial('/separation/summary', array(
+			'model' => $model,
+			'separations' => $model->separations
+		));
+		echo "</span> ";
+		$lbl = "Edit";
+	} else {
+		$lbl = "Add " . $model->getAttributeLabel('separations');
+	}
+	echo CHtml::link($lbl, array('/members/separations', 'id' => $model->id), array('id' => 'add-separations'));
 	echo "</div>";
 
 	echo "</div><!-- end of rightSection -->";

@@ -110,6 +110,7 @@ class Members extends CActiveRecord
 			'multi_field_data' => array(self::HAS_MANY, 'MultiFieldData', 'member_id'),
 			'outside_services' => array(self::HAS_MANY, 'OutsideServices', 'member_id'),
 			'living_outside' => array(self::HAS_MANY, 'LivingOutside', 'member_id'),
+			'separations' => array(self::HAS_MANY, 'Separations', 'member_id'),
 		);
 	}
 
@@ -175,6 +176,7 @@ class Members extends CActiveRecord
 				'annual_checkups' => 'Annual Checkups',
 				'living_outside' => 'Living Outside',
 				'health_data' => 'Health Data',
+				'separations' => 'Separations',
 			),
 			Yii::app()->params['memberLabels']
 		);
@@ -416,6 +418,13 @@ class Members extends CActiveRecord
 
 	public function getLatestLivingOutside() {
 		return LivingOutside::model()->find(array(
+			'condition' => "member_id = ".$this->id,
+			'order' => 'year_from DESC',
+		));
+	}
+
+	public function getLatestSeparation() {
+		return Separations::model()->find(array(
 			'condition' => "member_id = ".$this->id,
 			'order' => 'year_from DESC',
 		));
