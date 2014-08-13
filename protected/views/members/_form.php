@@ -30,11 +30,11 @@
 	<span class="right14">
 	<?php 
 		$u = Yii::app()->user;
-		if ($u->checkAccess('ProvAdm') and !$u->checkAccess('Admin')) {
-			echo $form->hiddenField($model, 'province_id', array('value' => $u->profile->member->province_id));
-		} else {
+		if ($u->checkAccess('Admin')) {
 			echo $form->labelEx($model, 'province_id');
 			echo $form->dropDownList($model, 'province_id', Provinces::getAll(), array('prompt' => '-- Select --'));
+		} else {
+			echo $form->hiddenField($model, 'province_id', array('value' => $u->profile->member->province_id));
 		}
 	?>
 	</span>

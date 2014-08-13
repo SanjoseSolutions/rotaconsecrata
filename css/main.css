@@ -292,6 +292,11 @@ div.title {
 	color: rgb(10, 30, 50);
 }
 
+.fields a {
+	font-size: 115%;
+	font-family: Verdana;
+}
+
 span.mobile span.val {
 	font-family: 'Times New Roman', serif;
 	font-size: 120%;

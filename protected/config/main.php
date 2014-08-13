@@ -49,6 +49,10 @@ return array(
 			'itemChildTable' => 'authitemchild',
 			'rightsTable' => 'rights',
 		),
+		'email' => array(
+			'class' => 'application.extensions.email.Email',
+			'delivery' => 'php', # debug for debugging
+		),
 		// uncomment the following to enable URLs in path-format
 		/*
 		'urlManager'=>array(
@@ -98,7 +102,7 @@ return array(
 	'params'=>CMap::mergeArray(
 		array(
 			// this is used in contact page
-			'adminEmail'=>'webmaster@example.com',
+			'adminEmail'=>'admin@sanjosesolutions.in',
 			'logoPath'=>'/images/rc-logo1.png',
 		),
 		require(dirname(__FILE__).DIRECTORY_SEPARATOR.'params.php')

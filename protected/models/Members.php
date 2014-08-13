@@ -74,7 +74,8 @@ class Members extends CActiveRecord
 				first_commitment_place, final_commitment_place, num_brothers, num_sisters,
 				num_priensts, num_nuns, birth_state, birth_district', 'safe'),
 			array('dob, vestition_dt, first_commitment_dt, final_commitment_dt, demise_dt,
-				leaving_dt, updated_on, made_final, father_alive, mother_alive',
+				leaving_dt, updated_on, made_final, father_alive, mother_alive
+				baptism_dt, confirmation_dt',
 				'default', 'setOnEmpty' => true, 'value' => null),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -111,6 +112,7 @@ class Members extends CActiveRecord
 			'outside_services' => array(self::HAS_MANY, 'OutsideServices', 'member_id'),
 			'living_outside' => array(self::HAS_MANY, 'LivingOutside', 'member_id'),
 			'separations' => array(self::HAS_MANY, 'Separations', 'member_id'),
+			'user' => array(self::HAS_ONE, 'Users', 'member_id'),
 		);
 	}
 

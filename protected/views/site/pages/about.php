@@ -16,10 +16,10 @@ to administrators with password protection. Installation, Support and Training
 services are available on request. For more information, contact: </p>
 
 <pre>
-Terence Monteiro,
 Sanjose Solutions,
 "Terroy", 67, 10th Cross,
 Lingarajpuram, Bangalore - 84.
+Phone: +91 80 2580 5730
 Mobile: +91 96633 13728
-Email: terence@sanjosesolutions.in
+Email: support@sanjosesolutions.in
 </pre>

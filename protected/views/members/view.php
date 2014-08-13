@@ -226,11 +226,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Members', 'url'=>array('index')),
-	array('label'=>'Create Member', 'url'=>array('create')),
+	array('label'=>'List Members', 'url'=>array('index'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
+	array('label'=>'Create Member', 'url'=>array('create'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
 	array('label'=>'Update Member', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Member', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Members', 'url'=>array('admin')),
+	array('label'=>'Delete Member', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
+	array('label'=>'Manage Members', 'url'=>array('admin'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
 );
 
 ?>
@@ -254,7 +254,33 @@ $this->menu=array(
 		$alt = $model->fullname . "'s photo";
 		echo CHtml::image($src, $alt, array('width' => $width, 'height' => $height));
 		echo '<figcaption>';
-		echo CHtml::link($label, array('photo', 'id'=>$model->id));
+		echo CHtml::link($label, array('photo', 'id'=>$model->id))."<br>";
+		$lbl = null;
+		if (!isset($model->user)) {
+			if (isset($model->email)) {
+				$lbl = "Grant Access";
+				echo CHtml::link($lbl, array('authorize', 'id'=>$model->id));
+			}
+		} else {
+			$user = $model->user;
+			$roles = array_map(function($role) {
+				return $role->name;
+			}, Rights::getAssignedRoles($user->id));
+			$lbl = "";
+			if ($user->superuser) {
+				$lbl = "Superuser ";
+			}
+			if (in_array('Admin', $roles)) {
+				$lbl .= "Generate Admin";
+			} elseif (in_array('ProvAdm', $roles)) {
+				$lbl .= "Provincial Admin";
+			} else {
+				$lbl .= "Member";
+			}
+			echo CHtml::link($lbl, array('/user/access', 'id'=>$user->id));
+		}
+		if (isset($lbl)) {
+		}
 		echo '</figcaption>';
 	?>
 </figure>
@@ -368,7 +394,7 @@ $this->menu=array(
 		echo "<span class='val'>";
 		$this->renderPartial('/renewals/summary', array('renewals' => $model->renewals));
 		echo "</span> ";
-		$lbl = "Edit";
+		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
 	} else {
 		$lbl = "Add Renewals";
 	}
@@ -429,10 +455,11 @@ $this->menu=array(
 		echo "<span class='val'>";
 		$this->renderPartial('/siblings/summary', array('siblings' => $model->siblings));
 		echo "</span> ";
-		echo CHtml::link("Edit", array('/members/siblings', 'id' => $model->id), array('id' => 'add-sibs'));
+		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
 	} else {
-		echo CHtml::link("Add Siblings", array('/members/siblings', 'id' => $model->id), array('id' => 'add-sibs'));
+		$lbl = "Add Siblings";
 	}
+	echo CHtml::link($lbl, array('/members/siblings', 'id' => $model->id), array('id' => 'add-sibs'));
 	echo "</div>";
 
 	echo "<div class='fields'>";
@@ -489,7 +516,7 @@ $this->menu=array(
 		echo CHtml::openTag('span', array('class'=>'val'));
 		$this->renderPartial('/booksWritten/summary', array('booksWritten' => $model->booksWritten));
 		echo CHtml::closeTag('span') . ' ';
-		$lbl = "Edit";
+		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
 	} else {
 		$lbl = "Add Books Written";
 	}
@@ -536,12 +563,11 @@ $this->menu=array(
 			'commTerms' => $model->communityTerms
 		));
 		echo "</span> ";
-		$lbl = "Edit";
-		echo CHtml::link($lbl, array('/members/communities', 'id' => $model->id), array('id' => 'add-comms'));
+		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
 	} else {
 		$lbl = "Add Communities";
-		echo CHtml::link($lbl, array('/members/communities', 'id' => $model->id), array('id' => 'add-comms'));
 	}
+	echo CHtml::link($lbl, array('/members/communities', 'id' => $model->id), array('id' => 'add-comms'));
 	echo "</div>";
 
 	echo '<div id="outsideServices-summary" class="fields">';
@@ -553,7 +579,7 @@ $this->menu=array(
 			'outsideServices' => $model->outside_services
 		));
 		echo "</span> ";
-		$lbl = "Edit";
+		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
 	} else {
 		$lbl = "Add Outside Services";
 	}
@@ -588,7 +614,7 @@ $this->menu=array(
 			'spiritualCourses' => $model->renewalCoursesSpiritual
 		));
 		echo "</span> ";
-		$lbl = "Edit";
+		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
 	} else {
 		$lbl = "Add Spiritual Renewal Courses";
 	}
@@ -608,7 +634,7 @@ $this->menu=array(
 			'professionalCourses' => $model->renewalCoursesProfessional
 		));
 		echo "</span> ";
-		$lbl = "Edit";
+		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
 	} else {
 		$lbl = "Add Professional Renewal Courses";
 	}
@@ -625,7 +651,7 @@ $this->menu=array(
 		echo "<span class='val'>";
 		$this->renderPartial('/travels/summary', array('travels' => $model->travels));
 		echo "</span> ";
-		$lbl = "Edit";
+		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
 	} else {
 		$lbl = "Add Travels";
 	}
@@ -641,7 +667,7 @@ $this->menu=array(
 			'livingOutside' => $model->living_outside
 		));
 		echo "</span> ";
-		$lbl = "Edit";
+		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
 	} else {
 		$lbl = "Add Living Outside";
 	}
@@ -657,7 +683,7 @@ $this->menu=array(
 			'separations' => $model->separations
 		));
 		echo "</span> ";
-		$lbl = "Edit";
+		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
 	} else {
 		$lbl = "Add " . $model->getAttributeLabel('separations');
 	}

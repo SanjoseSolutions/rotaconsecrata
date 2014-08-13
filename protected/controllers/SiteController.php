@@ -45,6 +45,9 @@ class SiteController extends Controller
 				$this->render('index', array(
 					'provider'=>$provider
 				));
+			} else {
+				$mid = $u->profile->member_id;
+				$this->redirect(array('/members/view', 'id'=>$mid));
 			}
 		}
 	}

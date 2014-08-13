@@ -102,10 +102,20 @@ class Users extends CActiveRecord
         public function beforeSave()
         {
                 if(parent::beforeSave()) {
-                        $this->password = crypt($this->password, CryptoHelper::blowfishSalt());
+			if ('NO-PASSWD' != $this->password) {
+				$this->password = crypt($this->password, CryptoHelper::blowfishSalt());
+			}
                         return true;
                 } else {
                         return false;
                 }
         }
+
+	public function afterFind()
+	{
+		if ('NO-PASSWD' == $this->password) {
+			$this->password = null;
+		}
+		return parent::afterFind();
+	}
 }

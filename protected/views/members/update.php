@@ -9,10 +9,10 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Members', 'url'=>array('index')),
-	array('label'=>'Create Member', 'url'=>array('create')),
+	array('label'=>'List Members', 'url'=>array('index'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
+	array('label'=>'Create Member', 'url'=>array('create'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
 	array('label'=>'View Member', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Members', 'url'=>array('admin')),
+	array('label'=>'Manage Members', 'url'=>array('admin'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
 );
 ?>
 

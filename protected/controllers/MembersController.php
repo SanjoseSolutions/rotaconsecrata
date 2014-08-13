@@ -33,7 +33,7 @@ class MembersController extends Controller
 #			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('create','update','index',
-					'view','photo','crop',
+					'view','photo','crop', 'authorize',
 					'renewals', 'renewalsSummary',
 					'siblings', 'siblingsSummary',
 					'communities', 'communitiesSummary',
@@ -259,6 +259,64 @@ class MembersController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 			'search'=>isset($search)?$search:0
+		));
+	}
+
+	public function actionAuthorize($id)
+	{
+		$model=$this->loadModel($id);
+
+		if (Yii::app()->request->isPostRequest) {
+			$role = $_POST['role'];
+			$user=new Users;
+			$user->username = $model->email;
+			$user->password = 'NO-PASSWD';
+			$user->email = $model->email;
+			$user->member_id = $model->id;
+			if ('Admin' == $role) {
+				$user->superuser = 1;
+			}
+			if ($user->save()) {
+				$ucode = new UserCodes;
+				$code=bin2hex(openssl_random_pseudo_bytes(3));
+				$ucode->code=sha1($code);
+				$ucode->purpose='userReg';
+				$ucode->data=$id;
+				$ucode->created = date_format(new DateTime(), 'Y-m-d h:i:s');
+				$url = Yii::app()->createAbsoluteUrl('/user/activate', array('code'=>$code));
+				if ($ucode->save()) {
+					if (!empty($role)) {
+						$authorizer = Yii::app()->getModule("rights")->getAuthorizer();
+						$authorizer->authManager->assign($role, $user->id);
+					}
+					$msg = "Authorization successful. Activation link emailed";
+					Yii::app()->user->setFlash('msg', $msg);
+					$email = Yii::app()->email;
+					$email->to = $model->email;
+					$email->subject = 'Welcome to RotaConsecrata';
+					$email->message = sprintf("Dear %s,\n\n".
+						"This is an email notification email that your user account has\n".
+						"been created by administrator and can be activated by clicking\n".
+						"the below link:\n\n".
+						"\t%s\n\n".
+						"This link will expire after 24 hours. If you are unable to login\n".
+						"within this time, please contact your admin:\n\n".
+						"Regards, RotaConsecrata Admin.", $model->fullname, $url);
+					$email->send();
+					Yii::trace("$msg. Link: $url", 'application.controllers.MembersController');
+				}
+			} else {
+				$errs = $user->getErrors();
+				$earr = array();
+				foreach($errs as $attr => $ea) {
+					array_push($earr, "$attr : " . implode("; ", $ea));
+				}
+				throw new Exception(implode("\n", $earr));
+			}
+		}
+
+		$this->render('authorize', array(
+			'model' => $model,
 		));
 	}
 
