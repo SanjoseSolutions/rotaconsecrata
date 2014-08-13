@@ -65,6 +65,15 @@ CREATE TABLE members(
 	annual_checkups TINYINT,
 	health_data TEXT,
 	province_id INTEGER,
+	age_retired INTEGER,
+	last_illness_nature VARCHAR(100),
+	pension_amt FLOAT,
+	decease_dt	DATE,
+	decease_time	TIME,
+	convent_decease INTEGER,
+	funeral_celebrant VARCHAR(100),
+	burial_place VARCHAR(100),
+	cemetery VARCHAR(100),
 	CONSTRAINT member_province FOREIGN KEY (province_id) REFERENCES provinces(id) ON UPDATE CASCADE
 );
 
@@ -261,4 +270,16 @@ CREATE TABLE user_codes(
 	data	VARCHAR(50),
 	created	DATETIME DEFAULT NOW()
 );
-
+/*
+ALTER TABLE members
+	ADD COLUMN cemetery VARCHAR(100) AFTER province_id,
+	ADD COLUMN burial_place VARCHAR(100) AFTER province_id,
+	ADD COLUMN funeral_celebrant VARCHAR(100) AFTER province_id,
+	ADD COLUMN convent_decease INTEGER AFTER province_id,
+	ADD COLUMN decease_time	TIME AFTER province_id,
+	ADD COLUMN decease_dt	DATE AFTER province_id,
+	ADD COLUMN last_illness_nature VARCHAR(100) AFTER province_id,
+	ADD COLUMN pension_amt FLOAT AFTER province_id,
+	ADD COLUMN age_retired INTEGER AFTER province_id
+	;
+*/

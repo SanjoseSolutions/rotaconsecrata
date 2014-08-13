@@ -60,11 +60,12 @@ class Members extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('fullname, dob, joining_dt, fathers_name, mothers_name', 'required'),
-			array('province_id, father_alive, mother_alive, mission, generalate, community,
-				updated_by, swiss_visit, holyland_visit, family_abroad, annual_checkups,
-				teach_lang, mother_tongue, num_brothers, num_sisters,
-				num_priests, num_nuns, place_family', 'numerical', 'integerOnly'=>true),
-			array('fullname, maiden_name, fathers_name, mothers_name', 'length', 'max'=>100),
+			array('province_id, father_alive, mother_alive, mission, generalate, updated_by,
+				swiss_visit, holyland_visit, family_abroad, annual_checkups, teach_lang,
+				mother_tongue, num_brothers, num_sisters, age_retired, num_priests,
+				num_nuns, place_family, convent_decease', 'numerical', 'integerOnly'=>true),
+			array('fullname, maiden_name, fathers_name, mothers_name, last_illness_nature,
+				funeral_celebrant, burial_place, cemetery', 'length', 'max'=>100),
 			array('photo, email, parish, edu_joining, edu_present', 'length', 'max'=>50),
 			array('mobile, home_phone, home_mobile', 'length', 'max'=>15),
 			array('diocese', 'length', 'max'=>30),
@@ -75,8 +76,9 @@ class Members extends CActiveRecord
 				num_priensts, num_nuns, birth_state, birth_district', 'safe'),
 			array('dob, vestition_dt, first_commitment_dt, final_commitment_dt, demise_dt,
 				leaving_dt, updated_on, made_final, father_alive, mother_alive
-				baptism_dt, confirmation_dt',
+				baptism_dt, confirmation_dt, decease_dt, decease_time',
 				'default', 'setOnEmpty' => true, 'value' => null),
+			array('pension_amt', 'type', 'type'=>'float'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, fullname, age, maiden_name, made_final, mobile, dob, joining_dt,
@@ -179,6 +181,15 @@ class Members extends CActiveRecord
 				'living_outside' => 'Living Outside',
 				'health_data' => 'Health Data',
 				'separations' => 'Separations',
+				'age_retired' => 'Age of Retirement',
+				'pension_amt' => 'Pension Amount',
+				'last_illness_nature' => 'Nature of Last illness',
+				'decease_dt' => 'Date of Decease',
+				'decease_time' => 'Time of Decease',
+				'convent_decease' => 'Convent at time of Decease',
+				'funeral_celebrant' => 'Main Celebrant at Funeral',
+				'burial_place' => 'Place of Burial',
+				'cemetery' => 'Name of Cemetery',
 			),
 			Yii::app()->params['memberLabels']
 		);

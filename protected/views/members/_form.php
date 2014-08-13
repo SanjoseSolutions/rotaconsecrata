@@ -541,6 +541,78 @@
 		<?php echo $form->error($model,'health_data'); ?>
 	</div>
 
+	<div class="row">
+	<span class="leftHalf"><?php
+		echo $form->labelEx($model,'age_retired');
+		echo $form->textField($model,'age_retired',array('size'=>5,'maxlength'=>10,'placeholder'=>$model->getAttributeLabel('age_retired')));
+		echo $form->error($model,'age_retired');
+	?></span>
+	<span class="rightHalf"><?php
+		echo $form->labelEx($model,'pension_amt');
+		echo $form->textField($model,'pension_amt',array('size'=>6,'maxlength'=>11,'placeholder'=>$model->getAttributeLabel('pension_amt')));
+		echo $form->error($model,'pension_amt');
+	?></span>
+	</div>
+
+	<div class="row"><?php
+		echo $form->labelEx($model,'last_illness_nature');
+		echo $form->textField($model,'last_illness_nature',array('size'=>60,'maxlength'=>100,'placeholder'=>'Enter '.$model->getAttributeLabel('last_illness_nature')));
+		echo $form->error($model,'last_illness_nature');
+	?></div>
+
+	<div class="row">
+	<span class="leftHalf"><?php
+		echo $form->labelEx($model,'decease_dt');
+		$this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'decease_dt',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'maxDate'    => 0,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		));
+		echo $form->error($model,'decease_dt'); ?>
+	</span>
+	<span class="rightHalf">
+	<?php
+		echo $form->labelEx($model,'decease_time');
+		echo $form->textField($model, 'decease_time', array('placeholder'=>'hh:mm:ss','size'=>10,'maxlength'=>10));
+		echo $form->error($model,'decease_time');
+	?>
+	</span>
+	</div>
+
+	<div class="row"><?php
+		echo $form->labelEx($model,'convent_decease');
+		echo $form->textField($model,'convent_decease',array('placeholder'=>'Enter '.$model->getAttributeLabel('convent_decease'),'size'=>60,'maxlength'=>100));
+		echo $form->error($model,'convent_decease');
+	?></div>
+
+	<div class="row"><?php
+		echo $form->labelEx($model,'funeral_celebrant');
+		echo $form->textField($model,'funeral_celebrant',array('placeholder'=>'Enter '.$model->getAttributeLabel('funeral_celebrant'),'size'=>60,'maxlength'=>100));
+		echo $form->error($model,'funeral_celebrant');
+	?></div>
+
+	<div class="row"><?php
+		echo $form->labelEx($model,'burial_place');
+		echo $form->textField($model,'burial_place',array('placeholder'=>'Enter '.$model->getAttributeLabel('burial_place'),'size'=>60,'maxlength'=>100));
+		echo $form->error($model,'burial_place');
+	?></div>
+
+	<div class="row"><?php
+		echo $form->labelEx($model,'cemetery');
+		echo $form->textField($model,'cemetery',array('placeholder'=>'Enter '.$model->getAttributeLabel('cemetery'),'size'=>60,'maxlength'=>100));
+		echo $form->error($model,'cemetery');
+	?></div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>
