@@ -46,8 +46,7 @@ class SiteController extends Controller
 					'provider'=>$provider
 				));
 			} else {
-				$mid = $u->profile->member_id;
-				$this->redirect(array('/members/view', 'id'=>$mid));
+				$this->redirect(array('/members/selfView'));
 			}
 		}
 	}

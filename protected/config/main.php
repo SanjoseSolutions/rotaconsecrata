@@ -31,7 +31,7 @@ return array(
 		),
 		'rights'=>array(
 			'userClass' => 'Users',
-			'install'=>false
+			'install'=>true
 		),
 	),
 
@@ -48,6 +48,7 @@ return array(
 			'itemTable' => 'authitem',
 			'itemChildTable' => 'authitemchild',
 			'rightsTable' => 'rights',
+			'defaultRoles' => array('Guest', 'Authenticated'),
 		),
 		'email' => array(
 			'class' => 'application.extensions.email.Email',

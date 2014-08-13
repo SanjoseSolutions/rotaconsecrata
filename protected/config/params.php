@@ -12,6 +12,7 @@ return array(
 		'final_commitment_place' => 'Perpetual Profession Place',
 		'edu_joining' => 'Qualification when joining',
 		'edu_present' => 'Qualification to date',
+		'demise_dt' => 'Date of Decease',
 	)
 );
 

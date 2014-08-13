@@ -11,7 +11,8 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'List Members', 'url'=>array('index'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
 	array('label'=>'Create Member', 'url'=>array('create'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
-	array('label'=>'View Member', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>'View Member', 'url'=>array('view', 'id'=>$model->id), 'visible' => Yii::app()->user->checkAccess('ProvAdm')),
+	array('label'=>'View Self', 'url'=>array('selfView'), 'visible' => !Yii::app()->user->checkAccess('ProvAdm')),
 	array('label'=>'Manage Members', 'url'=>array('admin'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
 );
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-class MembersController extends Controller
+class MembersController extends RController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -14,8 +14,7 @@ class MembersController extends Controller
 	public function filters()
 	{
 		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
+			'rights'
 		);
 	}
 
@@ -56,6 +55,14 @@ class MembersController extends Controller
 				'users'=>array('*'),
 			),
 		);
+	}
+
+	public function actionSelfView()
+	{
+		$id = Yii::app()->user->profile->member_id;
+		$this->render('view', array(
+			'model'=>$this->loadModel($id),
+		));
 	}
 
 	/**
@@ -121,11 +128,11 @@ class MembersController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-		$specs = Specializations::model()->findAll();
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
+		$specs = Specializations::model()->findAll();
 		$setSpecs = array_map(function($ms) { return $ms->spec_id; }, $model->memberSpecs);
 		$setSpokenLangs = array_map(function($sl) { return $sl->lang_id; }, $model->spokenLangs);
 
@@ -170,6 +177,22 @@ class MembersController extends Controller
 		}
 
 		$this->render('update',array(
+			'model'=>$model,
+			'specializations'=>$specs,
+			'setSpecs'=>$setSpecs,
+			'setSpokenLangs'=>$setSpokenLangs,
+		));
+	}
+
+	public function actionSelfUpdate()
+	{
+		$id = Yii::app()->user->profile->member_id;
+		$model = $this->loadModel($id);
+		$specs = Specializations::model()->findAll();
+		$setSpecs = array_map(function($ms) { return $ms->spec_id; }, $model->memberSpecs);
+		$setSpokenLangs = array_map(function($sl) { return $sl->lang_id; }, $model->spokenLangs);
+
+		$this->render('update', array(
 			'model'=>$model,
 			'specializations'=>$specs,
 			'setSpecs'=>$setSpecs,

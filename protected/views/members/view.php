@@ -228,7 +228,8 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'List Members', 'url'=>array('index'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
 	array('label'=>'Create Member', 'url'=>array('create'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
-	array('label'=>'Update Member', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Update Member', 'url'=>array('update', 'id'=>$model->id), 'visible' => Yii::app()->user->checkAccess('ProvAdm')),
+	array('label'=>'Update Self', 'url'=>array('selfUpdate'), 'visible' => !Yii::app()->user->checkAccess('ProvAdm')),
 	array('label'=>'Delete Member', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
 	array('label'=>'Manage Members', 'url'=>array('admin'), 'visible' => Yii::app()->user->checkAccess('ProvAdmin')),
 );
@@ -277,7 +278,7 @@ $this->menu=array(
 			} else {
 				$lbl .= "Member";
 			}
-			echo CHtml::link($lbl, array('/user/access', 'id'=>$user->id));
+			echo CHtml::link($lbl, array('authorize', 'id'=>$model->id));
 		}
 		if (isset($lbl)) {
 		}

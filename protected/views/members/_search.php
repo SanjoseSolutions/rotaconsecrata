@@ -15,8 +15,20 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 )); ?>
 
 	<div class="row">
+	<span class='leftHalf'>
 		<?php echo $form->label($model,'id'); ?>
 		<?php echo $form->textField($model,'id'); ?>
+	</span>
+	<span class='rightHalf'>
+	<?php
+		$u = Yii::app()->user;
+		if ($u->checkAccess('Admin')) {
+			echo $form->labelEx($model, 'province_id');
+			echo $form->dropDownList($model, 'province_id', Provinces::getAll(), array('prompt' => '-- Select --'));
+		} else {
+			echo $form->hiddenField($model, 'province_id', array('value' => $u->profile->member->province_id));
+		} ?>
+	</span>
 	</div>
 
 	<div class="row">
@@ -27,6 +39,17 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	<div class="row">
 		<?php echo $form->label($model,'maiden_name'); ?>
 		<?php echo $form->textField($model,'maiden_name',array('size'=>60,'maxlength'=>100)); ?>
+	</div>
+
+	<div class="row">
+	</span>
+	</div>
+
+	<div class="row">
+	<?php
+		echo $form->labelEx($model, 'member_no');
+		echo $form->textField($model, 'member_no', array('size'=>32, 'maxlength'=>32, 'placeholder'=>'Member admission no'));
+	?>
 	</div>
 
 	<div class="row">
@@ -233,13 +256,14 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	</div>
 
 	<div class="row">
+	<span class='leftHalf'>
 		<?php echo $form->label($model,'home_phone'); ?>
 		<?php echo $form->textField($model,'home_phone',array('size'=>15,'maxlength'=>15)); ?>
-	</div>
-
-	<div class="row">
+	</span>
+	<span class='rightHalf'>
 		<?php echo $form->label($model,'home_mobile'); ?>
 		<?php echo $form->textField($model,'home_mobile',array('size'=>15,'maxlength'=>15)); ?>
+	</span>
 	</div>
 
 	<div class="row">
@@ -253,6 +277,7 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	</div>
 
 	<div class="row">
+	<span class='leftHalf'>
 		<?php echo $form->label($model,'demise_dt'); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			'model' => $model,
@@ -269,6 +294,11 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 				'maxlength' => 10,
 			),
 		)); ?>
+	</span>
+	<span class='leftHalf'>
+		<?php echo $form->label($model,'member_alive'); ?>
+		<?php echo $form->dropDownList($model,'member_alive',$yesno_opts, array('prompt' => '-- Select --')); ?>
+	</span>
 	</div>
 
 	<div class="row">
@@ -288,6 +318,7 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 				'maxlength' => 10,
 			),
 		)); ?>
+	</span>
 	</div>
 
 	<div class="row">

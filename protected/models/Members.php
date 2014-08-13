@@ -76,7 +76,7 @@ class Members extends CActiveRecord
 				num_priensts, num_nuns, birth_state, birth_district', 'safe'),
 			array('dob, vestition_dt, first_commitment_dt, final_commitment_dt, demise_dt,
 				leaving_dt, updated_on, made_final, father_alive, mother_alive
-				baptism_dt, confirmation_dt, decease_dt, decease_time',
+				baptism_dt, confirmation_dt, decease_time',
 				'default', 'setOnEmpty' => true, 'value' => null),
 			array('pension_amt', 'type', 'type'=>'float'),
 			// The following rule is used by search().
@@ -87,7 +87,8 @@ class Members extends CActiveRecord
 				home_phone, home_mobile, parish, diocese, demise_dt, leaving_dt,
 				mission, generalate, community, updated_by, updated_on, swiss_visit,
 				holyland_visit, family_abroad, specialization, education, current_community,
-				current_designation, bday_from, bday_to', 'safe', 'on'=>'search'),
+				current_designation, bday_from, bday_to, member_alive',
+				'safe', 'on'=>'search'),
 		);
 	}
 
@@ -184,7 +185,6 @@ class Members extends CActiveRecord
 				'age_retired' => 'Age of Retirement',
 				'pension_amt' => 'Pension Amount',
 				'last_illness_nature' => 'Nature of Last illness',
-				'decease_dt' => 'Date of Decease',
 				'decease_time' => 'Time of Decease',
 				'convent_decease' => 'Convent at time of Decease',
 				'funeral_celebrant' => 'Main Celebrant at Funeral',
@@ -330,6 +330,15 @@ class Members extends CActiveRecord
 		$criteria->compare('family_abroad',$this->family_abroad);
 		$criteria->compare('annual_checkups',$this->annual_checkups);
 		$criteria->compare('health_data',$this->health_data);
+		if (isset($this->member_alive)) {
+			if ($this->member_alive) {
+				$cond = "IS";
+			} else {
+				$cond = "IS NOT";
+			}
+			Yii::trace("Condition: $cond", 'application.models.Members');
+			$criteria = $criteria->addCondition("demise_dt $cond NULL");
+		}
 		if (isset($this->education) and $this->education) {
 			$criteria = $criteria->addCondition("EXISTS (SELECT id FROM academic_courses c " .
 				"WHERE c.member_id = t.id AND c.name LIKE '%" . $this->education . "%')");
@@ -474,4 +483,5 @@ class Members extends CActiveRecord
 	public $bday_from;
 	public $bday_to;
 	public $education;
+	public $member_alive;
 }

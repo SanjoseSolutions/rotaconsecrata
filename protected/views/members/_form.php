@@ -109,23 +109,6 @@
 		<?php echo $form->error($model,'dob'); ?>
 	</span>
 	<span class="rightHalf">
-		<?php echo $form->labelEx($model,'demise_dt'); ?>
-		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-			'model' => $model,
-			'attribute' => 'demise_dt',
-		'options'       => array(
-			'dateFormat' => FormatHelper::getDatePickerFormat(),
-			'yearRange'  => '1900:c+10',
-			'maxDate'    => 0,
-			'changeYear' => true,
-		),
-		'htmlOptions'	=> array(
-			'placeholder' => 'dd/mm/yyyy',
-			'size' => 10,
-			'maxlength' => 10,
-		),
-	)); ?>
-		<?php echo $form->error($model,'demise_dt'); ?>
 	</span>
 	</div>
 
@@ -562,21 +545,21 @@
 
 	<div class="row">
 	<span class="leftHalf"><?php
-		echo $form->labelEx($model,'decease_dt');
+		echo $form->labelEx($model,'demise_dt');
 		$this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			'model' => $model,
-			'attribute' => 'decease_dt',
-			'options'       => array(
-				'dateFormat' => FormatHelper::getDatePickerFormat(),
-				'yearRange'  => '1900:c+10',
-				'maxDate'    => 0,
-				'changeYear' => true,
-			),
-			'htmlOptions'	=> array(
-				'placeholder' => 'dd/mm/yyyy',
-				'size' => 10,
-				'maxlength' => 10,
-			),
+			'attribute' => 'demise_dt',
+		'options'       => array(
+			'dateFormat' => FormatHelper::getDatePickerFormat(),
+			'yearRange'  => '1900:c+10',
+			'maxDate'    => 0,
+			'changeYear' => true,
+		),
+		'htmlOptions'	=> array(
+			'placeholder' => 'dd/mm/yyyy',
+			'size' => 10,
+			'maxlength' => 10,
+		),
 		));
 		echo $form->error($model,'decease_dt'); ?>
 	</span>
