@@ -71,25 +71,46 @@ class UserController extends Controller
 			$ucode->delete();
 			throw new CHttpException(403, "Access denied. This link has expired");
 		}
-		$id = $ucode->data;
-		$model = Users::model()->findByAttributes(array('member_id'=>$id));
-		$member = Members::model()->find("id=$id");
+		$mData = json_decode($ucode->data);
+		$model = new Users;
+		$model->email = $model->username = $mData->email;
+		$model->member_id = $mData->id;
+		$member = Members::model()->find("id=".$mData->id);
 
 		if (Yii::app()->request->isPostRequest) {
 			$model->attributes = $_POST['Users'];
 			$pass = $model->password;
-			if ($model->save()) {
-				$ident = new UserIdentity($model->username, $pass);
-				$model->password = $pass;
-				if ($ident->authenticate()) {
-					Yii::app()->user->login($ident);
-					$ucode->delete();
-					Yii::trace('Activation success', 'application.controllers.UserController');
-					Yii::app()->user->setFlash('msg', "Activation successful!! Password set. Proceed by clicking 'Home'");
+
+			$role = $mData->role;
+			if ('Admin' == $role) $model->superuser = 1;
+
+			try {
+				if ($model->save()) {
+					if (!empty($role)) {
+						$authorizer = Yii::app()->getModule("rights")->getAuthorizer();
+						$authorizer->authManager->assign($role, $model->id);
+					}
+
+					$ident = new UserIdentity($model->username, $pass);
+					$model->password = $pass;
+					if ($ident->authenticate()) {
+						Yii::app()->user->login($ident);
+						$ucode->delete();
+						Yii::trace('Activation success', 'application.controllers.UserController');
+						Yii::app()->user->setFlash('msg', "Activation successful!! Password set. Proceed by clicking 'Home'");
+					}
 				} else {
-					Yii::app()->user->setFlash('msg', "Activation failed!!");
-					Yii::trace('Activation failed', 'application.controllers.UserController');
+					$errs = $model->getErrors();
+					throw new Exception("Failed to save user: " .
+						implode("\n", array_map(function($k, $v) {
+							return "$k: $v";
+						}, array_keys($errs), $errs)));
 				}
+			}
+			catch (Exception $e) {
+				$err = "Activation failed. " . $e->getMessage();
+				Yii::app()->user->setFlash('err', $err);
+				Yii::debug($err, 'application.controllers.UserController');
 			}
 		}
 

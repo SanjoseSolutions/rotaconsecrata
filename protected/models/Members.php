@@ -77,7 +77,7 @@ class Members extends CActiveRecord
 				num_priensts, num_nuns, birth_state, birth_district', 'safe'),
 			array('dob, vestition_dt, first_commitment_dt, final_commitment_dt, demise_dt,
 				leaving_dt, updated_on, made_final, father_alive, mother_alive
-				baptism_dt, confirmation_dt, decease_time',
+				baptism_dt, confirmation_dt, decease_time, email, member_no',
 				'default', 'setOnEmpty' => true, 'value' => null),
 			array('pension_amt', 'type', 'type'=>'float'),
 			// The following rule is used by search().

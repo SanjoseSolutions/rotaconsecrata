@@ -30,7 +30,7 @@ class UserCodes extends CActiveRecord
 		return array(
 			array('code', 'length', 'max'=>41),
 			array('purpose', 'length', 'max'=>10),
-			array('data', 'length', 'max'=>50),
+			array('data', 'length', 'max'=>255),
 			array('created', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

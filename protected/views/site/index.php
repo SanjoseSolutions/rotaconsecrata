@@ -13,6 +13,8 @@ $this->menu=array(
 
 <h1>Welcome to <i><?php echo CHtml::encode(Yii::app()->name); ?></i></h1>
 
+<div class='flash-notice'><?php echo $title ?></div>
+
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'members-grid',
 	'dataProvider'=>$provider,

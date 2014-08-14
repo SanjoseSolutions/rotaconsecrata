@@ -9,25 +9,22 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Users', 'url'=>array('index')),
-	array('label'=>'Create Users', 'url'=>array('create')),
-	array('label'=>'View Users', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Users', 'url'=>array('admin')),
 );
 ?>
 
 <h1>Welcome User #<?php echo $model->id.': '.$member->fullname; ?></h1>
 
 
-<div class='msg'><p>
 <?php
-	$msg = Yii::app()->user->getFlash('msg');
-	if (!empty($msg)) {
-		echo $msg;
-	} else {
-		echo "Kindly activate your account by setting your first time password..";
+$msg = Yii::app()->user->getFlash('msg');
+if (!empty($msg)) {
+	echo "<div class='flash-success'>$msg</div>";
+} else {
+	if ($err = Yii::app()->user->getFlash('err')) {
+		echo "<div class='flash-error'>$err</div>";
 	}
+	echo "<p>Kindly activate your account by setting your first time password..</p>";
+	$this->renderPartial('_form', array('model'=>$model));
+}
 ?>
-</p></div>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>

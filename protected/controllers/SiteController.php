@@ -36,13 +36,18 @@ class SiteController extends Controller
 		} else {
 			$params = array();
 			if ($u->checkAccess('ProvAdm')) {
+				$m = $u->profile->member;
+				$title = 'Generalate Admin: Member listing of entire congregation (all Provinces)..';
 				if (!$u->checkAccess('Admin')) {
+					$pname = $m->province->name;
+					$title = "You're a Province Admin for $pname Province. Member listing for your Province..";
 					$params['criteria'] = array(
-						'condition' => "province_id = " . $u->profile->member->province_id
+						'condition' => "province_id = " . $m->province_id
 					);
 				}
 				$provider = new CActiveDataProvider('Members', $params);
 				$this->render('index', array(
+					'title'=>$title,
 					'provider'=>$provider
 				));
 			} else {
