@@ -29,7 +29,7 @@ CREATE TABLE members(
   `confirmation_place` varchar(100) DEFAULT NULL,
 	joining_dt DATE NOT NULL,
 	`joining_place` varchar(75) DEFAULT NULL,
-	vestation_dt DATE,
+	vestition_dt DATE,
 	`vestition_place` varchar(75) DEFAULT NULL,
 	first_commitment_dt DATE,
 	`first_commitment_place` varchar(75) DEFAULT NULL,
@@ -268,7 +268,7 @@ CREATE TABLE user_codes(
 	code VARCHAR(41) UNIQUE,
 	purpose VARCHAR(10),
 	data	VARCHAR(50),
-	created	DATETIME DEFAULT NOW()
+	created	DATETIME
 );
 /*
 ALTER TABLE members

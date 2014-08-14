@@ -35,11 +35,14 @@
 	<div class="row">
 	<?php
 		echo CHtml::label('Role', 'role');
-		echo CHtml::dropDownList('role', '', array(
+		$roles = array(
 			'' => 'Member',
-			'Admin' => 'Generalate Admin',
-			'ProvAdm' => 'Provincial Admin',
-		));
+			'ProvAdm' => 'Province Admin',
+		);
+		if (Yii::app()->user->checkAccess('Admin')) {
+			$roles['Admin'] = 'Generalate Admin';
+		}
+		echo CHtml::dropDownList('role', '', $roles);
 	?>
 	</div>
 

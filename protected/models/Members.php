@@ -69,6 +69,7 @@ class Members extends CActiveRecord
 			array('photo, email, parish, edu_joining, edu_present', 'length', 'max'=>50),
 			array('mobile, home_phone, home_mobile', 'length', 'max'=>15),
 			array('diocese', 'length', 'max'=>30),
+			array('member_no', 'length', 'max'=>32),
 			array('vestition_dt, first_commitment_dt, final_commitment_dt, address, health_data,
 				demise_dt, leaving_dt, updated_on, joining_place, vestition_place,
 				baptism_dt, baptism_place, confirmation_dt, confirmation_place,
