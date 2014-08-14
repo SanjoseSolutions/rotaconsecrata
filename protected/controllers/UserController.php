@@ -80,7 +80,9 @@ class UserController extends Controller
 			$pass = $model->password;
 			if ($model->save()) {
 				$ident = new UserIdentity($model->username, $pass);
+				$model->password = $pass;
 				if ($ident->authenticate()) {
+					Yii::app()->user->login($ident);
 					$ucode->delete();
 					Yii::trace('Activation success', 'application.controllers.UserController');
 					Yii::app()->user->setFlash('msg', "Activation successful!! Password set. Proceed by clicking 'Home'");

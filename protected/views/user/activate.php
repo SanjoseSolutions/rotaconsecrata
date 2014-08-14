@@ -18,6 +18,16 @@ $this->menu=array(
 
 <h1>Welcome User #<?php echo $model->id.': '.$member->fullname; ?></h1>
 
-<p>Kindly activate your account by setting your first time password..</p>
+
+<div class='msg'><p>
+<?php
+	$msg = Yii::app()->user->getFlash('msg');
+	if (!empty($msg)) {
+		echo $msg;
+	} else {
+		echo "Kindly activate your account by setting your first time password..";
+	}
+?>
+</p></div>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>
