@@ -71,7 +71,7 @@ class BooksWrittenController extends Controller
 		{
 			$model->attributes=$_POST['BooksWritten'];
 			if($model->save()) {
-				Yii::trace("Create successful for id " . $model->$id, "application.controllers.AcademicCoursesController");
+				Yii::trace("Create successful for id " . $model->id, "application.controllers.AcademicCoursesController");
 				return;
 			}
 		}

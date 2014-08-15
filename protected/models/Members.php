@@ -117,6 +117,7 @@ class Members extends CActiveRecord
 			'living_outside' => array(self::HAS_MANY, 'LivingOutside', 'member_id'),
 			'separations' => array(self::HAS_MANY, 'Separations', 'member_id'),
 			'user' => array(self::HAS_ONE, 'Users', 'member_id'),
+			'convent_dec' => array(self::BELONGS_TO, 'Communities', 'convent_decease'),
 		);
 	}
 

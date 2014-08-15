@@ -46,7 +46,7 @@ $('#add-$fld').fancybox( {
 ";
 }
 $courses_script = "";
-foreach(array('academic', 'professional', 'technical', 'other', 'special_skills') as $course) {
+foreach(array('academic', 'prof_qual', 'technical', 'other', 'special_skills') as $course) {
 	$courses_script .= "
 $('#add-$course-courses').fancybox( {
 	'onComplete': function() {
@@ -593,7 +593,7 @@ $this->menu=array(
 
 	$this->renderPartial('academicCourseSummary', array(
 		'model' => $model,
-		'course' => 'professional'));
+		'course' => 'prof_qual'));
 
 	$this->renderPartial('academicCourseSummary', array(
 		'model' => $model,
@@ -708,4 +708,44 @@ $this->menu=array(
 		echo '</span>';
 	}
 	echo "</div>";
+
+	echo "<div class='fields'>";
+	$flds = array('age_retired', 'pension_amt', 'decease_time');
+	$cls = "left13";
+	foreach($flds as $fld) {
+		echo "<span class='$cls'>";
+		$cls = $cls === "left13" ? "right13" : "left13";
+		echo "<label>";
+		echo $model->getAttributeLabel($fld);
+		echo ": </label>";
+		echo CHtml::tag('span',array('class'=>'val'),$model->$fld);
+		echo "</span>";
+	}
+	echo "</div>";
+
+	echo "<div class='fields'>";
+	$flds = array('last_illness_nature', 'funeral_celebrant', 'burial_place', 'cemetery');
+	$cls = 'leftHalf';
+	foreach($flds as $fld) {
+		echo "<span class='$cls'>";
+		echo "<label>";
+		echo $model->getAttributeLabel($fld); 
+		echo ": </label>";
+		echo CHtml::tag('span',array('class'=>'val'),$model->$fld);
+		echo "</span>";
+		if ($cls == "leftHalf") {
+			$cls = "rightHalf";
+		} else {
+			$cls = "leftHalf";
+			echo "</div><div class='fields'>";
+		}
+	}
+	echo "</div>";
+
+	if ($model->convent_dec) {
+		echo "<div class='fields'>";
+		echo CHtml::label($model->getAttributeLabel('convent_decease').': ', false);
+		echo CHtml::tag('span',array('class'=>'val'),$model->convent_dec->name);
+		echo "</div>";
+	}
 ?>

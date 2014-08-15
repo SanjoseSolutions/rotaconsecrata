@@ -574,7 +574,8 @@
 
 	<div class="row"><?php
 		echo $form->labelEx($model,'convent_decease');
-		echo $form->textField($model,'convent_decease',array('placeholder'=>'Enter '.$model->getAttributeLabel('convent_decease'),'size'=>60,'maxlength'=>100));
+		echo $form->dropDownList($model,'convent_decease',Communities::getAllHash(),array('prompt'=>'-- Select one --'));
+#,array('placeholder'=>'Enter '.$model->getAttributeLabel('convent_decease'),'size'=>60,'maxlength'=>100));
 		echo $form->error($model,'convent_decease');
 	?></div>
 

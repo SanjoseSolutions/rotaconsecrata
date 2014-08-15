@@ -71,7 +71,7 @@ class TravelsController extends Controller
 		{
 			$model->attributes=$_POST['Travels'];
 			if($model->save()) {
-				Yii::trace("Create successful for id " . $model->$id, "application.controllers.AcademicCoursesController");
+				Yii::trace("Create successful for id " . $model->id, "application.controllers.AcademicCoursesController");
 				return;
 			}
 		}
