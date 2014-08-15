@@ -290,6 +290,11 @@ $this->menu=array(
 		echo CHtml::tag('span',array('class'=>'val'),$model->province->name);
 		echo '</div>';
 
+		echo '<div class="fields">';
+		echo CHtml::label($model->getAttributeLabel('member_no').': ', false);
+		echo CHtml::tag('span',array('class'=>'val'),$model->member_no);
+		echo '</div>';
+
 		echo '</figcaption>';
 	?>
 </figure>
