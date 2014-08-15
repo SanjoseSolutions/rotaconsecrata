@@ -245,8 +245,8 @@ class Members extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('member_no',$this->fullname,true);
-		$criteria->compare('province_id',$this->fullname,true);
+		$criteria->compare('member_no',$this->member_no,true);
+		$criteria->compare('province_id',$this->province_id,true);
 		$criteria->compare('fullname',$this->fullname,true);
 		$criteria->compare('photo',$this->photo,true);
 		$criteria->compare('maiden_name',$this->maiden_name,true);
