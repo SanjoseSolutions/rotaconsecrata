@@ -242,7 +242,9 @@ $this->menu=array(
 </div>
 
 <figure class="photo">
-	<?php if (!$model->photo) {
+	<?php
+	
+	if (!$model->photo) {
 			$photo_path = "/images/placeholder-woman.jpg";
 			$src = Yii::app()->request->baseUrl . $photo_path;
 			list($width, $height) = getimagesize(".$photo_path");
@@ -282,6 +284,12 @@ $this->menu=array(
 		}
 		if (isset($lbl)) {
 		}
+
+		echo '<div class="fields">';
+		echo CHtml::label($model->getAttributeLabel('province_id').': ', false);
+		echo CHtml::tag('span',array('class'=>'val'),$model->province->name);
+		echo '</div>';
+
 		echo '</figcaption>';
 	?>
 </figure>

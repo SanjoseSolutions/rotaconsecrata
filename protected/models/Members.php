@@ -77,8 +77,8 @@ class Members extends CActiveRecord
 				num_priensts, num_nuns, birth_state, birth_district', 'safe'),
 			array('dob, vestition_dt, first_commitment_dt, final_commitment_dt, demise_dt,
 				leaving_dt, updated_on, made_final, father_alive, mother_alive
-				baptism_dt, confirmation_dt, decease_time, email, member_no',
-				'default', 'setOnEmpty' => true, 'value' => null),
+				baptism_dt, confirmation_dt, decease_time, email, member_no,
+				', 'default', 'setOnEmpty' => true, 'value' => null),
 			array('pension_amt', 'type', 'type'=>'float'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -333,13 +333,15 @@ class Members extends CActiveRecord
 		$criteria->compare('annual_checkups',$this->annual_checkups);
 		$criteria->compare('health_data',$this->health_data);
 		if (isset($this->member_alive)) {
-			if ($this->member_alive) {
+			if ('1' === $this->member_alive) {
 				$cond = "IS";
-			} else {
+			} elseif ('0' === $this->member_alive) {
 				$cond = "IS NOT";
 			}
-			Yii::trace("Condition: $cond", 'application.models.Members');
-			$criteria = $criteria->addCondition("demise_dt $cond NULL");
+			if (isset($cond)) {
+				Yii::trace("Condition: $cond", 'application.models.Members');
+				$criteria = $criteria->addCondition("demise_dt $cond NULL");
+			}
 		}
 		if (isset($this->education) and $this->education) {
 			$criteria = $criteria->addCondition("EXISTS (SELECT id FROM academic_courses c " .
