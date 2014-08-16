@@ -91,7 +91,6 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 			'options'       => array(
 				'dateFormat' => FormatHelper::getDatePickerFormat(),
 				'yearRange'  => '1900:c+10',
-				'maxDate'    => 0,
 				'changeYear' => true,
 			),
 			'htmlOptions'	=> array(
@@ -109,7 +108,6 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 			'options'       => array(
 				'dateFormat' => FormatHelper::getDatePickerFormat(),
 				'yearRange'  => '1900:c+10',
-				'maxDate'    => 0,
 				'changeYear' => true,
 			),
 			'htmlOptions'	=> array(
