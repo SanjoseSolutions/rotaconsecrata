@@ -710,6 +710,7 @@ $this->menu=array(
 	$flds = array('mission', 'generalate', 'swiss_visit', 'holyland_visit', 'family_abroad', 'annual_checkups');
 	$cls = "left13";
 	foreach($flds as $fld) {
+		if (!isset($model->$fld)) continue;
 		echo "<span class='$cls'>";
 		$cls = $cls === "left13" ? "right13" : "left13";
 		echo "<label>";
@@ -726,6 +727,7 @@ $this->menu=array(
 	$flds = array('age_retired', 'pension_amt', 'decease_time');
 	$cls = "left13";
 	foreach($flds as $fld) {
+		if (!isset($model->$fld)) continue;
 		echo "<span class='$cls'>";
 		$cls = $cls === "left13" ? "right13" : "left13";
 		echo "<label>";
@@ -740,6 +742,7 @@ $this->menu=array(
 	$flds = array('last_illness_nature', 'funeral_celebrant', 'burial_place', 'cemetery');
 	$cls = 'leftHalf';
 	foreach($flds as $fld) {
+		if (!isset($model->$fld)) continue;
 		echo "<span class='$cls'>";
 		echo "<label>";
 		echo $model->getAttributeLabel($fld); 
