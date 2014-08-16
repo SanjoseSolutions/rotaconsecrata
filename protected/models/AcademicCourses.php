@@ -126,6 +126,40 @@ class AcademicCourses extends CActiveRecord
 		return parent::model($className);
 	}
 
+        protected function beforeSave()
+        {
+            if(parent::beforeSave())
+            {
+                // Format dates based on the locale
+                foreach($this->metadata->tableSchema->columns as $columnName => $column)
+                {
+                    if ($column->dbType == 'date' and isset($this->$columnName) and $this->$columnName)
+                    {
+			    $this->$columnName = FormatHelper::dateConvDB(
+			    	$this->$columnName, Yii::app()->locale->getDateFormat('short'));
+		    }
+		}
+		return true;
+	    } else return false;
+	}
+
+        protected function afterFind()
+        {
+            // Format dates based on the locale
+            foreach($this->metadata->tableSchema->columns as $columnName => $column)
+            { 
+                if (!strlen($this->$columnName)) continue;
+
+                if ($column->dbType == 'date')
+                { 
+                        $this->$columnName = FormatHelper::dateConvView(
+                                $this->$columnName,
+                                Yii::app()->locale->getDateFormat('short')
+                        );
+                }
+            }
+            return parent::afterFind();
+        }
 	public static function getDegrees() {
 		$deg_list = array();
 		$education = AcademicCourses::model()->findAll();

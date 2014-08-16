@@ -1,4 +1,10 @@
 function set_academic_course_form_submit(course) {
+	jQuery('#AcademicCourses_certificate_dt').datepicker( {
+		'dateFormat':'dd/mm/yy',
+		'yearRange':'1900:c+10',
+		'maxDate':0,
+		'changeYear':true
+	} );
         $('#'+course+'Courses-form').submit(function() {
                 $.post($(this).attr('action'), $(this).serialize());
                 reload_academic_courses(course);

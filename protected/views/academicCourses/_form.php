@@ -40,7 +40,7 @@ $action = $model->isNewRecord ? array('/academicCourses/create') : array('/acade
 
 	<span class="sib-field">
 		<?php echo $form->labelEx($model,'certificate_dt'); ?>
-		<?php echo $form->textField($model,'certificate_dt',array('placeholder'=>'yyyy-mm-dd')); ?>
+		<?php echo $form->textField($model,'certificate_dt',array('placeholder'=>'dd/mm/yyyy')); ?>
 		<?php echo $form->error($model,'certificate_dt'); ?>
 	</span>
 
