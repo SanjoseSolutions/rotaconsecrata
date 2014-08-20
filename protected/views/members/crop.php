@@ -39,6 +39,13 @@
 </div><!-- form -->
 
 <script>
+$('#people-photo-form').submit(function(e) {
+	if (!$('#x1').val()) {
+		alert("Please drag and select an area in the image to crop and then click Save");
+		return false;
+	}
+	return true;
+} );
 $('#photo').imgAreaSelect( {
 	x1: 0,
 	y1: 0,
