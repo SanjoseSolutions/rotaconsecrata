@@ -120,18 +120,9 @@ class MembersController extends RController
 		));
 	}
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
+	private function _update($id, $vUrl)
 	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
+		$model = $this->loadModel($id);
 		$specs = Specializations::model()->findAll();
 		$setSpecs = array_map(function($ms) { return $ms->spec_id; }, $model->memberSpecs);
 		$setSpokenLangs = array_map(function($sl) { return $sl->lang_id; }, $model->spokenLangs);
@@ -173,24 +164,8 @@ class MembersController extends RController
 			$model->updated_on = date_format(new DateTime(), 'd/m/Y');
 			$model->updated_by = Yii::app()->user->id;
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect($vUrl);
 		}
-
-		$this->render('update',array(
-			'model'=>$model,
-			'specializations'=>$specs,
-			'setSpecs'=>$setSpecs,
-			'setSpokenLangs'=>$setSpokenLangs,
-		));
-	}
-
-	public function actionSelfUpdate()
-	{
-		$id = Yii::app()->user->profile->member_id;
-		$model = $this->loadModel($id);
-		$specs = Specializations::model()->findAll();
-		$setSpecs = array_map(function($ms) { return $ms->spec_id; }, $model->memberSpecs);
-		$setSpokenLangs = array_map(function($sl) { return $sl->lang_id; }, $model->spokenLangs);
 
 		$this->render('update', array(
 			'model'=>$model,
@@ -198,6 +173,22 @@ class MembersController extends RController
 			'setSpecs'=>$setSpecs,
 			'setSpokenLangs'=>$setSpokenLangs,
 		));
+	}
+
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionUpdate($id)
+	{
+		$this->_update($id, array('view','id'=>$model->id));
+	}
+
+	public function actionSelfUpdate()
+	{
+		$id = Yii::app()->user->profile->member_id;
+		$this->_update($id, array('selfView'));
 	}
 
 	/**
