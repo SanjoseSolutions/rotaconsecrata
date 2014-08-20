@@ -182,7 +182,7 @@ class MembersController extends RController
 	 */
 	public function actionUpdate($id)
 	{
-		$this->_update($id, array('view','id'=>$model->id));
+		$this->_update($id, array('view','id'=>$id));
 	}
 
 	public function actionSelfUpdate()
