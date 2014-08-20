@@ -21,6 +21,7 @@ CREATE TABLE members(
 	mobile	VARCHAR(15),
 	email	VARCHAR(50),
 	dob	DATE NOT NULL,
+	nationality VARCHAR(50),
 	`birth_state` varchar(50) DEFAULT NULL,
 	`birth_district` varchar(50) DEFAULT NULL,
   `baptism_dt` date DEFAULT NULL,

@@ -109,6 +109,13 @@
 		<?php echo $form->error($model,'dob'); ?>
 	</span>
 	<span class="rightHalf">
+		<?php echo $form->labelEx($model,'nationality'); ?>
+		<?php echo $form->textField($model,'nationality',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('nationality'),
+			'size'=>25,
+			'maxlength'=>50
+		)); ?>
+		<?php echo $form->error($model,'nationality'); ?>
 	</span>
 	</div>
 
