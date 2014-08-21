@@ -99,6 +99,18 @@ class AcademicCourseNames extends CActiveRecord
 		return parent::model($className);
 	}
 
+	public static function getAll()
+	{
+		return self::model()->findAll();
+	}
+
+	public static function getAllNames()
+	{
+		return array_map(function($model) {
+			return $model->name;
+		}, self::getAll());
+	}
+
 	public static function get($course)
 	{
 		return self::model()->findByAttributes(array(
