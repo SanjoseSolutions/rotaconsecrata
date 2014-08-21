@@ -203,6 +203,37 @@
 
 	<div class="row">
 	<span class="leftHalf">
+		<?php echo $form->labelEx($model,'feast_day'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'feast_day',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'minDate'    => -365,
+				'maxDate'    => 365,
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
+		<?php echo $form->error($model,'feast_day'); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->labelEx($model,'patron_saint'); ?>
+		<?php echo $form->textField($model,'patron_saint',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('patron_saint'),
+			'size'=>30,
+			'maxlength'=>100
+		)); ?>
+		<?php echo $form->error($model,'patron_saint'); ?>
+	</span>
+	</div>
+
+	<div class="row">
+	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'confirmation_dt'); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			'model' => $model,
@@ -356,14 +387,61 @@
 	</span>
 	</div>
 
+	<div class="row">
+	<span class="leftHalf">
+	<?php $prof = $model->professed;
+	if ($prof >= 24) {
+		echo $form->labelEx($model,'silver_jubilee_place');
+		echo $form->textField($model,'silver_jubilee_place',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('silver_jubilee_place'),
+			'size'=>25,
+			'maxlength'=>100));
+		echo $form->error($model,'silver_jubilee_place');
+	} ?>
+	</span>
+	<span class="rightHalf">
+	<?php if ($prof >= 49) {
+		echo $form->labelEx($model,'golden_jubilee_place');
+		echo $form->textField($model,'golden_jubilee_place',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('golden_jubilee_place'),
+			'size'=>25,
+			'maxlength'=>100));
+		echo $form->error($model,'golden_jubilee_place');
+	} ?>
+	</span>
+	</div>
+
+	<div class="row">
+	<span class="leftHalf">
+	<?php if ($prof >= 59) {
+		echo $form->labelEx($model,'diamond_jubilee_place');
+		echo $form->textField($model,'diamond_jubilee_place',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('diamond_jubilee_place'),
+			'size'=>25,
+			'maxlength'=>100));
+		echo $form->error($model,'diamond_jubilee_place');
+	} ?>
+	</span>
+	<span class="rightHalf">
+	<?php if ($prof >= 74) {
+		echo $form->labelEx($model,'platinum_jubilee_place');
+		echo $form->textField($model,'platinum_jubilee_place',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('platinum_jubilee_place'),
+			'size'=>25,
+			'maxlength'=>100));
+		echo $form->error($model,'platinum_jubilee_place');
+	} ?>
+	</span>
+	</div>
+
 	<?php if (!$model->isNewRecord): ?>
 	</div><!-- end of div.rightSection -->
 	<?php endif ?>
 
 	<div class="row">
-	<span class="left34">
+	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'fathers_name'); ?>
-		<?php echo $form->textField($model,'fathers_name',array('placeholder'=>'Enter Fathers Fullname','size'=>60,'maxlength'=>100)); ?>
+		<?php echo $form->textField($model,'fathers_name',array('placeholder'=>'Enter Fathers Fullname','size'=>40,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'fathers_name'); ?>
 	</span>
 	<span class="right14">
@@ -371,18 +449,34 @@
 		<?php echo $form->checkBox($model,'father_alive'); ?>
 		<?php echo $form->error($model,'father_alive'); ?>
 	</span>
+	<span class="right14">
+		<?php echo $form->labelEx($model,'fathers_occupation',array('label'=>'Occupation')); ?>
+		<?php echo $form->textField($model,'fathers_occupation',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('fathers_occupation'),
+			'size'=>20,
+			'maxlength'=>50)); ?>
+		<?php echo $form->error($model,'fathers_occupation'); ?>
+	</span>
 	</div>
 
 	<div class="row">
-	<span class="left34">
+	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'mothers_name'); ?>
-		<?php echo $form->textField($model,'mothers_name',array('placeholder'=>'Enter Mothers Fullname','size'=>60,'maxlength'=>100)); ?>
+		<?php echo $form->textField($model,'mothers_name',array('placeholder'=>'Enter Mothers Fullname','size'=>40,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'mothers_name'); ?>
 	</span>
 	<span class="right14">
 		<?php echo $form->labelEx($model,'mother_alive',array('label'=>'Alive?')); ?>
 		<?php echo $form->checkBox($model,'mother_alive'); ?>
 		<?php echo $form->error($model,'mother_alive'); ?>
+	</span>
+	<span class="right14">
+		<?php echo $form->labelEx($model,'mothers_occupation',array('label'=>'Occupation')); ?>
+		<?php echo $form->textField($model,'mothers_occupation',array(
+			'placeholder'=>'Enter '.$model->getAttributeLabel('mothers_occupation'),
+			'size'=>20,
+			'maxlength'=>50)); ?>
+		<?php echo $form->error($model,'mothers_occupation'); ?>
 	</span>
 	</div>
 

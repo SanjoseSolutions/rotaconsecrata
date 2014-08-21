@@ -46,7 +46,7 @@ $('#add-$fld').fancybox( {
 ";
 }
 $courses_script = "";
-foreach(array('academic', 'prof_qual', 'technical', 'other', 'special_skills') as $course) {
+foreach(AcademicCourseNames::getAllNames() as $course) {
 	$courses_script .= "
 $('#add-$course-courses').fancybox( {
 	'onComplete': function() {
@@ -570,7 +570,7 @@ $this->menu=array(
 
 	echo '<div id="communities-summary" class="fields">';
 	if ($model->communityTerms) {
-		echo "<label>Community: </label>";
+		echo CHtml::label($model->getAttributeLabel('community_terms').': ', false);
 		echo "<span class='val'>";
 		$this->renderPartial('/communityTerms/summary', array(
 			'model' => $model,
@@ -600,25 +600,11 @@ $this->menu=array(
 	echo CHtml::link($lbl, array('/members/outsideServices', 'id' => $model->id), array('id' => 'add-outside-services'));
 	echo "</div>";
 
-	$this->renderPartial('academicCourseSummary', array(
-		'model' => $model,
-		'course' => 'academic'));
-
-	$this->renderPartial('academicCourseSummary', array(
-		'model' => $model,
-		'course' => 'prof_qual'));
-
-	$this->renderPartial('academicCourseSummary', array(
-		'model' => $model,
-		'course' => 'technical'));
-
-	$this->renderPartial('academicCourseSummary', array(
-		'model' => $model,
-		'course' => 'other'));
-
-	$this->renderPartial('academicCourseSummary', array(
-		'model' => $model,
-		'course' => 'special_skills'));
+	foreach(AcademicCourseNames::getAllNames() as $course) {
+		$this->renderPartial('academicCourseSummary', array(
+			'model' => $model,
+			'course' => $course));
+	}
 
 	echo "<div id='renewal-courses-spiritual-summary' class='fields'>";
 	if ($model->renewalCoursesSpiritual) {
