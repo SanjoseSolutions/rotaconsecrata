@@ -293,7 +293,7 @@ class MembersController extends RController
 			$ucode->code=sha1($code);
 			$ucode->purpose='userReg';
 			$ucode->data=json_encode($user);
-			$ucode->created = date_format(new DateTime(), 'Y-m-d h:i:s');
+			$ucode->created = date_format(new DateTime(), 'Y-m-d H:i:s');
 			$url = Yii::app()->createAbsoluteUrl('/user/activate', array('code'=>$code));
 			if ($ucode->save()) {
 				$msg = "Authorization successful. Activation link emailed to user. Will be valid for 24 hours.";
