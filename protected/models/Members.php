@@ -96,6 +96,7 @@ class Members extends CActiveRecord
 				mission, generalate, community, updated_by, updated_on, swiss_visit,
 				holyland_visit, family_abroad, specialization, education,
 				current_community, current_designation, bday_from, bday_to,
+				feast_from, feast_to,
 				member_alive', 'safe', 'on'=>'search'),
 		);
 	}
@@ -156,6 +157,8 @@ class Members extends CActiveRecord
 				'age' => 'Age',
 				'bday_from' => 'Birthday From',
 				'bday_to' => 'Birthday To',
+				'feast_from' => 'Feast Day From',
+				'feast_to' => 'Feast Day To',
 				'teach_lang' => 'Language qualified to teach',
 				'books_written' => 'Books Written',
 				'joining_dt' => 'Joining Date',
@@ -340,6 +343,15 @@ class Members extends CActiveRecord
 			    	$this->bday_to, Yii::app()->locale->getDateFormat('short'));
 			$criteria = $criteria->addCondition("$nxt_bday BETWEEN '$dt' AND '$to_dt' ORDER BY $nxt_bday");
 		}
+		if (isset($this->feast_from) and $this->feast_from and
+				isset($this->feast_to) and $this->feast_to) {
+			$dt = FormatHelper::dateConvDB(
+			    	$this->feast_from, Yii::app()->locale->getDateFormat('short'));
+			$nxt_feast = "MAKEDATE(YEAR('$dt')+IF(DAYOFYEAR(t.feast_day)<DAYOFYEAR('$dt'),1,0),DAYOFYEAR(t.feast_day))";
+			$to_dt = FormatHelper::dateConvDB(
+			    	$this->feast_to, Yii::app()->locale->getDateFormat('short'));
+			$criteria = $criteria->addCondition("$nxt_feast BETWEEN '$dt' AND '$to_dt' ORDER BY $nxt_feast");
+		}
 		$criteria->compare('updated_by',$this->updated_by);
 		$criteria->compare('updated_on',$this->updated_on,true);
 		$criteria->compare('swiss_visit',$this->swiss_visit);
@@ -501,6 +513,8 @@ class Members extends CActiveRecord
 	public $current_designation;
 	public $bday_from;
 	public $bday_to;
+	public $feast_from;
+	public $feast_to;
 	public $education;
 	public $member_alive;
 }

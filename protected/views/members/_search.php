@@ -119,6 +119,43 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 	</span>
 	</div>
 
+	<div>
+	<span class="leftHalf">
+		<?php echo $form->label($model,'feast_from'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'feast_from',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
+	</span>
+	<span class="rightHalf">
+		<?php echo $form->label($model,'feast_to'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+			'model' => $model,
+			'attribute' => 'feast_to',
+			'options'       => array(
+				'dateFormat' => FormatHelper::getDatePickerFormat(),
+				'yearRange'  => '1900:c+10',
+				'changeYear' => true,
+			),
+			'htmlOptions'	=> array(
+				'placeholder' => 'dd/mm/yyyy',
+				'size' => 10,
+				'maxlength' => 10,
+			),
+		)); ?>
+	</span>
+	</div>
+
 	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->label($model,'joining_dt'); ?>
