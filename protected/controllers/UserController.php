@@ -28,7 +28,7 @@ class UserController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','activate'),
+				'actions'=>array('index','view','activate','forgotPassword','resetPassword'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -53,6 +53,118 @@ class UserController extends Controller
 	{
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+		));
+	}
+
+	public function actionForgotPassword()
+	{
+		if (isset($_POST['email'])) {
+			$email = $_POST['email'];
+			$model = Users::model()->findByAttributes(array(
+				'email' => $email
+			));
+			if (!isset($model)) {
+				Yii::app()->user->setFlash('error', 'Email address not found! Have you activated your account yet?');
+				return;
+			}
+			
+			$ucode = new UserCodes;
+			$code = bin2hex(openssl_random_pseudo_bytes(3));
+			$ucode->code = sha1($code);
+			$ucode->purpose = 'resetPass';
+			$ucode->data = $model->id;
+			$ucode->created = date_format(new DateTime(), 'Y-m-d H:i:s');
+			$url = Yii::app()->createAbsoluteUrl('/user/resetPassword', array('code'=>$code));
+			if ($ucode->save()) {
+				$msg = "Reset password link sent. Valid for 4 hours. Check your mail";
+				Yii::app()->user->setFlash('notice', $msg);
+				$email = Yii::app()->email;
+				$email->from = Yii::app()->params['adminEmail'];
+				$email->type = 'text/plain';
+				$email->to = $model->email;
+				$email->subject = 'RotaConsecrata: Reset Password';
+				$member = $model->member;
+				$email->message = sprintf("Dear %s,\n\n".
+					"This is an automatic email to reset your password. If you\n".
+					"have sent this mail and want to reset your password, click\n".
+					"the link below:\n\n".
+					"\t%s\n\n".
+					"This link will expire in 4 hours. If you're unable to login\n".
+					"within this time, please retry resetting your password.\n\n".
+					"Regards, RotaConsecrata Admin.", $member->fullname, $url);
+				$email->send();
+				Yii::trace("$msg. Link: $url", 'application.controllers.UserController');
+			} else {
+				$errs = $ucode->getErrors();
+				$earr = array();
+				foreach($errs as $attr => $ea) {
+					array_push($earr, "$attr : " . implode("; ", $ea));
+				}
+				throw new Exception(implode("\n", $earr));
+			}
+		}
+
+		$this->render('forgot_password');
+	}
+
+	public function actionResetPassword($code)
+	{
+		$sha = sha1($code);
+		$ucode = UserCodes::model()->find("code='$sha'");
+		if (!isset($ucode)) {
+			throw new CHttpException(403, "Access denied You are not allowed to access this page");
+		}
+		$expTime = new DateTime($ucode->created);
+		Yii::trace("Exp:".$expTime->format('Y-m-d H:i:s'), 'application.controllers.UserController');
+		$expTime->add(new DateInterval('PT4H'));
+		$now = new DateTime();
+		if ($now > $expTime) {
+			Yii::trace("Now: ".$now->format('Y-m-d H:i:s').", Exp:".$expTime->format('Y-m-d H:i:s'), 'application.controllers.UserController');
+			$ucode->delete();
+			throw new CHttpException(403, "Access denied. This link has expired");
+		}
+		$id = $ucode->data;
+		$model = new ResetPasswordForm();
+		$model->setUser($id);
+		$user = Users::model()->find("id=$id");
+		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form') 
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+
+		if(isset($_POST['ResetPasswordForm']))
+		{
+			$model->attributes = $_POST['ResetPasswordForm'];
+			$username = $user->username;
+			$pass = $model->newPassword;
+			if($model->validate() && $model->changePassword())
+			{
+				$ident = new UserIdentity($username, $pass);
+				if ($ident->authenticate()) {
+					Yii::app()->user->login($ident);
+					$ucode->delete();
+					Yii::trace('Password reset success', 'application.controllers.UserController');
+					Yii::app()->user->setFlash('success', "Password reset successful!! Password set. Proceed by clicking 'Home'");
+				} else {
+					$errs = $model->getErrors();
+					throw new Exception("Failed to reset user password: " .
+						implode("\n", array_map(function($k, $v) {
+							return "$k: $v";
+						}, array_keys($errs), $errs)));
+				}
+			}
+/*			catch (Exception $e) {
+				$err = "Password reset failed. " . $e->getMessage();
+				Yii::app()->user->setFlash('error', $err);
+				Yii::debug($err, 'application.controllers.UserController');
+			}*/
+		}
+
+		$this->render('reset_password', array(
+			'model' => $model,
+			'user' => $user,
+			'member' => $user->member,
 		));
 	}
 
