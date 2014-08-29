@@ -59,7 +59,7 @@ class Members extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fullname, dob, joining_dt, fathers_name, mothers_name', 'required'),
+			array('fullname, dob, province_id, joining_dt, fathers_name, mothers_name', 'required'),
 			array('province_id, father_alive, mother_alive, mission, generalate, updated_by,
 				swiss_visit, holyland_visit, family_abroad, annual_checkups, teach_lang,
 				mother_tongue, num_brothers, num_sisters, age_retired, num_priests,
