@@ -84,6 +84,7 @@ class Members extends CActiveRecord
 				demise_dt, leaving_dt, updated_on, made_final, father_alive,
 				mother_alive, baptism_dt, feast_day, confirmation_dt,
 				decease_time, email, member_no, nationality,
+				dob, fathers_name, mothers_name, joining_dt,
 				fathers_occupation, mothers_occupation', 'default',
 				'setOnEmpty' => true, 'value' => null),
 			array('pension_amt', 'type', 'type'=>'float'),
