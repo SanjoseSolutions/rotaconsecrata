@@ -78,11 +78,12 @@ class UserController extends Controller
 			if ($ucode->save()) {
 				$msg = "Reset password link sent. Valid for 4 hours. Check your mail";
 				Yii::app()->user->setFlash('notice', $msg);
+				$appName = Yii::app()->name;
 				$email = Yii::app()->email;
 				$email->from = Yii::app()->params['adminEmail'];
 				$email->type = 'text/plain';
 				$email->to = $model->email;
-				$email->subject = 'RotaConsecrata: Reset Password';
+				$email->subject = "$appName: Reset Password";
 				$member = $model->member;
 				$email->message = sprintf("Dear %s,\n\n".
 					"This is an automatic email to reset your password. If you\n".
@@ -91,7 +92,7 @@ class UserController extends Controller
 					"\t%s\n\n".
 					"This link will expire in 4 hours. If you're unable to login\n".
 					"within this time, please retry resetting your password.\n\n".
-					"Regards, RotaConsecrata Admin.", $member->fullname, $url);
+					"Regards, $appName Admin.", $member->fullname, $url);
 				$email->send();
 				Yii::trace("$msg. Link: $url", 'application.controllers.UserController');
 			} else {

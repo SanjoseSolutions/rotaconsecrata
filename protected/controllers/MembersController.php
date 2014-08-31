@@ -298,11 +298,12 @@ class MembersController extends RController
 			if ($ucode->save()) {
 				$msg = "Authorization successful. Activation link emailed to user. Will be valid for 24 hours.";
 				Yii::app()->user->setFlash('msg', $msg);
+				$appName = Yii::app()->name;
 				$email = Yii::app()->email;
 				$email->from = Yii::app()->params['adminEmail'];
 				$email->type = 'text/plain';
 				$email->to = $model->email;
-				$email->subject = 'Welcome to RotaConsecrata';
+				$email->subject = "Welcome to $appName";
 				$email->message = sprintf("Dear %s,\n\n".
 					"This is an email notification email that your user account has\n".
 					"been created by administrator and can be activated by clicking\n".
@@ -310,7 +311,7 @@ class MembersController extends RController
 					"\t%s\n\n".
 					"This link will expire after 24 hours. If you are unable to login\n".
 					"within this time, please contact your admin:\n\n".
-					"Regards, RotaConsecrata Admin.", $model->fullname, $url);
+					"Regards, $appName Admin.", $model->fullname, $url);
 					$email->send();
 					Yii::trace("$msg. Link: $url", 'application.controllers.MembersController');
 			} else {
