@@ -186,7 +186,8 @@ $this->menu=array(
 	<?php
 	
 	if (!$model->photo) {
-			$photo_path = "/images/placeholder-woman.jpg";
+			$sex = $model->sex == 'M' ? 'male' : 'female';
+			$photo_path = "/images/placeholder-$sex.jpg";
 			$src = Yii::app()->request->baseUrl . $photo_path;
 			list($width, $height) = getimagesize(".$photo_path");
 			$label = 'Add Photo';

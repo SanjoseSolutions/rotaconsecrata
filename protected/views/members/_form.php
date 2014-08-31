@@ -23,8 +23,8 @@
 	<div class="row">
 	<span class="left34">
 	<?php
-		echo $form->labelEx($model, 'member_no');
-		echo $form->textField($model, 'member_no', array('size'=>32, 'maxlength'=>32, 'placeholder'=>'Member admission no'));
+		echo $form->labelEx($model, 'sex');
+		echo $form->dropDownList($model, 'sex', array('M'=>'Male','F'=>'Female'), array('prompt'=>'-Select-'));
 	?>
 	</span>
 	<span class="right14">
@@ -49,7 +49,8 @@
 	<?php if (!$model->isNewRecord): ?>
 	<figure class="photo">
 	<?php if (!$model->photo) {
-			$photo_path = "/images/placeholder-woman.jpg";
+			$sex = $model->sex == 'M' ? 'male' : 'female';
+			$photo_path = "/images/placeholder-$sex.jpg";
 			$src = Yii::app()->request->baseUrl . $photo_path;
 			list($width, $height) = getimagesize(".$photo_path");
 			$label = 'Add Photo';
