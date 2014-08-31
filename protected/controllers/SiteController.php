@@ -37,10 +37,10 @@ class SiteController extends Controller
 			$params = array();
 			if ($u->checkAccess('ProvAdm')) {
 				$m = $u->profile->member;
-				$title = 'Generalate Admin: Member listing of entire congregation (all Provinces)..';
+				$title = 'Generalate Admin: Member listing of entire congregation (all Groups)..';
 				if (!$u->checkAccess('Admin')) {
 					$pname = $m->province->name;
-					$title = "You're a Province Admin for $pname Province. Member listing for your Province..";
+					$title = "You're a Group Admin for $pname Group. Member listing for your Group..";
 					$params['criteria'] = array(
 						'condition' => "province_id = " . $m->province_id
 					);

@@ -37,7 +37,7 @@
 		echo CHtml::label('Role', 'role');
 		$roles = array(
 			'' => 'Member',
-			'ProvAdm' => 'Province Admin',
+			'ProvAdm' => 'Group Admin',
 		);
 		if (Yii::app()->user->checkAccess('Admin')) {
 			$roles['Admin'] = 'Generalate Admin';
