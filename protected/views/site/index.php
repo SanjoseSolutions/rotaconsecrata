@@ -27,22 +27,7 @@ $this->menu=array(
 			'value' => 'CHtml::link($data->fullname, Yii::app()->createUrl("/members/view", array("id" => $data->id)))',
 		),
 		'dob',
-		'fathers_name',
-		'mothers_name',
-		'joining_dt',
-		array(
-			'name' => 'First Commitment',
-			'value' => '$data->first_commitment_dt',
-		),
-		array(
-			'name' => 'Jub',
-			'type' => 'raw',
-			'value' => 'CHtml::image(Yii::app()->request->baseUrl . "/images/" . ($data->professed >= 50 ? "gold" : ($data->professed >= 25 ? "silver" : "ph")). "-badge-20.png", "Jubilee")'
-#			'value' => 'if ($data->age >= 50) {
-#				echo CHtml::image("/images/gold-badge-20.png", "Golden Jubilee", array("width" => 20, "height => 20));
-#			} elseif ($data->age >= 25) {
-#				echo CHtml::image("/images/silver-badge-20.png", "Golden Jubilee", array("width" => 20, "height => 20));
-#			}'
-		),
+		'mobile',
+		'email',
 	)
 )); ?>

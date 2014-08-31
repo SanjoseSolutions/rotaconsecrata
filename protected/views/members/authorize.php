@@ -40,7 +40,7 @@
 			'ProvAdm' => 'Group Admin',
 		);
 		if (Yii::app()->user->checkAccess('Admin')) {
-			$roles['Admin'] = 'Generalate Admin';
+			$roles['Admin'] = 'Overall Admin';
 		}
 		echo CHtml::dropDownList('role', '', $roles);
 	?>
