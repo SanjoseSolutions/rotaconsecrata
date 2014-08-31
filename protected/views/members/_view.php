@@ -7,7 +7,8 @@
 
 <figure class="photo">
 	<?php if (!$data->photo) {
-			$photo_path = "/images/placeholder-woman.jpg";
+			$sex = $data->sex == 'M' ? 'male' : 'female';
+			$photo_path = "/images/placeholder-$sex.jpg";
 			$src = Yii::app()->request->baseUrl . $photo_path;
 			list($width, $height) = getimagesize(".$photo_path");
 			$label = 'Add Photo';
