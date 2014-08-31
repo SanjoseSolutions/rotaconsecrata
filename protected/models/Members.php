@@ -59,7 +59,7 @@ class Members extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fullname, sex', 'required'),
+			array('fullname, sex, province_id', 'required'),
 			array('province_id, father_alive, mother_alive, mission, generalate, updated_by,
 				swiss_visit, holyland_visit, family_abroad, annual_checkups, teach_lang,
 				mother_tongue, num_brothers, num_sisters, age_retired, num_priests,
@@ -405,7 +405,7 @@ class Members extends CActiveRecord
             { 
                 if (!strlen($this->$columnName)) continue;
 
-                if ($column->dbType == 'date')
+                if ($column->dbType == 'date' and isset($this->$columnName) and $this->$columnName)
                 { 
                         $this->$columnName = FormatHelper::dateConvView(
                                 $this->$columnName,
