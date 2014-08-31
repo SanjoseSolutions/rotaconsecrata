@@ -16,7 +16,6 @@ $this->widget('application.extensions.fancybox.EFancyBox', array(
         'config'=>array(),
 ));
 
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-renewals.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-booksWritten.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-siblings.js');
 #Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-communities.js');
@@ -25,7 +24,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-spir
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-professionalRenewalCourses.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-travels.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-membersMultiData.js');
-$mul_flds = array("awards", "articles", "research_works", "bodies_membership", "special_services", "interest_areas");
+$mul_flds = array();
 $models = array();
 $mul_fld_script = "";
 foreach($mul_flds as $fld) {
@@ -67,20 +66,6 @@ $('#add-$course-courses').fancybox( {
 ";
 }
 Yii::app()->clientScript->registerScript('addSibs', "
-$('#add-renewals').fancybox( {
-	'onComplete': function() {
-		set_renewal_form_submit();
-		set_renewal_button_click();
-	},
-	'onClosed': function() {
-		$.get('" . CHtml::normalizeUrl(array(
-			'/members/renewalsSummary',
-			'id' => $model->id
-		)) . "', function(data) {
-			$('#renewals-summary .val').html(data);
-		} );
-	}
-} );
 $('#add-sibs').fancybox( {
 	'onComplete': function() {
 		set_form_submit();
@@ -107,34 +92,6 @@ $('#add-comms').fancybox( {
 			'id' => $model->id
 		)) . "', function(data) {
 			$('#communities-summary .val').html(data);
-		} );
-	}
-} );
-$('#add-outside-services').fancybox( {
-        'onComplete': function() {
-                set_os_form_submit();
-                set_os_button_click();
-        },
-	'onClosed': function() {
-		$.get('" . CHtml::normalizeUrl(array(
-			'/members/outsideServicesSummary',
-			'id' => $model->id
-		)) . "', function(data) {
-			$('#outsideServices-summary .val').html(data);
-		} );
-	}
-} );
-$('#add-living-outside').fancybox( {
-        'onComplete': function() {
-                set_lo_form_submit();
-                set_lo_button_click();
-        },
-	'onClosed': function() {
-		$.get('" . CHtml::normalizeUrl(array(
-			'/members/livingOutsideSummary',
-			'id' => $model->id
-		)) . "', function(data) {
-			$('#livingOutside-summary .val').html(data);
 		} );
 	}
 } );
@@ -196,26 +153,10 @@ $('#add-professional-courses').fancybox( {
 		} );
 	}
 } );
-$('#add-separations').fancybox( {
-        'onComplete': function() {
-                set_separations_form_submit();
-                set_separations_button_click();
-        },
-	'onClosed': function() {
-		$.get('" . CHtml::normalizeUrl(array(
-			'/members/separationsSummary',
-			'id' => $model->id
-		)) . "', function(data) {
-			$('#separations-summary .val').html(data);
-		} );
-	}
-} );
 ".$mul_fld_script
 .$courses_script
 .file_get_contents(dirname(__FILE__).'/../../../js/add-communities.js')
-.file_get_contents(dirname(__FILE__).'/../../../js/add-outsideServices.js')
-.file_get_contents(dirname(__FILE__).'/../../../js/add-livingOutside.js')
-.file_get_contents(dirname(__FILE__).'/../../../js/add-separations.js'));
+);
 
 /* @var $this MembersController */
 /* @var $model Members */
@@ -402,19 +343,6 @@ $this->menu=array(
 		echo "</div>";
 	}
 
-	echo '<div id="renewals-summary" class="fields">';
-	if ($model->renewals) {
-		echo "<label>Renewals: </label>";
-		echo "<span class='val'>";
-		$this->renderPartial('/renewals/summary', array('renewals' => $model->renewals));
-		echo "</span> ";
-		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
-	} else {
-		$lbl = "Add Renewals";
-	}
-	echo CHtml::link($lbl, array('/members/renewals', 'id' => $model->id), array('id' => 'add-renewals'));
-	echo '</div>';
-
 	echo "<div class='fields'>";
 	echo "<label>Father's Name: </label>";
 	if ($model->father_alive) {
@@ -520,43 +448,6 @@ $this->menu=array(
 		echo "</div>";
 	}
 
-	$this->renderPartial('memberFieldSummary', array(
-		'model'=>$model,
-		'fld'=>'awards'));
-
-	echo '<div id="books-written-summary" class="fields">';
-	if ($model->booksWritten) {
-		echo CHtml::label($model->getAttributeLabel('books_written') . ': ', false);
-		echo CHtml::openTag('span', array('class'=>'val'));
-		$this->renderPartial('/booksWritten/summary', array('booksWritten' => $model->booksWritten));
-		echo CHtml::closeTag('span') . ' ';
-		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
-	} else {
-		$lbl = "Add Books Written";
-	}
-	echo CHtml::link($lbl, array('/members/booksWritten', 'id'=>$model->id), array('id'=>'add-books-written'));
-	echo "</div>";
-
-	$this->renderPartial('memberFieldSummary', array(
-		'model'=>$model,
-		'fld'=>'articles'));
-
-	$this->renderPartial('memberFieldSummary', array(
-		'model'=>$model,
-		'fld'=>'research_works'));
-
-	$this->renderPartial('memberFieldSummary', array(
-		'model'=>$model,
-		'fld'=>'bodies_membership'));
-
-	$this->renderPartial('memberFieldSummary', array(
-		'model'=>$model,
-		'fld'=>'special_services'));
-
-	$this->renderPartial('memberFieldSummary', array(
-		'model'=>$model,
-		'fld'=>'interest_areas'));
-
 	$specs = array();
 	foreach($model->memberSpecs as $spec) {
 		array_push($specs, $spec->spec->name);
@@ -567,38 +458,6 @@ $this->menu=array(
 		echo "<span class='val'>" . implode(', ', $specs) . "</span>";
 		echo "</div>";
 	}
-
-	echo '<div id="communities-summary" class="fields">';
-	if ($model->communityTerms) {
-		echo CHtml::label($model->getAttributeLabel('community_terms').': ', false);
-		echo "<span class='val'>";
-		$this->renderPartial('/communityTerms/summary', array(
-			'model' => $model,
-			'commTerms' => $model->communityTerms
-		));
-		echo "</span> ";
-		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
-	} else {
-		$lbl = "Add Communities";
-	}
-	echo CHtml::link($lbl, array('/members/communities', 'id' => $model->id), array('id' => 'add-comms'));
-	echo "</div>";
-
-	echo '<div id="outsideServices-summary" class="fields">';
-	if ($model->outside_services) {
-		echo "<label>Outside Services: </label>";
-		echo "<span class='val'>";
-		$this->renderPartial('/outsideService/summary', array(
-			'model' => $model,
-			'outsideServices' => $model->outside_services
-		));
-		echo "</span> ";
-		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
-	} else {
-		$lbl = "Add Outside Services";
-	}
-	echo CHtml::link($lbl, array('/members/outsideServices', 'id' => $model->id), array('id' => 'add-outside-services'));
-	echo "</div>";
 
 	foreach(AcademicCourseNames::getAllNames() as $course) {
 		$this->renderPartial('academicCourseSummary', array(
@@ -656,38 +515,6 @@ $this->menu=array(
 		$lbl = "Add Travels";
 	}
 	echo CHtml::link($lbl, array('/members/travels', 'id'=>$model->id), array('id'=>'add-travels'));
-	echo "</div>";
-
-	echo '<div id="livingOutside-summary" class="fields">';
-	if ($model->living_outside) {
-		echo CHtml::label($model->getAttributeLabel('living_outside').': ', false);
-		echo "<span class='val'>";
-		$this->renderPartial('/livingOutside/summary', array(
-			'model' => $model,
-			'livingOutside' => $model->living_outside
-		));
-		echo "</span> ";
-		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
-	} else {
-		$lbl = "Add Living Outside";
-	}
-	echo CHtml::link($lbl, array('/members/livingOutside', 'id' => $model->id), array('id' => 'add-living-outside'));
-	echo "</div>";
-
-	echo '<div id="separations-summary" class="fields">';
-	if ($model->separations) {
-		echo CHtml::label($model->getAttributeLabel('separations').': ', false);
-		echo "<span class='val'>";
-		$this->renderPartial('/separation/summary', array(
-			'model' => $model,
-			'separations' => $model->separations
-		));
-		echo "</span> ";
-		$lbl = CHtml::image(Yii::app()->request->baseUrl."/images/edit.png", "Edit", array('height'=>14,'width'=>14,'title'=>'Edit'));;
-	} else {
-		$lbl = "Add " . $model->getAttributeLabel('separations');
-	}
-	echo CHtml::link($lbl, array('/members/separations', 'id' => $model->id), array('id' => 'add-separations'));
 	echo "</div>";
 
 	echo "</div><!-- end of rightSection -->";

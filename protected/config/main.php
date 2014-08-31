@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'RotaConsecrata',
+	'name'=>'Uth Connect',
 	'sourceLanguage'=>'en-GB',
 
 	// preloading 'log' component
@@ -104,7 +104,7 @@ return array(
 		array(
 			// this is used in contact page
 			'adminEmail'=>'admin@sanjosesolutions.in',
-			'logoPath'=>'/images/rc-logo1.png',
+			'logoPath'=>'/images/uc-logo.png',
 		),
 		require(dirname(__FILE__).DIRECTORY_SEPARATOR.'params.php')
 	),
