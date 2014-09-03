@@ -1,4 +1,9 @@
 function set_renewal_form_submit() {
+	jQuery('#Renewals_renewal_dt').datepicker( {
+		'dateFormat': 'dd/mm/yy',
+		'yearRange': '1900:c+10',
+		'changeYear':true
+	} );
         $('#renewals-form').submit(function() {                                                   
                 $.post($(this).attr('action'), $(this).serialize());                              
                 reload_renewals();
