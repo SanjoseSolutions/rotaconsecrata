@@ -234,6 +234,10 @@ class MembersController extends RController
 	{
 		$model=new Members('search');
 		$model->unsetAttributes();  // clear any default values
+		$u = Yii::app()->user;
+		if (!$u->checkAccess('Admin') and $u->checkAccess('ProvAdm'))
+			$model->province_id = $u->profile->member->province_id;
+
 		if(isset($_GET['Members']))
 			$model->attributes=$_GET['Members'];
 

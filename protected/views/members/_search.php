@@ -25,8 +25,6 @@ $yesno_opts = array(1 => 'Yes', 0 => 'No');
 		if ($u->checkAccess('Admin')) {
 			echo $form->labelEx($model, 'province_id');
 			echo $form->dropDownList($model, 'province_id', Provinces::getAll(), array('prompt' => '-- Select --'));
-		} else {
-			echo $form->hiddenField($model, 'province_id', array('value' => $u->profile->member->province_id));
 		} ?>
 	</span>
 	</div>

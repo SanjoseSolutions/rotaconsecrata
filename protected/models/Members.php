@@ -262,7 +262,7 @@ class Members extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('member_no',$this->member_no,true);
-		$criteria->compare('province_id',$this->province_id,true);
+		$criteria->compare('province_id',$this->province_id);
 		$criteria->compare('fullname',$this->fullname,true);
 		$criteria->compare('photo',$this->photo,true);
 		$criteria->compare('maiden_name',$this->maiden_name,true);
@@ -341,7 +341,10 @@ class Members extends CActiveRecord
 			$nxt_bday = "MAKEDATE(YEAR('$dt')+IF(DAYOFYEAR(t.dob)<DAYOFYEAR('$dt'),1,0),DAYOFYEAR(t.dob))";
 			$to_dt = FormatHelper::dateConvDB(
 			    	$this->bday_to, Yii::app()->locale->getDateFormat('short'));
-			$criteria = $criteria->addCondition("$nxt_bday BETWEEN '$dt' AND '$to_dt' ORDER BY $nxt_bday");
+			$criteria->mergeWith(array(
+				'condition'	=> "$nxt_bday BETWEEN '$dt' AND '$to_dt'",
+				'order'		=> "$nxt_bday"
+			));
 		}
 		if (isset($this->feast_from) and $this->feast_from and
 				isset($this->feast_to) and $this->feast_to) {
@@ -350,7 +353,10 @@ class Members extends CActiveRecord
 			$nxt_feast = "MAKEDATE(YEAR('$dt')+IF(DAYOFYEAR(t.feast_day)<DAYOFYEAR('$dt'),1,0),DAYOFYEAR(t.feast_day))";
 			$to_dt = FormatHelper::dateConvDB(
 			    	$this->feast_to, Yii::app()->locale->getDateFormat('short'));
-			$criteria = $criteria->addCondition("$nxt_feast BETWEEN '$dt' AND '$to_dt' ORDER BY $nxt_feast");
+			$criteria->mergeWith(array(
+				'condition'	=> "$nxt_feast BETWEEN '$dt' AND '$to_dt'",
+				'order'		=> "$nxt_feast"
+			));
 		}
 		$criteria->compare('updated_by',$this->updated_by);
 		$criteria->compare('updated_on',$this->updated_on,true);
