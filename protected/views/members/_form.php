@@ -46,6 +46,15 @@
 		<?php echo $form->error($model,'fullname'); ?>
 	</div>
 
+	<div class="row">
+	<?php echo CHtml::label('Ministries', null);
+		foreach ($specializations as $spec) {
+			echo '<label class="cblabel" for="spec_'.$spec->id.'">'.$spec->name." ";
+			echo CHtml::checkBox('specialization[]', in_array($spec->id, $setSpecs), array('id'=>"spec_".$spec->id, 'value' => $spec->id));
+			echo '</label>';
+		} ?>
+	</div>
+
 	<?php if (!$model->isNewRecord): ?>
 	<figure class="photo">
 	<?php if (!$model->photo) {
@@ -548,15 +557,6 @@
 		echo $form->dropDownList($model, 'teach_lang', $languages, array('prompt' => '-- Select one --'));
 		echo $form->error($model, 'teach_lang');
 	?>		
-	</div>
-
-	<div class="row">
-	<?php echo CHtml::label('Specialization', null);
-		foreach ($specializations as $spec) {
-			echo '<label class="cblabel" for="spec_'.$spec->id.'">'.$spec->name." ";
-			echo CHtml::checkBox('specialization[]', in_array($spec->id, $setSpecs), array('id'=>"spec_".$spec->id, 'value' => $spec->id));
-			echo '</label>';
-		} ?>
 	</div>
 
 	<div class="row">
