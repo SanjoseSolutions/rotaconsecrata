@@ -27,6 +27,29 @@
 	<div id="header">
 		<div id="logo"><?php $burl = Yii::app()->request->baseUrl;
 			echo CHtml::link(CHtml::image($burl . Yii::app()->params['logoPath'], Yii::app()->name), "$burl/"); ?></div>
+                <?php if (!Yii::app()->user->isGuest): ?>
+                <div id="search">
+                        <?php $form=$this->beginWidget('CActiveForm', array(
+                                                'id' => 'search_form',
+                                                'action' => Yii::app()->createUrl('/members/search'),
+                                                'method' => 'GET',
+                        ));
+                        echo CHtml::textField('key', '', array('id' => 'search_key'));
+                        echo CHtml::imageButton(Yii::app()->request->baseUrl . '/images/search.png');
+                        $this->endWidget();
+                        Yii::app()->clientScript->registerScript('global-search', "
+                        $('#search_form').submit(function() {
+                                $.get($(this).attr('action'), {
+                                        'key': $('#search_key').val()
+                                }, function(data) {
+                                        $('#content').html(data);
+                                } );
+                                return false;
+                        } );
+                        $('#search_key').focus();
+                        "); ?>
+                </div>
+                <?php endif ?>
 	</div><!-- header -->
 
 	<div id="mainmenu">
