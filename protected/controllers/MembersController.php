@@ -56,6 +56,27 @@ class MembersController extends RController
 			),
 		);
 	}
+	
+	public function actionSearch()
+	{
+		if (isset($_GET['key'])) {
+                        $key = $_GET['key'];            
+                        $crit = new CDbCriteria();     
+			$crit->mergeWith(array('condition' => "fullname like '%$key%'"), 'OR');
+                        if (preg_match('/^\d+$/', $key)) {    
+                                $crit->mergeWith(array('condition' => "id = $key"), 'OR');
+                        }                                  
+          
+                        $mems = new CActiveDataProvider('Members', array(
+                                'criteria' => $crit                                              
+                        ));                                       
+                                                        
+                        if ($mems->itemCount > 0)       
+                                $this->renderPartial('index', array(                                        
+                                        'dataProvider' => $mems
+                                ));                                    
+                }
+	}
 
 	public function actionSelfView()
 	{
