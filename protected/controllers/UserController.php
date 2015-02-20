@@ -220,9 +220,13 @@ class UserController extends Controller
 				}
 			}
 			catch (Exception $e) {
-				$err = "Activation failed. " . $e->getMessage();
+                $msg = $e->getMessage();
+                if (preg_match("/Duplicate entry.*for key 'username'/", $msg)) {
+                    $msg = "Username must be unique";
+                }
+				$err = "Activation failed. " . $msg;
+                $model->password = "";
 				Yii::app()->user->setFlash('err', $err);
-				Yii::debug($err, 'application.controllers.UserController');
 			}
 		}
 
