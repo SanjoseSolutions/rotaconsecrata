@@ -37,6 +37,10 @@
 	<?php echo CHtml::encode($data->dob); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('blood_group')); ?>:</b>
+	<?php echo CHtml::encode($data->blood_group); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('joining_dt')); ?>:</b>
 	<?php echo CHtml::encode($data->joining_dt); ?>
 	<br />

@@ -352,6 +352,13 @@ $this->menu=array(
 		echo "</div>";
 	}
 
+  if ($model->blood_group) {
+    echo '<div class="fields">';
+    echo CHtml::label($model->getAttributeLabel('blood_group'). ': ', false);
+    echo CHtml::tag('span', array('class'=>'val'), $model->blood_group);
+    echo '</div>';
+  }
+
 	echo '<div class="joining fields">';
 	echo CHtml::label(str_replace(' Date', '', $model->getAttributeLabel('joining_dt')). ': ', false);
 	echo CHtml::tag('span', array('class'=>'date val'), $model->joining_dt);

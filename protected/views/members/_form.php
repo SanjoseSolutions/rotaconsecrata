@@ -120,6 +120,14 @@
 	</div>
 
 	<div class="row">
+  <span class="leftHalf">
+    <?php echo $form->labelEx($model,'blood_group'); ?>
+    <?php echo $form->textField($model,'blood_group',array('size'=>10,'maxlength'=>15,'placeholder'=>'Blood Group')); ?>
+    <?php echo $form->error($model,'blood_group'); ?>
+  </span>
+	</div>
+
+	<div class="row">
 	<span class="leftHalf">
 		<?php echo $form->labelEx($model,'birth_state'); ?>
 		<?php echo $form->textField($model,'birth_state',array(
