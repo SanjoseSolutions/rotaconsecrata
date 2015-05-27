@@ -700,7 +700,7 @@ $this->menu=array(
 	echo "</div><!-- end of rightSection -->";
 
 	echo "<div class='fields'>";
-	$flds = array('mission', 'generalate', 'swiss_visit', 'holyland_visit', 'family_abroad', 'annual_checkups');
+	$flds = array('mission', 'generalate', 'swiss_visit', 'holyland_visit', 'family_abroad', 'annual_checkups', 'donate_organs' );
 	$cls = "left13";
 	foreach($flds as $fld) {
 		if (!isset($model->$fld)) continue;
@@ -715,6 +715,23 @@ $this->menu=array(
 		echo '</span>';
 	}
 	echo "</div>";
+
+  if (isset($model->donate_organs) and $model->donate_organs) {
+    echo "<div class='fields'>";
+    $organs = [ 'donate_eyes', 'donate_kidneys', 'donate_heart', 'donate_liver', 'donate_lungs', 'donate_pancreas', 'donate_body' ];
+    foreach($organs as $fld) {
+      echo "<span class='$cls'>";
+      $cls = $cls === "left13" ? "right13" : "left13";
+      echo "<label>";
+      echo $model->attributeLabels()[$fld];
+      echo ": </label>";
+      echo "<span class='val'>";
+      echo $model->$fld ? 'YES' : 'NO';
+      echo '</span>';
+      echo '</span>';
+    }
+    echo "</div>";
+  }
 
 	echo "<div class='fields'>";
 	$flds = array('age_retired', 'pension_amt', 'decease_time');

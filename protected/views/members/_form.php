@@ -627,6 +627,26 @@
 	</span>
 	</div>
 
+  <div class="row">
+  <?php
+    echo $form->labelEx($model,'donate_organs');
+    echo $form->checkBox($model,'donate_organs');
+    echo $form->error($model,'donate_organs');
+  ?>
+  </div>
+
+	<div id="organs-div" class="row organs">
+  <?php
+    $organs = [ 'donate_eyes', 'donate_kidneys', 'donate_heart', 'donate_liver', 'donate_lungs',
+      'donate_pancreas', 'donate_body' ];
+		foreach ($organs as $oid => $org) {
+			echo '<label class="cblabel" for="sorg_'.$oid.'">'.$model->getAttributeLabel($org)." ";
+			echo $form->checkBox($model, $org, ['id' => 'sorg_'.$oid]);
+			echo '</label>';
+    }
+  ?>
+  </div>
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'health_data'); ?>
 		<?php echo $form->textArea($model,'health_data',array('rows'=>4, 'cols'=>50,'placeholder'=>'Enter Health Data')); ?>

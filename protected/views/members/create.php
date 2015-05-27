@@ -1,4 +1,5 @@
 <?php
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/donate-organs.js');
 /* @var $this MembersController */
 /* @var $model Members */
 
